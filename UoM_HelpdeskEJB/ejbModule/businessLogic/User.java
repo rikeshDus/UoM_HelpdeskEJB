@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class UserEntity {
+public class User {
 	@Id
 	private String user_id;
 	private String password;
@@ -18,7 +18,7 @@ public class UserEntity {
 	private String email;
 	private Date date_of_birth;
 	
-	public UserEntity() {
+	public User() {
 		
 	}
 

@@ -1,5 +1,5 @@
 package businessLogic;
 
-public class TrackingEntity {
+public class Student {
 
 }

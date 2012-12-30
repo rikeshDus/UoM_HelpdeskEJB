@@ -5,7 +5,7 @@ import javax.persistence.Id;
 
 
 @Entity
-public class StaffEntity {
+public class Staff {
 	@Id
 	private String staff_id;
 	private String user_id;
@@ -16,7 +16,7 @@ public class StaffEntity {
 	
 	
 	
-	public StaffEntity() {
+	public Staff() {
 	}
 	
 	public String getStaff_id() {
