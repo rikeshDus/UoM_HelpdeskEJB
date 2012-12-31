@@ -46,7 +46,7 @@ public class UserManager {
 				temporaryUser.setUser_id(rs.getString("user_id"));
 				temporaryUser.setSurname(rs.getString("surname"));
 				temporaryUser.setPassword(rs.getString("password"));
-				temporaryUser.setName(rs.getNString("name"));
+				temporaryUser.setName(rs.getString("name"));
 				temporaryUser.setLocality(rs.getString("locality"));
 				temporaryUser.setHouse_number(rs.getInt("house_number"));
 				temporaryUser.setEmail(rs.getString("email"));
@@ -69,13 +69,16 @@ public class UserManager {
     }//end of  public User findUser(String username)
     
     public boolean Login(String username,String password){ 
+    	
     	if(this.findUser(username) == null)
     		return false;//should load error page
+
     	if(this.findUser(username).getPassword().equals(password)){
     		this.user = this.findUser(username);
     		return true;
-    	}
+    	}//end of if(this.findUser(username).getPassword().equals(password))
+    	
     	return false;
     }// end of public boolean Login(String username,String password){
 
-}//end of class
+}//end of classa
