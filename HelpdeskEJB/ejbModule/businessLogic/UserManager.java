@@ -22,7 +22,20 @@ public class UserManager {
     }
     
     
-    public User findUser(String username){
+    
+    public User getUser() {
+		return this.user;
+	}
+
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+
+	public User findUser(String username){
     	Connection con;
     	String query;
     	PreparedStatement pstmt;
@@ -74,7 +87,7 @@ public class UserManager {
     		return false;//should load error page
 
     	if(this.findUser(username).getPassword().equals(password)){
-    		this.user = this.findUser(username);
+    		this.setUser(this.findUser(username));
     		return true;
     	}//end of if(this.findUser(username).getPassword().equals(password))
     	

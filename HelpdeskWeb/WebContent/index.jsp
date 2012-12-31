@@ -1,4 +1,4 @@
-<%@page import="businessLogic.UserManager" %>
+<%@page import="businessLogic.UserManager, businessLogic.User" %>
 <%!
 	String username,password;
 	boolean loginValidate = false,formSubmit;
@@ -17,7 +17,8 @@
 		
 		if(loginValidate)
 		{
-			
+			session.setAttribute("currentUser", userManager.getUser());
+			response.sendRedirect("homepage.jsp");
 		}//end if(loginValidate)
 	}//end if(formSubmit)
 	
