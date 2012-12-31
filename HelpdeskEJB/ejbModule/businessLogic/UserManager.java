@@ -35,8 +35,8 @@ public class UserManager {
     	query = "SELECT * FROM user WHERE user_id = ?";
     	
     	try {
-			pstmt = con.prepareStatement(query);
-			
+    		pstmt = con.prepareStatement(query);
+    		
 			pstmt.setString(1, username);
 			
 			rs = pstmt.executeQuery();
@@ -44,7 +44,7 @@ public class UserManager {
 			while(rs.next()){
 				temporaryUser = new User();
 				temporaryUser.setUser_id(rs.getString("user_id"));
-				temporaryUser.setSurname(rs.getNString("surname"));
+				temporaryUser.setSurname(rs.getString("surname"));
 				temporaryUser.setPassword(rs.getString("password"));
 				temporaryUser.setName(rs.getNString("name"));
 				temporaryUser.setLocality(rs.getString("locality"));
@@ -59,7 +59,7 @@ public class UserManager {
     		pstmt.close();
     		con.close();
     		return temporaryUser;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}   	
@@ -68,7 +68,9 @@ public class UserManager {
 		return null;    	
     }//end of  public User findUser(String username)
     
-    public boolean Login(String username,String password){    	
+    public boolean Login(String username,String password){ 
+    	if(this.findUser(username) == null)
+    		return false;//should load error page
     	if(this.findUser(username).getPassword().equals(password)){
     		this.user = this.findUser(username);
     		return true;

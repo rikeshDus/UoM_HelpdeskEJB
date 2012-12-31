@@ -5,9 +5,23 @@
 <html>
   <head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    	<title>GlassFish JSP Page</title>
+    	<title>UoM Helpdesk</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
+  	<form action="validateLogin.jsp">
+	    <table>
+	    	<tr>
+	    		<td>Username :</td>
+	    		<td><input type="text" name="txt_username" /></td>
+	    	</tr>
+	    	<tr>
+	    		<td>Password :</td>
+	    		<td><input type="password" name="txt_password" /></td>
+	    	</tr>
+	    	<tr>
+	    		<td colspan="2"><input type="submit" value="Sign In"/></td>
+	    	</tr>
+	    </table>
+	 </form>
   </body>
 </html> 
