@@ -29,10 +29,10 @@ public class CourseManager {
 		return null;
     }
     
-    public List<Course> getAllCourse(){
+    public ArrayList<Course> getAllCourse(){
     	Connection con =  null;
     	Course course;
-    	List<Course> allCourse = new ArrayList<Course>();
+    	ArrayList<Course> allCourse = new ArrayList<Course>();
     	Statement stmt;
     	ResultSet rs;
     	String query = "SELECT * FROM course";
@@ -49,6 +49,7 @@ public class CourseManager {
     			course = new Course();
     			
     			course.setCourse_code(rs.getString("course_code"));
+    			course.setName(rs.getString("name"));
     			course.setDescrition(rs.getString("description"));
     			course.setType(rs.getString("type"));
     			allCourse.add(course);

@@ -7,6 +7,7 @@ import javax.persistence.Id;
 public class Course {
 	@Id
 	private String course_code;
+	private String name;
 	private String descrition;
 	private String type;
 	
@@ -20,6 +21,14 @@ public class Course {
 
 	public void setCourse_code(String course_code) {
 		this.course_code = course_code;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDescrition() {

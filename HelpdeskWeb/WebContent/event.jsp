@@ -1,4 +1,31 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page import="businessLogic.*" %>
+
+<%! 
+	String comboCourse = "";
+	ArrayList<Course> allCourse = new ArrayList<Course>();
+%>
+<%
+	CourseManager courseManager = new CourseManager();
+	allCourse = courseManager.getAllCourse();
+	
+	//generating <option> for each course </option>
+	for(int i=0;i<allCourse.size();i++){
+		comboCourse += "<option value=\" "+allCourse.get(i).getCourse_code()+" \">"+allCourse.get(i).getName()+"</option>";
+	}//end for(int i=0;i<allCourse.size();i++){
+		
+		
+		
+		
+	/* 
+	generating a list of student Id from database
+	format it to fit in a combo box :-
+	<option value=id> Id </option>
+	 */
+	 
+	 
+%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -47,7 +74,7 @@ function SubmitcreateEventFormDiv(){
 					<td>Course Involve</td>
 					<td>
 						<select>
-							<option>List of Course</option>
+							<%= comboCourse %>
 						</select>
 						<br>
 						<button>Add Course</button>
