@@ -12,6 +12,8 @@
 <title>UoM Helpdesk</title>
 </head>
 <body>
-	<%= user.getEmail() %>
+	<a href="event.jsp">Event</a>
+	<br>
+	<a href="query.jsp">Query</a>
 </body>
 </html>

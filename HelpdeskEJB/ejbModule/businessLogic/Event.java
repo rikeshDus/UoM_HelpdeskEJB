@@ -8,7 +8,7 @@ public class Event {
 	@Id
 	private int event_id;
 	private String title;
-	private String descroiption;
+	private String description;
 	private String type;
 	private String user_id;
 	
@@ -33,11 +33,11 @@ public class Event {
 	}
 
 	public String getDescroiption() {
-		return descroiption;
+		return description;
 	}
 
 	public void setDescroiption(String descroiption) {
-		this.descroiption = descroiption;
+		this.description = descroiption;
 	}
 
 	public String getType() {
