@@ -1,5 +1,7 @@
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import javax.validation.constraints.AssertTrue;
 
 import org.junit.Test;
@@ -40,6 +42,16 @@ public class UserManagerTest {
 		boolean validLogin = userManager.Login(username, password);
 		
 		assertTrue(validLogin);
+	}
+	
+	@Test
+	public void testGetAllUser(){
+		businessLogic.UserManager userManager = new UserManager();
+		ArrayList<businessLogic.User> allUser = userManager.getAllUser();
+		
+		String id = allUser.get(0).getUser_id();
+		
+		assertTrue(id.equals("1010790"));
 	}
 
 }

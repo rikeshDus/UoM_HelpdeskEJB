@@ -3,7 +3,9 @@
 
 <%! 
 	String comboCourse = "";
+	String comboUser = "";
 	ArrayList<Course> allCourse = new ArrayList<Course>();
+	ArrayList<User> allUser = new ArrayList<User>();
 %>
 <%
 	CourseManager courseManager = new CourseManager();
@@ -22,7 +24,12 @@
 	format it to fit in a combo box :-
 	<option value=id> Id </option>
 	 */
+	 UserManager userManager = new UserManager();
+	 allUser = userManager.getAllUser();
 	 
+	 for(int i=0; i<allUser.size();i++){
+		 comboUser += "<option value = \" "+allUser.get(i).getUser_id()+" \" >"+allUser.get(i).getUser_id()+"</option>";
+	 }
 	 
 %>
 
@@ -33,20 +40,47 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script type="text/javascript" src="javascript/jquery-1.8.3.min.js"></script>
 <script type="text/javascript">
-function SubmitcreateEventFormDiv(){
+var courseArray = [];
+
+var courseNumberAdded = 0;
+
+
+function submitcreateEventFormDiv(){
 	$("#createEventFormDiv").hide(1000);
-}
+	$.post("ajax/eventAjax.jsp",
+	{
+		 'type':$("#eventType").val(),
+		'title':$("#title").val(),
+		'description':$("#description").val(),
+		'facultyEngineering':  $("#checkFacultyEngineering").val(),
+		'facultyAgriculture':  $("#checkFacultyAgriculture").val(),
+		'course[]': courseArray
+	},
+	function(data,status){
+		alert("Data:" + data);
+	});
+	
+}//end function SubmitcreateEventFormDiv(){
+
+function addCourse(){	
+	courseArray[courseNumberAdded] = $("#comboCourse").val();
+	alert(courseArray[courseNumberAdded]);
+	courseNumberAdded++;
+	$("#courseAddedTextArea").append($("#comboCourse").text());
+	$("#courseAddedConfirmMessge").html("<span style='color: #123456;'> Course Successfully Added </span>").show().fadeIn(500).fadeOut(2000);
+	
+}//end function addCourse(){
 </script>
 <title>UoM Helpdesk</title>
 </head>
 <body >
 	<div id="createEventFormDiv">
-		<form action="#">
+		<form action="#" name="createEventForm">
 			<table cellspacing="2" cellpadding="3">
 				<tr>
 					<td>Event Type</td>
 					<td> 
-						<select name="">
+						<select name="" id="eventType">
 							<option value="sport">Sport</option>
 							<option value="other">Other</option>
 						</select>
@@ -54,43 +88,44 @@ function SubmitcreateEventFormDiv(){
 				</tr>
 				<tr>
 					<td>Title</td>
-					<td><input type="text" name=""/> </td>
+					<td><input type="text" name="" id="title"/> </td>
 				</tr>
 				<tr>
 					<td>Description</td>
-					<td><textarea name=""></textarea></td>
+					<td><textarea name="" id="description"></textarea></td>
 				</tr>
 				<tr>
 					<td colspan="2">Faculty Involve </td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						Engineering <input type="checkbox" name=""/>
-						Agriculture <input type="checkbox" name=""/>
+						Engineering <input type="checkbox" name="faculty" id="checkFacultyEngineering"/>
+						Agriculture <input type="checkbox" name="faculty" id="checkFacultyAgriculture"/>
 						
 					</td>
 				</tr>
 				<tr>
 					<td>Course Involve</td>
 					<td>
-						<select>
+						<select id="comboCourse">
 							<%= comboCourse %>
 						</select>
 						<br>
-						<button>Add Course</button>
+						<button onclick="addCourse();">Add Course</button>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
 						Course Added <br>
-						<textarea rows="" cols="" readonly="readonly"></textarea>
+						<div id="courseAddedConfirmMessge"></div><br>
+						<textarea rows="" cols="" readonly="readonly" id="courseAddedTextArea"></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td>ID Involve</td>
 					<td>
-						<select>
-							<option>List of Id</option>
+						<select id="comboUser">
+							<%= comboUser %>
 						</select>
 						<br>
 						<button>Add Id</button>
@@ -99,12 +134,12 @@ function SubmitcreateEventFormDiv(){
 				<tr>
 					<td colspan="2">
 						Id Added <br>
-						<textarea rows="" cols="" ></textarea>
+						<textarea rows="" cols="" id="courseAddedTextArea"></textarea>
 					</td>
 				</tr>
 			</table>
 		</form>
 	</div>
-	<button onclick="SubmitcreateEventFormDiv();">Submit</button>
+	<button onclick="submitcreateEventFormDiv();">Submit</button>
 </body>
 </html>

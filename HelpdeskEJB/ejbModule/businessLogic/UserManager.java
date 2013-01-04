@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  * Session Bean implementation class UserManager
@@ -81,6 +83,65 @@ public class UserManager {
 		return null;    	
     }//end of  public User findUser(String username)
     
+	
+	
+	
+	//get all user from database
+	public ArrayList<User> getAllUser(){
+		
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		User temporaryUser;
+		ArrayList<User> allUser = new ArrayList<User>();
+		String query = "SELECT * FROM user";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryUser = new User();
+				
+				temporaryUser.setUser_id(rs.getString("user_id"));
+				temporaryUser.setSurname(rs.getString("surname"));
+				temporaryUser.setPassword(rs.getString("password"));
+				temporaryUser.setName(rs.getString("name"));
+				temporaryUser.setLocality(rs.getString("locality"));
+				temporaryUser.setHouse_number(rs.getInt("house_number"));
+				temporaryUser.setEmail(rs.getString("email"));
+				temporaryUser.setDate_of_birth(rs.getDate("date_of_birth"));
+				temporaryUser.setCountry(rs.getString("country"));			
+				
+				allUser.add(temporaryUser);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return allUser;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+	}//end of public ArrayList<User> getAllUser()
+	
+	
+	
+	
+	
+	
+	
     public boolean Login(String username,String password){ 
     	
     	if(this.findUser(username) == null)
