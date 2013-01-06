@@ -8,7 +8,7 @@
 	ArrayList<User> allUser = new ArrayList<User>();
 %>
 <%
-	CourseManager courseManager = new CourseManager();
+ 	CourseManager courseManager = new CourseManager();
 	allCourse = courseManager.getAllCourse();
 	
 	//generating <option> for each course </option>
@@ -16,7 +16,7 @@
 		comboCourse += "<option value=\" "+allCourse.get(i).getCourse_code()+" \">"+allCourse.get(i).getName()+"</option>";
 	}//end for(int i=0;i<allCourse.size();i++){
 		
-		
+		 
 		
 		
 	/* 
@@ -30,7 +30,7 @@
 	 for(int i=0; i<allUser.size();i++){
 		 comboUser += "<option value = \" "+allUser.get(i).getUser_id()+" \" >"+allUser.get(i).getUser_id()+"</option>";
 	 }
-	 
+	  
 %>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
@@ -54,10 +54,12 @@ function submitcreateEventFormDiv(){
 		'description':$("#description").val(),
 		'facultyEngineering':  $("#checkFacultyEngineering").val(),
 		'facultyAgriculture':  $("#checkFacultyAgriculture").val(),
-		'course[]': courseArray
+		'course[]': courseArray,
+		'startDate':$("#startDate").val(),
+		'endDate':$("#endDate").val()
 	},
 	function(data,status){
-		alert("Data:" + data);
+		alert(data);
 	});
 	
 }//end function SubmitcreateEventFormDiv(){
@@ -66,7 +68,7 @@ function addCourse(){
 	courseArray[courseNumberAdded] = $("#comboCourse").val();
 	alert(courseArray[courseNumberAdded]);
 	courseNumberAdded++;
-	$("#courseAddedTextArea").append($("#comboCourse").text());
+	//$("#courseAddedTextArea").append($("#comboCourse").text());
 	$("#courseAddedConfirmMessge").html("<span style='color: #123456;'> Course Successfully Added </span>").show().fadeIn(500).fadeOut(2000);
 	
 }//end function addCourse(){
@@ -111,7 +113,7 @@ function addCourse(){
 							<%= comboCourse %>
 						</select>
 						<br>
-						<button onclick="addCourse();">Add Course</button>
+						<input type="button" onclick="addCourse()" value="add">
 					</td>
 				</tr>
 				<tr>
@@ -125,7 +127,7 @@ function addCourse(){
 					<td>ID Involve</td>
 					<td>
 						<select id="comboUser">
-							<%= comboUser %>
+							<%=comboUser %>
 						</select>
 						<br>
 						<button>Add Id</button>
@@ -136,6 +138,14 @@ function addCourse(){
 						Id Added <br>
 						<textarea rows="" cols="" id="courseAddedTextArea"></textarea>
 					</td>
+				</tr>
+				<tr>
+					<td>Starting Date</td>
+					<td><input type="date" name="startDate" id="startDate"></td>
+				</tr>
+				<tr>
+					<td>Ending Date</td>
+					<td><input type="date" name="endDate" id="endDate"></td>
 				</tr>
 			</table>
 		</form>

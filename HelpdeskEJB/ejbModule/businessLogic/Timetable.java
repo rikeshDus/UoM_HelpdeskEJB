@@ -1,5 +1,7 @@
 package businessLogic;
 
+import java.sql.Time;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -8,7 +10,8 @@ public class Timetable {
 	@Id
 	private int timetable_id;
 	private int Structure_id;
-	private String datetime;//will contain datetime type from mysql
+	private Time time;//will contain datetime type from mysql
+	private String day;
 	private int duration;
 	private String  lecture_class;
 	private String staff_id;
@@ -31,14 +34,23 @@ public class Timetable {
 
 	public void setStructure_id(int structure_id) {
 		Structure_id = structure_id;
+	}	
+	
+
+	public Time getTime() {
+		return time;
 	}
 
-	public String getDatetime() {
-		return datetime;
+	public void setTime(Time time) {
+		this.time = time;
 	}
 
-	public void setDatetime(String datetime) {
-		this.datetime = datetime;
+	public String getDay() {
+		return day;
+	}
+
+	public void setDay(String day) {
+		this.day = day;
 	}
 
 	public int getDuration() {
