@@ -20,7 +20,7 @@
 	
 	//generating <option> for each course </option>
 	for(int i=0;i<allCourse.size();i++){
-		comboCourse += "<option value=\" "+allCourse.get(i).getCourse_code()+" \">"+allCourse.get(i).getName()+"</option>";
+		comboCourse += "<option value=\' "+allCourse.get(i).getCourse_code()+" \'>"+allCourse.get(i).getName()+"</option>";
 	}//end for(int i=0;i<allCourse.size();i++){
 		
 		 
@@ -63,16 +63,35 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 		  // Handler for .ready() called.
-		  $("#displaySchedule").hide();
+			$("#displaySchedule").hide();
+			$("#innerSportCreateEventForm").hide();
 		});
+		
+		function sportHideShow(){
+			$("#innerSportCreateEventForm").show().fadeIn(1000);
+		}
+		
+		function sportTeamsDisplay(){
+			//get number of teams
+			var numTeams = $("#txt_numOfTeam").val();
+			
+			var display = "<table>";
+			
+			for(var i=0; i<numTeams;i++){
+				display += "<tr><td> Team "+i+"</td><td><select><%= comboCourse %></select></td></tr>";
+			}//end for(var i=0; i<numTeams;i++){
+			
+			display += "</table>";
+			
+			//add disply to div
+			$("#innerSportTeamsDisplay").html(display);
+			
+		}//end function sportTeamsDisplay(){
 			
 		var courseArray = [];
 		var courseNumberAdded = 0;
 		
-		function hideShow(){
-					
-		}//end function hideShow(){
-		
+			
 		function submitcreateEventFormDiv(){			
 			$("#createEventFormDiv").hide(1000);
 			
@@ -88,7 +107,8 @@
 				'faculty[]':  faculties,
 				'course[]': courseArray,
 				'startDate':$("#startDate").val(),
-				'endDate':$("#endDate").val()
+				'endDate':$("#endDate").val(),
+				'teams':$("#txt_numOfTeam").val()
 			},
 			function(data,status){
 				
@@ -112,7 +132,7 @@
 			
 			
 		function submitSchedule(){
-		
+			alert($("#scheduleDaytime").val());
 			$.post("ajax/eventSchedule.jsp",
 			{
 				'type':$("#eventType").val(),
@@ -128,6 +148,8 @@
 			});
 			
 		}//end function submitSchedule()
+		
+		
 	</script>
 	<title>UoM Helpdesk</title>
 </head>
@@ -138,9 +160,9 @@
 				<tr>
 					<td>Event Type</td>
 					<td> 
-						<select name="" id="eventType">
-							<option value="sport">Sport</option>
+						<select name="" id="eventType" onchange="sportHideShow();">
 							<option value="other">Other</option>
+							<option value="sport">Sport</option>							
 						</select>
 					</td>
 				</tr>
@@ -148,6 +170,7 @@
 					<td>Title</td>
 					<td><input type="text" name="" id="title"/> </td>
 				</tr>
+					
 				<tr>
 					<td>Description</td>
 					<td><textarea name="" id="description"></textarea></td>
@@ -193,6 +216,7 @@
 						<textarea rows="" cols="" id="courseAddedTextArea"></textarea>
 					</td>
 				</tr>
+				
 				<tr>
 					<td>Starting Date</td>
 					<td><input type="date" name="startDate" id="startDate"></td>
@@ -204,6 +228,16 @@
 			</table>
 		</form>
 		<button onclick="submitcreateEventFormDiv();">Submit</button>
+	</div>
+	
+	<div id="innerSportCreateEventForm">
+		<table>			
+			<tr>
+				<td>Number of teams</td>
+				<td><input type="number" id="txt_numOfTeam" min="0" onblur="sportTeamsDisplay();"/> </td>
+			</tr>	
+		</table>
+		<div id="innerSportTeamsDisplay"></div>
 	</div>
 	<div id="displaySchedule">
 		

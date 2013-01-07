@@ -2,8 +2,9 @@
 <%@page import="java.sql.Date, businessLogic.* , java.util.ArrayList"%>
 <%!
 	String title,description,type,user_id,time;
-	int duration;
+	int duration,currentEventId;
 	Date date;
+	boolean result;
 %>
 
 
@@ -18,18 +19,19 @@
 	duration =Integer.parseInt(request.getParameter("duration"));
 	date = Date.valueOf( request.getParameter("date") );
 
-	out.print(title+" " + description+" " +type+" " +user_id+" " +time+" " +duration+" " +date); 
-	/* 
+	
+	
 	ScheduleManager scheduleManager = new ScheduleManager();
 	EventManager eventManager = new EventManager();
 	
-	eventManager.createEvent(null, title, description, type, user_id);
-	scheduleManager.createSchedule(null, duration, date, time, "LAST_INSERT_ID()");
-	 */
 	
-	/* 
-	INSERT INTO foo (auto,text)
-    VALUES(NULL,'text');         # generate ID by inserting NULL
-INSERT INTO foo2 (id,text)
-    VALUES(LAST_INSERT_ID(),'text');  */
+	 
+	currentEventId = eventManager.createEvent( title, description, type, user_id);
+	result = scheduleManager.createSchedule( duration, date, time, currentEventId);
+	if(result && currentEventId>0){
+		out.print("success"); 	
+	}//end if(result && currentEventId>0){
+	else{
+		out.print("fail");
+	}//end else
 %>

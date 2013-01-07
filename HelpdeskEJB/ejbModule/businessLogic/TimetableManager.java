@@ -5,7 +5,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -23,6 +26,56 @@ public class TimetableManager {
     public TimetableManager() {
         // TODO Auto-generated constructor stub
     }
+    
+    public boolean findTimetableByDayTime(Time time, String day,int structure_id){
+    	Connection con;
+    	String query;
+    	PreparedStatement pstmt;
+    	ResultSet rs = null;
+    	Timetable temporaryTimetable = null;
+    	
+    	DatabaseConnection dbconnect = new DatabaseConnection();
+    	con = dbconnect.getConnection();
+    	
+    	query = "SELECT * FROM timetable WHERE day = ? And structure_id = ? AND starttime BETWEEN ? AND ?";
+    	
+    	try {
+    		pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, day);
+			pstmt.setInt(2,structure_id);
+			pstmt.setString(3, time.toString());
+			//get time
+			Calendar calender = Calendar.getInstance();
+			calender.setTime(time);
+			
+			calender.add(Calendar.HOUR, 1);
+			long tim = calender.getTime().getTime();
+			Timestamp newtime = new Timestamp(tim);
+			pstmt.setString(4, newtime.toString());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				rs.close();
+	    		pstmt.close();
+	    		con.close();
+				return true;
+			}//end while(if.next())
+			rs.close();
+    		pstmt.close();
+    		con.close();
+    	}
+    	catch(SQLException e){
+    		
+    		return false; 
+    	}
+    	
+		return false;    	
+    }
+    
+    
+    
+    
     
     public ArrayList<Timetable> getAllTimetableByStructureId(int structure_Id,Date startDate, Date endDate){
     	Connection con;
