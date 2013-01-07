@@ -37,43 +37,61 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script type="text/javascript" src="javascript/jquery-1.8.3.min.js"></script>
-<script type="text/javascript">
-var courseArray = [];
-
-var courseNumberAdded = 0;
-
-
-function submitcreateEventFormDiv(){
-	$("#createEventFormDiv").hide(1000);
-	$.post("ajax/eventAjax.jsp",
-	{
-		 'type':$("#eventType").val(),
-		'title':$("#title").val(),
-		'description':$("#description").val(),
-		'facultyEngineering':  $("#checkFacultyEngineering").val(),
-		'facultyAgriculture':  $("#checkFacultyAgriculture").val(),
-		'course[]': courseArray,
-		'startDate':$("#startDate").val(),
-		'endDate':$("#endDate").val()
-	},
-	function(data,status){
-		alert(data);
-	});
-	
-}//end function SubmitcreateEventFormDiv(){
-
-function addCourse(){	
-	courseArray[courseNumberAdded] = $("#comboCourse").val();
-	alert(courseArray[courseNumberAdded]);
-	courseNumberAdded++;
-	//$("#courseAddedTextArea").append($("#comboCourse").text());
-	$("#courseAddedConfirmMessge").html("<span style='color: #123456;'> Course Successfully Added </span>").show().fadeIn(500).fadeOut(2000);
-	
-}//end function addCourse(){
-</script>
-<title>UoM Helpdesk</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<script type="text/javascript" src="javascript/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript">
+		var courseArray = [];
+		
+		var courseNumberAdded = 0;
+		
+		
+		function submitcreateEventFormDiv(){
+			$("#createEventFormDiv").hide(1000);
+			$.post("ajax/eventAjax.jsp",
+			{
+				'type':$("#eventType").val(),
+				'title':$("#title").val(), 
+				'description':$("#description").val(),
+				'facultyEngineering':  $("#checkFacultyEngineering").val(),
+				'facultyAgriculture':  $("#checkFacultyAgriculture").val(),
+				'course[]': courseArray,
+				'startDate':$("#startDate").val(),
+				'endDate':$("#endDate").val()
+			},
+			function(data,status){
+				$("#displaySchedule").html(data);
+			});
+			
+		}//end function SubmitcreateEventFormDiv(){
+		
+			
+			
+		function addCourse(){	
+			courseArray[courseNumberAdded] = $("#comboCourse").val();
+			alert(courseArray[courseNumberAdded]);
+			courseNumberAdded++;
+			//$("#courseAddedTextArea").append($("#comboCourse").text());
+			$("#courseAddedConfirmMessge").html("<span style='color: #123456;'> Course Successfully Added </span>").show().fadeIn(500).fadeOut(2000);
+			
+		}//end function addCourse(){
+			
+			
+		function submitSchedule(){
+			$.post("ajax/eventAjax.jsp",
+			{
+				'type':$("#eventType").val(),
+				'title':$("#title").val(), 
+				'description':$("#description").val(),
+				'date':$("#startDate").val(),
+				'time':$("#endDate").val()
+			},
+			function(data,status){
+				alert(data);
+			});
+			
+		}//end function submitSchedule()
+	</script>
+	<title>UoM Helpdesk</title>
 </head>
 <body >
 	<div id="createEventFormDiv">
@@ -149,7 +167,11 @@ function addCourse(){
 				</tr>
 			</table>
 		</form>
+		<button onclick="submitcreateEventFormDiv();">Submit</button>
 	</div>
-	<button onclick="submitcreateEventFormDiv();">Submit</button>
+	<div id="displaySchedule">
+		
+		<button onclick="submitSchedule();">Back</button>
+	</div>
 </body>
 </html>

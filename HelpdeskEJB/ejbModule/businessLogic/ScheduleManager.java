@@ -1,6 +1,10 @@
 package businessLogic;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -18,10 +22,42 @@ public class ScheduleManager {
      * Default constructor. 
      */
     public ScheduleManager() {
-        // TODO Auto-generated constructor stub
+        
     }
     
     
+    
+    public boolean createSchedule(int duration, Date date, String time,int event_id){
+    	Connection con;
+    	String query;
+    	PreparedStatement pstmt;
+    	int insert=0;
+    	
+    	DatabaseConnection dbconnect = new DatabaseConnection();
+    	con = dbconnect.getConnection();
+    	
+    	query = "INSERT INTO schedule VALUES('',?,?,?,?)";
+    	
+    	try{
+    		pstmt = con.prepareStatement(query);
+    		
+    		pstmt.setInt(1, duration);
+    		pstmt.setDate(2, date);
+    		pstmt.setString(3, time);
+    		pstmt.setInt(4, event_id);
+    		
+    		insert = pstmt.executeUpdate();
+    		
+    	}
+    	catch(SQLException sqle){
+    		//load error page
+    	}    	
+    	
+    	if(insert>0){
+    		return true;
+		}    	
+		return false;    	
+    }//end of public boolean createSchedule(){
     
     /*Generate schedule if not sport.
      * retrieve all free slots of event participant

@@ -30,6 +30,8 @@
  		outputMessage += " <br>" + allFreeSlot.get(i).getDay()+"   "+allFreeSlot.get(i).getDuration();
  	}//end for(int i=0;i<allFreeSlot.size();i++){
  	 
- 	 
+ 	//messega formating
+ 	outputMessage += "<br> <input type=\"datetime\" name=\"scheduleDaytime\">";
+ 	
  	out.print(outputMessage);
 %>
