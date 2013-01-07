@@ -27,7 +27,7 @@ public class ScheduleManager {
     
     
     
-    public boolean createSchedule(int duration, Date date, String time,int event_id){
+    public boolean createSchedule(String id, int duration, Date date, String time,String event_id){
     	Connection con;
     	String query;
     	PreparedStatement pstmt;
@@ -36,15 +36,16 @@ public class ScheduleManager {
     	DatabaseConnection dbconnect = new DatabaseConnection();
     	con = dbconnect.getConnection();
     	
-    	query = "INSERT INTO schedule VALUES('',?,?,?,?)";
+    	query = "INSERT INTO schedule VALUES(?,?,?,?,?)";
     	
     	try{
     		pstmt = con.prepareStatement(query);
     		
-    		pstmt.setInt(1, duration);
-    		pstmt.setDate(2, date);
-    		pstmt.setString(3, time);
-    		pstmt.setInt(4, event_id);
+    		pstmt.setString(1, id);
+    		pstmt.setInt(2, duration);
+    		pstmt.setDate(3, date);
+    		pstmt.setString(4, time);
+    		pstmt.setString(5, event_id);
     		
     		insert = pstmt.executeUpdate();
     		

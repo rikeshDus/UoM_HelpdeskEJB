@@ -4,10 +4,17 @@
 <%! 
 	String comboCourse = "";
 	String comboUser = "";
+	String chechBoxFaculty = "";
 	ArrayList<Course> allCourse = new ArrayList<Course>();
 	ArrayList<User> allUser = new ArrayList<User>();
+	ArrayList<Faculty> allFaculty = new ArrayList<Faculty>();
+	User user;
+	String user_id;
 %>
 <%
+	user = (User)(session.getAttribute("currentUser"));
+	user_id = user.getUser_id();	
+
  	CourseManager courseManager = new CourseManager();
 	allCourse = courseManager.getAllCourse();
 	
@@ -30,6 +37,20 @@
 	 for(int i=0; i<allUser.size();i++){
 		 comboUser += "<option value = \" "+allUser.get(i).getUser_id()+" \" >"+allUser.get(i).getUser_id()+"</option>";
 	 }
+	 
+	 
+	 /* 
+		generating a list of faculty from database
+		format it to fit in a combo box :-
+		<option value=id> faculty name </option>
+	 */
+	  FacultyManager facultyManager = new FacultyManager();	 
+	 allFaculty = facultyManager.getAllFaculty();
+	 
+	 for(int i=0;i<allFaculty.size();i++){
+		 chechBoxFaculty += allFaculty.get(i).getName()+" <input type=\"checkbox\" name=\"faculty\" value=\""+allFaculty.get(i).getFaculty_id()+"\" id=\""+allFaculty.get(i).getName()+"\"/>";
+	 }//end of for(int i=0;i<allFaculty.size();i++){
+	  
 	  
 %>
 
@@ -40,26 +61,40 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<script type="text/javascript" src="javascript/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript">
+		$(document).ready(function() {
+		  // Handler for .ready() called.
+		  $("#displaySchedule").hide();
+		});
+			
 		var courseArray = [];
-		
 		var courseNumberAdded = 0;
 		
+		function hideShow(){
+					
+		}//end function hideShow(){
 		
-		function submitcreateEventFormDiv(){
+		function submitcreateEventFormDiv(){			
 			$("#createEventFormDiv").hide(1000);
+			
+			//get checkbox value
+			var faculties = [];
+			$("input[name='faculty']:checked").each(function(){faculties.push($(this).val());});
+			
 			$.post("ajax/eventAjax.jsp",
 			{
 				'type':$("#eventType").val(),
 				'title':$("#title").val(), 
 				'description':$("#description").val(),
-				'facultyEngineering':  $("#checkFacultyEngineering").val(),
-				'facultyAgriculture':  $("#checkFacultyAgriculture").val(),
+				'faculty[]':  faculties,
 				'course[]': courseArray,
 				'startDate':$("#startDate").val(),
 				'endDate':$("#endDate").val()
 			},
 			function(data,status){
-				$("#displaySchedule").html(data);
+				
+				var temp =$("#displaySchedule").html();
+				$("#displaySchedule").html(data +"<br>"+temp);
+				$("#displaySchedule").show().fadeIn(1000);
 			});
 			
 		}//end function SubmitcreateEventFormDiv(){
@@ -77,13 +112,16 @@
 			
 			
 		function submitSchedule(){
-			$.post("ajax/eventAjax.jsp",
+		
+			$.post("ajax/eventSchedule.jsp",
 			{
 				'type':$("#eventType").val(),
 				'title':$("#title").val(), 
 				'description':$("#description").val(),
-				'date':$("#startDate").val(),
-				'time':$("#endDate").val()
+				'date':$("#scheduleDate").val(),
+				'time':$("#scheduleDaytime").val(),
+				'duration':$("#scheduleDuration").val(),
+				'user':<%= user_id %>
 			},
 			function(data,status){
 				alert(data);
@@ -119,9 +157,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						Engineering <input type="checkbox" name="faculty" id="checkFacultyEngineering"/>
-						Agriculture <input type="checkbox" name="faculty" id="checkFacultyAgriculture"/>
-						
+						<%= chechBoxFaculty %>
 					</td>
 				</tr>
 				<tr>
@@ -171,7 +207,7 @@
 	</div>
 	<div id="displaySchedule">
 		
-		<button onclick="submitSchedule();">Back</button>
+		<button onclick="submitSchedule();">Submit</button>
 	</div>
 </body>
 </html>
