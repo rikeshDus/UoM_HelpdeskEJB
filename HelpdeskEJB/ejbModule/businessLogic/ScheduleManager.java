@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import javax.ejb.LocalBean;
@@ -65,6 +67,220 @@ public class ScheduleManager {
 		}    	
 		return false;    	
     }//end of public boolean createSchedule(){
+    
+    
+    
+    /*Generate Schedule if sport
+     * Use round robin algorithm (first come , first serve)
+     * generate round of the sport
+     * store round in hashmap with key=round1,2,.. and value = arraylist of teams.
+     * ArrayList will store teams which vs each other consecutively, ArrayList.get(0) vs ArrayList.get(1)
+     * return hashMap
+     */
+    public HashMap<String,List<String>> generateSportSchedule(HashMap<String,String[]> teamsHashMap ,Date startDate, Date endDate){
+    	//variable
+    	HashMap<String, List<String>> result = new HashMap<String, List<String>>();
+    	ArrayList <String> allTeams = new ArrayList<String>();
+    	ArrayList <String> allParticipant = new ArrayList<String>();
+    	ArrayList<String> allCourseCode = new ArrayList<String>();
+    	ArrayList<String> module = new ArrayList<String>();
+    	ArrayList<Timestamp> allTime = new ArrayList<Timestamp>();
+    	ArrayList<String> temSchedule = new ArrayList<String>();
+    	ArrayList<CourseStructure > allCourseStructure = new ArrayList<CourseStructure>();
+    	String[] partipant;
+    	int tem = 0,tem2 = 0;
+    	
+    	
+    	allTeams.addAll(teamsHashMap.keySet());
+    	//get all teams and participant
+    	for(int i=0;i<allTeams.size();i++){
+    		//get list of participant in team
+    		partipant = teamsHashMap.get(allTeams.get(i));
+    		
+    		//add paticipant to allPaticipant ArrayList
+    		for(int j=0;j<partipant.length;j++){
+    			allParticipant.add(partipant[j]);
+    		}//end for(int j=0;j<partipant.length;j++){
+    		
+    		
+    	}//end for for(int i=0;i<teamsHashMap.size();i++){
+    	
+    	
+    	//get Time
+    	//manager
+		StudentManager studentManager = new StudentManager();
+		TeachManager teachManager = new TeachManager();
+		CourseStructureManager coursestructure = new CourseStructureManager();
+		
+		//loop in team A
+		for(int j = 0; j<allParticipant.size();j++){
+			//get courses by student ids;
+			
+			if(studentManager.findStudent(allParticipant.get(j)) != null){
+				allCourseCode.add(studentManager.findStudent(allParticipant.get(j)).getCourse_code());
+			}//end if(studentManager.findStudent(participantTeamAIds[j]) != null){
+			
+			//get module in which staff works
+			
+			module = teachManager.getModuleFromStaffId(allParticipant.get(j));
+			if(module.size()>0){
+				//get course_structure by courses(module_code)
+    			allCourseStructure.addAll( coursestructure.getAllCourseStructureByModule(module) );
+			}//end if(module.size()>0){
+			
+			
+		}//end for(int j = 0; j<participantTeamAIds.length;j++){
+    	
+		
+		//get List of date
+		String[] course = new String[allCourseStructure.size()];
+		for(int j = 0; j<allCourseStructure.size();j++){
+			course[j] = allCourseStructure.get(j).getCourse_code();
+		}//end for(int j = 0; j<allCourseStructure.size();j++){
+		
+		int[] faculties = {};
+		
+		allTime = generateNonSportSchedule(faculties, course, startDate, endDate);
+		
+		
+		while(tem<allTeams.size()){
+			//add match
+			temSchedule.add(allTeams.get(tem));
+    		temSchedule.add(allTeams.get(tem+1));
+    		temSchedule.add(allTime.get(tem2).toString());
+			
+			tem++;
+			tem++;
+			tem2++;
+		}
+		
+		int numOfTeams = allTeams.size();
+		int round =1;
+		
+
+		numOfTeams = numOfTeams/2;
+		result.put("round "+round, temSchedule);
+		round++;
+		
+		while(numOfTeams>=2){
+			
+			temSchedule = new ArrayList<String>();
+			temSchedule.add(allTime.get(tem2).toString());
+			numOfTeams = numOfTeams/2;
+			result.put("round "+round, temSchedule);
+			round++;
+			tem2++;
+			
+		}
+		
+		
+    	
+    	/*//variable
+    	int numOfTeam = 0;
+    	String[] participantTeamAIds;
+    	String[] participantTeamBIds;
+    	
+    	ArrayList<String> module = new ArrayList<String>();
+    	String actualTeamA,actualTeamB;
+    	ArrayList<String> allCourseCode = new ArrayList<String>();
+    	ArrayList<String> temSchedule = new ArrayList<String>();
+    	ArrayList<CourseStructure > allCourseStructure = new ArrayList<CourseStructure>();
+    	Timestamp time;
+    	
+    	HashMap<String, List<String>> result = new HashMap<String, List<String>>();
+    	
+    	//get number of team
+    	numOfTeam = teamsHashMap.size();
+    	
+    	
+    	 * number of match in round 1 = numOfTeam/2
+    	 
+    	int round = 1, rounds = 1;
+    	while(round<numOfTeam)
+    	{
+    		
+    		round = round*2;
+    		
+	    	for (int i=0; i < (numOfTeam/2); i++) {
+	    		i++;
+	    		actualTeamA = "team"+ ((i*2)-1);
+	    		actualTeamB = "team"+ (i*2);
+	    		
+	    		//get particpants
+	    		participantTeamAIds = teamsHashMap.get(actualTeamA);
+	    		participantTeamBIds = teamsHashMap.get(actualTeamB);
+	    		
+	    		//manager
+	    		StudentManager studentManager = new StudentManager();
+	    		TeachManager teachManager = new TeachManager();
+	    		CourseStructureManager coursestructure = new CourseStructureManager();
+	    		
+	    		//loop in team A
+	    		for(int j = 0; j<participantTeamAIds.length;j++){
+	    			//get courses by student ids;
+	    			
+	    			if(studentManager.findStudent(participantTeamAIds[j]) != null){
+	    				allCourseCode.add(studentManager.findStudent(participantTeamAIds[j]).getCourse_code());
+	    			}//end if(studentManager.findStudent(participantTeamAIds[j]) != null){
+	    			
+	    			//get module in which staff works
+	    			
+	    			module = teachManager.getModuleFromStaffId(participantTeamAIds[j]);
+	    			if(module.size()>0){
+	    				//get course_structure by courses(module_code)
+	        			allCourseStructure.addAll( coursestructure.getAllCourseStructureByModule(module) );
+	    			}//end if(module.size()>0){
+	    			
+	    			
+	    		}//end for(int j = 0; j<participantTeamAIds.length;j++){
+	    		
+	    		//loop in team B
+	    		for(int j = 0; j<participantTeamBIds.length;j++){
+	    			//get courses by student ids;
+	    			if(studentManager.findStudent(participantTeamAIds[j]) != null){
+	    				allCourseCode.add(studentManager.findStudent(participantTeamAIds[j]).getCourse_code());
+	    			}//end if(studentManager.findStudent(participantTeamAIds[j]) != null){
+	    			
+	    			//get module in which staff works
+	    			module = teachManager.getModuleFromStaffId(participantTeamAIds[j]);
+	    			
+	    			if(module.size()>0){
+	    				//get course_structure by courses(module_code)
+	        			CourseStructureManager coursestructure = new CourseStructureManager();
+	        			allCourseStructure = coursestructure.getAllCourseStructureByModule(module);
+	    			}//end if(module.size()>0){
+	    			
+	    		}//end for(int j = 0; j<participantTeamAIds.length;j++){
+	    		
+	    		String[] course = new String[allCourseStructure.size()];
+	    		for(int j = 0; j<allCourseStructure.size();j++){
+	    			course[i] = allCourseStructure.get(j).getCourse_code();
+	    		}//end for(int j = 0; j<allCourseStructure.size();j++){
+	    		
+	    		int[] faculties = {};
+	    		
+	    		time = generateNonSportSchedule(faculties, course, startDate, endDate).get(0);
+	    		
+	    		temSchedule.add(actualTeamA);
+	    		temSchedule.add(actualTeamB);
+	    		temSchedule.add(time.toString());
+	    		
+	    		
+	    		result.put("round "+rounds, temSchedule);
+	        	rounds++;
+			}//end for (int i = 0; i < numOfTeam; i++) {
+    	
+    	
+    	//other round of projects
+    	
+    	
+    	
+    	}//end while
+*/    	return result;
+    }
+    
+    
+    
     
     /*Generate schedule if not sport.
      * retrieve all free slots of event participant

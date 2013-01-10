@@ -2,7 +2,7 @@
 <%! User user; %>
 <%
 	user = (User)(session.getAttribute("currentUser"));
-	//session.setAttribute("currentUser", user);
+	session.setAttribute("currentUser", user);
 %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>

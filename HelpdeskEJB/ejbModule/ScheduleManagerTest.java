@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -12,7 +14,43 @@ import businessLogic.ScheduleManager;
 import businessLogic.Timetable;
 
 public class ScheduleManagerTest {
-
+	
+	@Test
+	public void testGenerateSportSchedule() {
+		ScheduleManager scheduleManager = new ScheduleManager();
+		HashMap<String, String[]> teamsHashMap = new HashMap<String, String[]>();
+		HashMap<String, List<String>> result = new HashMap<String, List<String>>();
+		List<String> match = new ArrayList<String>();
+		Date endDate = new Date((2013-1900), 0, 12);
+		Date startDate = new Date((2013-1900), 0, 7);
+		String[] id = {"1010790,1010790"};
+		String[] profId = {"P 0001,P 0001"};
+		teamsHashMap.put("team1", profId);
+		teamsHashMap.put("team2", id);
+		/*teamsHashMap.put("team3", id);
+		teamsHashMap.put("team4", id);
+		teamsHashMap.put("team5", id);
+		teamsHashMap.put("team6", profId);
+		teamsHashMap.put("team7", id);
+		teamsHashMap.put("team8", id);*/
+		result = scheduleManager.generateSportSchedule(teamsHashMap, startDate, endDate);
+		int x =1;
+		for(int i=0;i<result.size();i++){
+			System.out.println("round "+x);
+			match = result.get("round "+x);
+			x++;
+			
+			for(int j=0;j<match.size();j++){
+				System.out.println(match.get(j)+"  ");
+			}
+			System.out.println("\n");
+		}
+		
+		
+		assertTrue( result != null);
+	}
+	
+	
 	@Test
 	public void testGenerateNonSportSchedule() {
 		ArrayList<Timestamp> allFreeSlot = new ArrayList<Timestamp>();
@@ -22,8 +60,8 @@ public class ScheduleManagerTest {
 		String course[] = {"E311"};
 	    Date endDate = new Date((2013-1900), 0, 12);
 		Date startDate = new Date((2013-1900), 0, 7);
-		allFreeSlot = scheduleManager.generateNonSportSchedule(faculties , course, startDate, endDate); 
-		assertTrue(allFreeSlot.get(0)!=null);
+		//allFreeSlot = scheduleManager.generateNonSportSchedule(faculties , course, startDate, endDate); 
+		//assertTrue(allFreeSlot.get(0)!=null);
 		
 	}
 	

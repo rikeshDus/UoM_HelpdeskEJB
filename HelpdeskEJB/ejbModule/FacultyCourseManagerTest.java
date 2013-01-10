@@ -1,8 +1,10 @@
-package businessLogic;
+
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import businessLogic.FacultyCourseManager;
 
 public class FacultyCourseManagerTest {
 

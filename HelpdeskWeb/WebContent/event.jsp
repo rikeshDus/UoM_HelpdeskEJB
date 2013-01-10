@@ -35,7 +35,7 @@
 	 allUser = userManager.getAllUser();
 	 
 	 for(int i=0; i<allUser.size();i++){
-		 comboUser += "<option value = \" "+allUser.get(i).getUser_id()+" \" >"+allUser.get(i).getUser_id()+"</option>";
+		 comboUser += "<option value = \' "+allUser.get(i).getUser_id()+" \' >"+allUser.get(i).getUser_id()+"</option>";
 	 }
 	 
 	 
@@ -68,17 +68,50 @@
 		});
 		
 		function sportHideShow(){
-			$("#innerSportCreateEventForm").show().fadeIn(1000);
+			var event = $("#eventType").val();
+			if(event == "sport")
+			{
+				$("#innerSportCreateEventForm").show().fadeIn(500);
+				$("#innerSportOtherEventForm").show().fadeOut(500);
+			}
+			else
+			{
+				$("#innerSportCreateEventForm").show().fadeOut(500);
+				$("#innerSportOtherEventForm").show().fadeIn(500);
+			}
+		
+						
 		}
+		
+		var courseArray = [];
+		var courseNumberAdded = 0;
+		var teamArray ="";
+		//var teamParticipant = "";
+		var teamParticipantCount = 0;
 		
 		function sportTeamsDisplay(){
 			//get number of teams
 			var numTeams = $("#txt_numOfTeam").val();
+			var round = numTeams;
+			while(round>2){
+				round = round/2;
+					if((round%2) == 1){
+						alert("Number of team should be 2,4,8,16,32: table of 2");
+						break;
+					}
+				
+								
+			}
+			//initialize array
+			teamArray = new Array(numTeams);
+			fillTeamArray(numTeams);
+			
 			
 			var display = "<table>";
 			
 			for(var i=0; i<numTeams;i++){
-				display += "<tr><td> Team "+i+"</td><td><select><%= comboCourse %></select></td></tr>";
+				display += "<tr><td> Team "+(i+1)+"</td><td><select id= 'selectTeam" +(i+1)+"'><%= comboUser %></select></td>";
+				display += "<td><button onclick=\"addParticipant('Team" +(i+1)+"')\">add</button><td></tr><tr><td colspan='3'><textarea id= 'textareaTeam" +(i+1)+"'></textarea></td></tr>";
 			}//end for(var i=0; i<numTeams;i++){
 			
 			display += "</table>";
@@ -88,17 +121,50 @@
 			
 		}//end function sportTeamsDisplay(){
 			
-		var courseArray = [];
-		var courseNumberAdded = 0;
-		
+ 			
+		function addParticipant(team){
+			var combo = "#select"+team;
+			var textarea = "#textarea"+team;
 			
+			var participant = $(combo).val();
+			var texareaValue = $(textarea).val();
+			var ParticipantCount = team.charAt( team.length-1 );
+			teamParticipantCount = parseInt(ParticipantCount)-1;
+			$(textarea).val(texareaValue+participant );
+			var teamParticipant = teamArray[teamParticipantCount];
+			teamParticipant.push(participant);
+			teamArray[teamParticipantCount] = teamParticipant;
+			teamParticipantCount++;
+		}//end function addParticipant(team){
+			
+		
+		
+		function fillTeamArray(numTeams){
+			for(var i = 0;i<numTeams;i++){
+				teamArray[i] = new Array();
+				/* var textarea = "#textareaTeam"+(i+1);
+				var text = " "+$(textarea).val();
+				teamParticipant = text.split("   ");
+				teamParticipant.splice(0, 1);
+				alert(teamParticipant.length +" : "+teamParticipant);
+				teamArray[i] = new Array(teamParticipant.length);
+				for(var j=0;j<teamParticipant.length;j++){
+					teamArray[i][j] = teamParticipant[j];
+					alert(i + " "+ j);
+				}
+				teamArray[i] = teamParticipant; */
+				
+			}
+			
+			
+		}
+		var roundArr = [];
+		
 		function submitcreateEventFormDiv(){			
 			$("#createEventFormDiv").hide(1000);
-			
 			//get checkbox value
 			var faculties = [];
 			$("input[name='faculty']:checked").each(function(){faculties.push($(this).val());});
-			
 			$.post("ajax/eventAjax.jsp",
 			{
 				'type':$("#eventType").val(),
@@ -108,12 +174,21 @@
 				'course[]': courseArray,
 				'startDate':$("#startDate").val(),
 				'endDate':$("#endDate").val(),
-				'teams':$("#txt_numOfTeam").val()
+				'teams':$("#txt_numOfTeam").val(),
+				'teamsParticipant[]':teamArray
 			},
 			function(data,status){
 				
+				 //extract data
+				var allData = data.split("-break-");
+				var form = allData[1];
+				var round = allData[0]; 
+				
+				roundArr = round.split(" ");
+				
+				
 				var temp =$("#displaySchedule").html();
-				$("#displaySchedule").html(data +"<br>"+temp);
+				$("#displaySchedule").html( round+"<br>confirm Schedule</br>"+temp);
 				$("#displaySchedule").show().fadeIn(1000);
 			});
 			
@@ -132,19 +207,20 @@
 			
 			
 		function submitSchedule(){
-			alert($("#scheduleDaytime").val());
 			$.post("ajax/eventSchedule.jsp",
 			{
 				'type':$("#eventType").val(),
 				'title':$("#title").val(), 
 				'description':$("#description").val(),
-				'date':$("#scheduleDate").val(),
+			 	'date':$("#scheduleDate").val(),
 				'time':$("#scheduleDaytime").val(),
 				'duration':$("#scheduleDuration").val(),
+				'event[]':roundArr,
 				'user':<%= user_id %>
 			},
 			function(data,status){
-				alert(data);
+				$("#displaySchedule").html( data+"in saving operation <a href='homepage.jsp'>back</a>");
+				
 			});
 			
 		}//end function submitSchedule()
@@ -154,8 +230,9 @@
 	<title>UoM Helpdesk</title>
 </head>
 <body >
+	
 	<div id="createEventFormDiv">
-		<form action="#" name="createEventForm">
+	
 			<table cellspacing="2" cellpadding="3">
 				<tr>
 					<td>Event Type</td>
@@ -175,48 +252,62 @@
 					<td>Description</td>
 					<td><textarea name="" id="description"></textarea></td>
 				</tr>
-				<tr>
-					<td colspan="2">Faculty Involve </td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<%= chechBoxFaculty %>
-					</td>
-				</tr>
-				<tr>
-					<td>Course Involve</td>
-					<td>
-						<select id="comboCourse">
-							<%= comboCourse %>
-						</select>
-						<br>
-						<input type="button" onclick="addCourse()" value="add">
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						Course Added <br>
-						<div id="courseAddedConfirmMessge"></div><br>
-						<textarea rows="" cols="" readonly="readonly" id="courseAddedTextArea"></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td>ID Involve</td>
-					<td>
-						<select id="comboUser">
-							<%=comboUser %>
-						</select>
-						<br>
-						<button>Add Id</button>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						Id Added <br>
-						<textarea rows="" cols="" id="courseAddedTextArea"></textarea>
-					</td>
-				</tr>
-				
+			</table>
+			<div id="innerSportOtherEventForm">
+				<table>
+					<tr>
+						<td colspan="2">Faculty Involve </td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<%= chechBoxFaculty %>
+						</td>
+					</tr>
+					<tr>
+						<td>Course Involve</td>
+						<td>
+							<select id="comboCourse">
+								<%= comboCourse %>
+							</select>
+							<br>
+							<input type="button" onclick="addCourse()" value="add">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							Course Added <br>
+							<div id="courseAddedConfirmMessge"></div><br>
+							<textarea rows="" cols="" readonly="readonly" id="courseAddedTextArea"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>ID Involve</td>
+						<td>
+							<select id="comboUser">
+								<%=comboUser %>
+							</select>
+							<br>
+							<button>Add Id</button>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							Id Added <br>
+							<textarea rows="" cols="" id="courseAddedTextArea"></textarea>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="innerSportCreateEventForm">
+				<table>			
+					<tr>
+						<td>Number of teams</td>
+						<td><input type="number" id="txt_numOfTeam" min="0" onblur="sportTeamsDisplay();"/> </td>
+					</tr>	
+				</table>
+				<div id="innerSportTeamsDisplay"></div>
+			</div>
+			<table>	
 				<tr>
 					<td>Starting Date</td>
 					<td><input type="date" name="startDate" id="startDate"></td>
@@ -226,19 +317,14 @@
 					<td><input type="date" name="endDate" id="endDate"></td>
 				</tr>
 			</table>
-		</form>
+		
 		<button onclick="submitcreateEventFormDiv();">Submit</button>
+		
 	</div>
 	
-	<div id="innerSportCreateEventForm">
-		<table>			
-			<tr>
-				<td>Number of teams</td>
-				<td><input type="number" id="txt_numOfTeam" min="0" onblur="sportTeamsDisplay();"/> </td>
-			</tr>	
-		</table>
-		<div id="innerSportTeamsDisplay"></div>
-	</div>
+	
+	
+	
 	<div id="displaySchedule">
 		
 		<button onclick="submitSchedule();">Submit</button>
