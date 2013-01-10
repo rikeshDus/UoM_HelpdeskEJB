@@ -5,7 +5,10 @@
 <%! 
 	User user;
 	Staff staff;
-	boolean result;
+	
+	boolean isStaff = false;
+
+	String combo ="<select><option>normal</option><option>technical</option></select>"; 
 
 	StudentManager studentManager = new StudentManager();
 	StaffManager staffManager = new StaffManager();
@@ -20,8 +23,11 @@
 	* if staff give form for technical qeury also
 	*/
 	staff = staffManager.findStaffByUserId(user.getUser_id());
+	if(staff != null){
+		isStaff = true;
+	}//end if(staff == null){
 	
-	
+		
 	/*
 	*send normal query by ajax and retrieve solutions
 	*give "forward" option which can be use if user has not agree to current solution
@@ -47,6 +53,14 @@
 	<textarea></textarea>
 	<br>
 	<br>
+	<%
+	if(isStaff){
+	%>
+	<%= combo %>
+	<%
+	}
+	%>
+	
 	<input type="button" value="Query" />
 </body>
 </html>

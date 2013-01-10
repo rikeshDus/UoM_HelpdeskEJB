@@ -10,6 +10,7 @@ public class Query {
 	private String descrition;
 	private String date;//will contain timestamp type of mysql
 	private String user_id;
+	private String type;
 	
 	public Query(){
 		
@@ -45,6 +46,14 @@ public class Query {
 
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	
