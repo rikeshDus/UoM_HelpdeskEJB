@@ -1,10 +1,13 @@
-package businessLogic;
+
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
 import org.junit.Test;
+
+import businessLogic.QueryManager;
+import businessLogic.Question;
 
 public class QueryManagerTest {
 	QueryManager queryManager = new QueryManager();
@@ -21,11 +24,16 @@ public class QueryManagerTest {
 
 	@Test
 	public void testGetSolution() {
-		ArrayList<Question> allquestion = queryManager.getSolution("email");
+		
+		ArrayList<Question> allquestion = queryManager.getSolution("none");
+		System.out.println(allquestion.size()+"");
 		for (int i = 0; i < allquestion.size(); i++) {
 			System.out.println(allquestion.get(i).getQuestion_id() + ". "+allquestion.get(i).getQuestion());
 		}
-		
+		/*allquestion = queryManager.getSolution("email");
+		for (int i = 0; i < allquestion.size(); i++) {
+			System.out.println(allquestion.get(i).getQuestion_id() + ". "+allquestion.get(i).getQuestion());
+		}*/
 		assertTrue(allquestion!=null);
 	}
 

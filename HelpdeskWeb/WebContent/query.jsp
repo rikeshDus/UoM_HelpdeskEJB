@@ -47,19 +47,53 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>UoM Helpdesk</title>
+<script type="text/javascript" src="javascript/jquery-1.8.3.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+	  // Handler for .ready() called.
+	$('#loading')
+	.hide(10)  // hide it initially
+	.ajaxStart(function() {
+	    $(this).show(100);
+	})
+	.ajaxStop(function() {
+	    $(this).hide(100);
+	})
+	;
+	});
+	
+	
 	function displayTechnicalForm(){
 		//display material
 	}
 	
-	function getSolution(){
+	function forwardQuery(){
 		$.post("ajax/queryAjax.jsp",
+		{
+			'query':$("#query").val(),
+			'user':<%= user.getUser_id()%> ,
+			'type':'foward'
+		},
+		function(data,status){
+								
+			$("#queryResult").html(data);
+			
+		});
+
+	}//end of function forwardQuery(){
+	
+	
+	function getSolution(){
+		document.getElementById("queryResult").innerHTML = "searching ..";
+			$.post("ajax/queryAjax.jsp",
 				{
 					'query':$("#query").val(),
 					'user':<%= user.getUser_id()%> ,
 					'type':'normal'
 				},
 				function(data,status){
+										
+					$("#queryResult").html(data);
 					
 				});
 	}
@@ -67,6 +101,9 @@
 
 </head>
 <body>
+	<div id="loading">Loading...</div>
+	<input type="button" value="Forward Query" onclick="forwardQuery();"/>
+	<input type="button" value="Advance Query" onclick="advanceQuery();"/>
 	<%
 	if(isStaff){
 	%>
@@ -78,10 +115,11 @@
 	Query
 	<textarea id="query"></textarea>
 	<br>
-	Material : <input type="text" />	
+	<input type="button" value="Submit" onClick="getSolution();"/>
 	<br>
+	<br>
+	<div id="queryResult"></div>
+	<div id="tracking"></div>
 	
-	<br>
-	<input type="button" value="Submit" />
 </body>
 </html>

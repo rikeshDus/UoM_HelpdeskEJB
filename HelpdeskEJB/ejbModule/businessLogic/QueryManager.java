@@ -78,12 +78,12 @@ public class QueryManager {
     	return t_iVersion;
     }//end public boolean createQuery()
     
-    public TrackingLog processQuery(String user_id,String description,String type ){
+    public TrackingLog forwardQuery(String user_id,String description,String type ){
     	
     	int query_id,tracking_id,question_id,tracking_log_id;
     	ArrayList <Answer> allAnswer = new ArrayList<Answer>();
     	User receiver = new User();
-    	TrackingLog tracking =  new TrackingLog(); 
+    	TrackingLog trackingLog =  new TrackingLog(); 
     	TrackingManager trackingManager = new TrackingManager();
     	QuestionManager questionManager = new QuestionManager();
     	TrackingLogManager trackingLogManager = new TrackingLogManager();
@@ -106,15 +106,12 @@ public class QueryManager {
     		tracking_log_id = trackingLogManager.createTrackingLog(tracking_id, question_id);
     		
     		//find tracking_log
-    		tracking = trackingLogManager.findTrackingLog(tracking_log_id);
-    		
-    		
-    		
+    		trackingLog = trackingLogManager.findTrackingLog(tracking_log_id);
     		
     		
     	}// if(query_id!=0){
     	
-    	return tracking;
+    	return trackingLog;
     }//end public String processQuery(String user_id,String description,String type ){
     
     public ArrayList<Question> getSolution(String question){
@@ -130,8 +127,7 @@ public class QueryManager {
 		ResultSet rs = null;
 		
 		ArrayList<Question> allQuestion = new ArrayList<Question>();
-		
-		
+		allQuestion.clear();
     	//use a simple analyser
     	SimpleAnalyzer analyzer = new SimpleAnalyzer(Version.LUCENE_40);
     	
@@ -154,12 +150,15 @@ public class QueryManager {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(sql_query);
 			
+			
 			while(rs.next()){
 				//adding result as document in lucene
 				addDoc(writer, rs.getString("question"), rs.getInt("question_id")+"");
 				
 			}
-			
+			con.close();
+			stmt.close();
+			rs.close();
 			
 			//close writer
 			writer.close();
