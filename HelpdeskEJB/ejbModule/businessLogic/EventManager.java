@@ -59,6 +59,10 @@ public class EventManager {
 			*/      	t_iVersion = t_resultset.getInt(1);  
 			      	
 			//}  
+			
+			con.close();
+			t_resultset.close();
+			pstmt.close();
     	}
     	catch(SQLException sqle){
     		//load error page

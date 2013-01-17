@@ -8,7 +8,7 @@
 	
 	boolean isStaff = false;
 
-	String combo ="<select><option>normal</option><option>technical</option></select>"; 
+	String combo ="<select id=\"comboQueryType\" onchange=\"displayTechnicalFrom();\"><option>normal</option><option>technical</option></select>"; 
 
 	StudentManager studentManager = new StudentManager();
 	StaffManager staffManager = new StaffManager();
@@ -47,12 +47,26 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>UoM Helpdesk</title>
+<script type="text/javascript">
+	function displayTechnicalForm(){
+		//display material
+	}
+	
+	function getSolution(){
+		$.post("ajax/queryAjax.jsp",
+				{
+					'query':$("#query").val(),
+					'user':<%= user.getUser_id()%> ,
+					'type':'normal'
+				},
+				function(data,status){
+					
+				});
+	}
+</script>
+
 </head>
 <body>
-	Query
-	<textarea></textarea>
-	<br>
-	<br>
 	<%
 	if(isStaff){
 	%>
@@ -60,7 +74,14 @@
 	<%
 	}
 	%>
+	<br>
+	Query
+	<textarea id="query"></textarea>
+	<br>
+	Material : <input type="text" />	
+	<br>
 	
-	<input type="button" value="Query" />
+	<br>
+	<input type="button" value="Submit" />
 </body>
 </html>
