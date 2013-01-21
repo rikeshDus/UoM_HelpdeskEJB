@@ -2,8 +2,7 @@
 <%@page import="businessLogic.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%!
-	String user_id;
-	String query_id,query, outMgs="";
+	String user_id, query_id,query, wildCard,fuzzy,proximity,firstRange,secondRange,boosting,excludeWords,booleanQuery, outMgs="";
 	String type;
 	int tracking_id;
  	
@@ -70,5 +69,23 @@
 		out.print(outMgs);
 		
 	}//end else if(type.equals("foward")){ 
+	else if(type.equals("advance")){
+		
+		 wildCard = request.getParameter("txt_wildCard");
+		 fuzzy = request.getParameter("txt_fuzzy");
+		 proximity = request.getParameter("txt_proximity");
+		 firstRange = request.getParameter("txt_firstRange");
+		 secondRange = request.getParameter("txt_secondRange");
+		 boosting = request.getParameter("txt_boosting");
+		 excludeWords = request.getParameter("txt_excludeWords");
+		 booleanQuery = request.getParameter("txt_boolean");
+		 
+		
+		 outMgs = wildCard+" , "+fuzzy+" , "+proximity+" , "+firstRange+" , "+secondRange+" , "+boosting+" , "+excludeWords+" , "+booleanQuery;
+			
+		out.print(outMgs);
+		
+		
+	}//end else if(type.equals("advance")){
 		
 %>

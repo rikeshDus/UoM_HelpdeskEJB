@@ -103,6 +103,30 @@ $(document).ready(function() {
 					
 				});
 	}
+	function getAdvanceSolution(){
+		document.getElementById("queryResult").innerHTML = "searching ..";
+			$.post("ajax/queryAjax.jsp",
+				{
+					'query':$("#query").val(),
+					'user':<%= user.getUser_id()%> ,
+					
+					'txt_wildCard':$("#txt_wildCard").val(),
+					'txt_fuzzy':$("#txt_fuzzy").val(),
+					'txt_proximity':$("#txt_proximity").val(),
+					'txt_firstRange':$("#txt_firstRange").val(),
+					'txt_secondRange':$("#txt_secondRange").val(),
+					'txt_boosting':$("#txt_boosting").val(),
+					'txt_excludeWords':$("#txt_excludeWords").val(),
+					'txt_boolean':$("#txt_boolean").val(),
+					
+					'type':'advance'
+				},
+				function(data,status){
+										
+					$("#queryResult").html(data);
+					
+				});
+	}
 </script>
 
 </head>
@@ -122,33 +146,35 @@ $(document).ready(function() {
 	<textarea id="query"></textarea>
 	<div id="advanceForm"> 
 		Wilddcard Searches 
-		<input type="text" name=""/>
+		<input type="text" name="txt_wildCard" id="txt_wildCard"/>
 		use ? or * search
 		<br>
 		Fuzzy Searches
-		<input type="text" name=""/> 
+		<input type="text" name="txt_fuzzy" id="txt_fuzzy"/> 
 		add ~ follow by (0.1 t0 1) for similarity
 		<br>
 		Proximity Searches
-		<input type="text" name=""/>
+		<input type="text" name="txt_proximity" id="txt_proximity"/>
 		add ~ follow by a number
 		<br>
 		Range Searches
-		<input type="text" name=""/>
+		<input type="text" name="txt_firstRange" id="txt_firstRange"/>
 		to
-		<input type="text" name=""/>
+		<input type="text" name="txt_secondRange" id="txt_secondRange"/>
 		<br>
 		Boosting Term
-		<input type="text" name=""/>
+		<input type="text" name="txt_boosting" id="txt_boosting"/>
 		add ^ follow by a number
 		<br>
 		Exclude Words
-		<input type="text" name=""/>
+		<input type="text" name="txt_excludeWords" id="txt_excludeWords"/>
 		add - follow by a number
 		<br>
 		Boolean Operators
-		<input type="text" name=""/>
+		<input type="text" name="txt_boolean" id="txt_boolean"/>
 		add OR between words
+		
+		<input type="button" value="Search" onClick="getAdvanceSolution();"/>
 	</div>
 	<br>
 	<input type="button" value="Submit" onClick="getSolution();"/>
