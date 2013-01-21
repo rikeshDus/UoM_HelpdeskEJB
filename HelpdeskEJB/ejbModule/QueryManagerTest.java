@@ -24,9 +24,8 @@ public class QueryManagerTest {
 
 	@Test
 	public void testGetSolution() {
-		
-		ArrayList<Question> allquestion = queryManager.getSolution("email",null, null, null, null, null, null, null, null);
-		System.out.println(allquestion.size()+"");
+		//formatQuery(String question,String wildCard, String fuzzy,String proximity,String firstRange,String secondRange,String boosting,String excludeWords,String booleanQuery)
+		ArrayList<Question> allquestion = queryManager.getSolution("\"will email\"~3");
 		for (int i = 0; i < allquestion.size(); i++) {
 			System.out.println(allquestion.get(i).getQuestion_id() + ". "+allquestion.get(i).getQuestion());
 		}

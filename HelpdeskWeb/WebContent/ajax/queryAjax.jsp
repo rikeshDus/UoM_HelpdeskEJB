@@ -28,7 +28,7 @@
 		//clear result
 		outMgs = "";
 		
-		allQuestion = queryManager.getSolution(query, null, null, null, null, null, null, null, null);
+		allQuestion = queryManager.getSolution(query);
 		
 		if(allQuestion.size() == 0){
 			outMgs =" no result found";
