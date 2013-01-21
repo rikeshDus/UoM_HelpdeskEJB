@@ -85,20 +85,19 @@ public class TrackingLogManager {
     		rs = pstmt.executeQuery();
     		
     		while(rs.next()){
+    			
     			trackingLog = new TrackingLog();
     			trackingLog.setDate(rs.getDate("date"));
     			trackingLog.setQuestion(rs.getInt("question_id"));
     			trackingLog.setTracking_id(rs.getInt("tracking_id"));
-    			trackingLog.setTracking_log_id(rs.getInt("tracking_log_id"));   			
-    			trackingLog.setReciever(rs.getString("reciever"));
+    			trackingLog.setTracking_log_id(rs.getInt("tracking_log_id"));  			
+    			trackingLog.setReciever(rs.getString("receiver"));
+    			
+    			rs.close();
+        		pstmt.close();
+        		con.close();
+        		return trackingLog;
     		}//end while(rs.next()){
-    		
-    		
-    		
-    		rs.close();
-    		pstmt.close();
-    		con.close();
-    		return trackingLog;
     		
     	}//end try
     	catch(SQLException se){
