@@ -114,7 +114,7 @@ public class QueryManager {
     	return trackingLog;
     }//end public String processQuery(String user_id,String description,String type ){
     
-    public ArrayList<Question> getSolution(String question){
+    public ArrayList<Question> getSolution(String question,String wildCard, String fuzzy,String proximity,String firstRange,String secondRange,String boosting,String excludeWords,String booleanQuery){
     	/*
     	 * use of lucene to find a relevant set of question related 
     	 * to the query. 
@@ -122,7 +122,7 @@ public class QueryManager {
     	
     	Question quest;
     	Connection con;
-	    String sql_query;
+	    String sql_query,lucene_question;
 		Statement stmt;
 		ResultSet rs = null;
 		
@@ -163,8 +163,11 @@ public class QueryManager {
 			//close writer
 			writer.close();
 			
+			//format question
+			lucene_question = formatQuery( question, wildCard,  fuzzy, proximity, firstRange, secondRange,boosting,excludeWords,booleanQuery);
+			
 			//create lucene query
-			Query lucene_query = new QueryParser(Version.LUCENE_40, "question", analyzer).parse(question+"*");
+			Query lucene_query = new QueryParser(Version.LUCENE_40, "question", analyzer).parse(lucene_question);
 			
 			//search
 		    int hitsPerPage = 10;
@@ -212,7 +215,43 @@ public class QueryManager {
         w.addDocument(doc);
     }
  
-    
+    private String formatQuery(String question,String wildCard, String fuzzy,String proximity,String firstRange,String secondRange,String boosting,String excludeWords,String booleanQuery){
+    	/*
+    	 * Check for null parameter
+    	 * if parameter is not null format the parameter 
+    	 * and concatenate to full query
+    	 */
+    	
+    	String fullQuery = "";
+    	
+    	//check for null values
+    	if(wildCard != null){
+    		
+    	}//end of  if(wildCard != null){
+    	if(fuzzy != null){
+    		
+    	}//end of if(fuzzy != null){
+    	if(proximity != null){
+    		
+    	}//end of if(proximity != null){
+    	if(firstRange != null){
+    		if(secondRange != null){
+        		
+        	}//end of if(secondRange != null){
+    	}//end of if(firstRange != null){
+    	
+    	if(boosting != null){
+    		
+    	}//end of if(boosting != null){
+    	if(excludeWords != null){
+    		
+    	}//end of if(excludeWords != null){
+    	if(booleanQuery != null){
+    		
+    	}//end of if(booleanQuery != null){
+
+    	return question;
+    }//end private String formatQuery(String question,String wildCard, String fuzzy,String proximity,String firstRange,String secondRange,String boosting,String excludeWords,String booleanQuery){
     
     
     

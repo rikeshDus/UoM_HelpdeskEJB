@@ -25,7 +25,7 @@ public class QueryManagerTest {
 	@Test
 	public void testGetSolution() {
 		
-		ArrayList<Question> allquestion = queryManager.getSolution("none");
+		ArrayList<Question> allquestion = queryManager.getSolution("email",null, null, null, null, null, null, null, null);
 		System.out.println(allquestion.size()+"");
 		for (int i = 0; i < allquestion.size(); i++) {
 			System.out.println(allquestion.get(i).getQuestion_id() + ". "+allquestion.get(i).getQuestion());

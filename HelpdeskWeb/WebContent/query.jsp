@@ -174,7 +174,7 @@ $(document).ready(function() {
 		<input type="text" name="txt_boolean" id="txt_boolean"/>
 		add OR between words
 		
-		<input type="button" value="Search" onClick="getAdvanceSolution();"/>
+		<input type="button" value="Advance Search" onClick="getAdvanceSolution();"/>
 	</div>
 	<br>
 	<input type="button" value="Submit" onClick="getSolution();"/>
