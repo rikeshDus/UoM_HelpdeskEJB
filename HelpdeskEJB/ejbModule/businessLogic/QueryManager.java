@@ -212,7 +212,7 @@ public class QueryManager {
         w.addDocument(doc);
     }
  
-    private String formatQuery(String wildCard, String fuzzy,String proximity,String firstRange,String secondRange,String boosting,String excludeWords,String booleanQuery){
+    public String formatQuery(String wildCard, String fuzzy,String proximity,String firstRange,String secondRange,String boosting,String excludeWords,String booleanQuery){
     	/*
     	 * Check for null parameter
     	 * if parameter is not null format the parameter 
@@ -224,52 +224,14 @@ public class QueryManager {
     	int tempNum = 0;
     	String allParam[] = { wildCard,  fuzzy, proximity, firstRange, secondRange, boosting, excludeWords, booleanQuery};
     	
-    	//remove first character if it is an escaping character
-		if(wildCard != null && (
-		   wildCard.startsWith("+")  || wildCard.startsWith("-") || wildCard.startsWith("!") || wildCard.startsWith("(") || wildCard.startsWith("&") || wildCard.startsWith("|") ||
-		   wildCard.startsWith(")")  || wildCard.startsWith("{") || wildCard.startsWith("}") || wildCard.startsWith("[") || wildCard.startsWith("]") || wildCard.startsWith("^") || 
-		   wildCard.startsWith("\"") || wildCard.startsWith("~") || wildCard.startsWith("*") || wildCard.startsWith("?") || wildCard.startsWith(":") || wildCard.startsWith("\\") 
-		   ))
-		{
-			//remove the character 0
-			wildCard = wildCard.substring(1);
-			
-		}//end if(wildCard.startsWith("*") || wildCard.startsWith("?")){
+    	
     	
 		//interated in each parameter
     	for (int i = 0; i < allParam.length; i++) {
     		
-    		if(allParam[i] != null){
-    	
-	    		//interated in each parameter character
-	    		for (int j = 0; j < allParam[i].length(); j++) {
-	    			
-	    			//get each char 
-	    			tempCharac = allParam[i].charAt(j);
-	    			//check for escape chracter
-	    			if(tempCharac == '+'  || tempCharac == '-' || tempCharac == '!' || tempCharac == '(' || 
-	    			   tempCharac == ')'  || tempCharac == '{' || tempCharac == '}' || tempCharac == '[' || 
-	    			   tempCharac == ']'  || tempCharac == '^' || tempCharac == '\"'|| tempCharac == '~' || 
-	    			   tempCharac == '*'  || tempCharac == '?' || tempCharac == ':' || tempCharac == '\\' ){
-	    				
-	    				//add \ before escaping character    				
-	    				fullQuery += allParam[i].substring(tempNum,j) + "\\";
-	    				tempNum = j;
-	    				
-	    				
-	    			}//end if(tempCharac == '+'  || tempCharac == '-' || tempCharac == '!' || tempCharac == '(' || 
-	    			else if(tempCharac == '&' || tempCharac == '|'){
-	    				//add \ before escaping character   
-	    				fullQuery += allParam[i].substring(tempNum,i) + "\\";
-	    				tempNum = j;
-	    				// move one character ahead because we need to escape && or ||
-	    				j++;
-	    			}//end else if(tempCharac == '&' || tempCharac == '|'){
-	    			
-	    			
-	    		}//for (int j = 0; j < allParam[i].length(); j++) {
-	    		//add the end of the String
-    			fullQuery += allParam[i].substring(tempNum);
+    		if(!allParam[i].equals("")){
+       			
+    			fullQuery += allParam[i];
     			
     			//leave space between each param
     			fullQuery += " AND ";
@@ -277,17 +239,19 @@ public class QueryManager {
 			}//end if(allParam[i] != null){
     		    		
     	}//end of for (int i = 0; i < allParam.length; i++) {
-    	fullQuery = fullQuery.substring(0,(fullQuery.length()-4));
-		System.out.println("testing value  " + fullQuery);
     	
+    	if(fullQuery.length() > 0){
+    		fullQuery = fullQuery.substring(0,(fullQuery.length()-4));
+    		System.out.println("testing value  " + fullQuery);
+        	    	
+        	return fullQuery;
+    	}
+    	else{
+    		return null;
+    	}
     	
-    	
-    	return fullQuery;
-    	
-    	
-    	
-    	
-    	/*if(tempCharac == '+'  || tempCharac == '-' || tempCharac == '!' || tempCharac == '(' || 
+    	/*reference
+    	 * if(tempCharac == '+'  || tempCharac == '-' || tempCharac == '!' || tempCharac == '(' || 
  			   tempCharac == ')'  || tempCharac == '{' || tempCharac == '}' || tempCharac == '[' || 
  			   tempCharac == ']'  || tempCharac == '^' || tempCharac == '\"'|| tempCharac == '~' || 
  			   tempCharac == '*'  || tempCharac == '?' || tempCharac == ':' || tempCharac == '\\' )*/
