@@ -65,9 +65,8 @@
 		trackingLog = queryManager.forwardQuery(user_id, query, type);
 		
 		
-		outMgs = trackingLog.getTracking_log_id()+" ";//+" , "+trackingLog.getTracking_id()+" , "+trackingLog.getQuestion()+" , "+trackingLog.getTracking_log_id()+" , "+trackingLog.getDate();
-		outMgs += "enter2";
-			
+		outMgs = trackingLog.getReciever()+" , "+trackingLog.getTracking_id()+" , "+trackingLog.getQuestion()+" , "+trackingLog.getTracking_log_id()+" , "+trackingLog.getDate();
+		
 		out.print(outMgs);
 		
 	}//end else if(type.equals("foward")){ 

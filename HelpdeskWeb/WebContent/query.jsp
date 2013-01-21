@@ -60,6 +60,9 @@ $(document).ready(function() {
 	    $(this).hide(100);
 	})
 	;
+	  
+	  
+	$("#advanceForm").hide();
 	});
 	
 	
@@ -82,6 +85,9 @@ $(document).ready(function() {
 
 	}//end of function forwardQuery(){
 	
+	function advanceQuery(){
+		$("#advanceForm").show(500);
+	}//end function advanceQuery()
 	
 	function getSolution(){
 		document.getElementById("queryResult").innerHTML = "searching ..";
@@ -114,6 +120,36 @@ $(document).ready(function() {
 	<br>
 	Query
 	<textarea id="query"></textarea>
+	<div id="advanceForm"> 
+		Wilddcard Searches 
+		<input type="text" name=""/>
+		use ? or * search
+		<br>
+		Fuzzy Searches
+		<input type="text" name=""/> 
+		add ~ follow by (0.1 t0 1) for similarity
+		<br>
+		Proximity Searches
+		<input type="text" name=""/>
+		add ~ follow by a number
+		<br>
+		Range Searches
+		<input type="text" name=""/>
+		to
+		<input type="text" name=""/>
+		<br>
+		Boosting Term
+		<input type="text" name=""/>
+		add ^ follow by a number
+		<br>
+		Exclude Words
+		<input type="text" name=""/>
+		add - follow by a number
+		<br>
+		Boolean Operators
+		<input type="text" name=""/>
+		add OR between words
+	</div>
 	<br>
 	<input type="button" value="Submit" onClick="getSolution();"/>
 	<br>
