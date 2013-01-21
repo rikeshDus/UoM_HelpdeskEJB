@@ -103,7 +103,7 @@ public class QueryManager {
     		receiver = getReceiver(description);
     		
     		//save track log
-    		tracking_log_id = trackingLogManager.createTrackingLog(tracking_id, question_id);
+    		tracking_log_id = trackingLogManager.createTrackingLog(tracking_id, question_id,receiver.getUser_id());
     		
     		//find tracking_log
     		trackingLog = trackingLogManager.findTrackingLog(tracking_log_id);
@@ -226,8 +226,100 @@ public class QueryManager {
     	 * return the user
     	 */
     	
+    	Connection con;
+	    String sql_query;
+		Statement stmt;
+		ResultSet rs = null;
+    	Staff staff =null;
+    	ArrayList <Staff> staffPopulation =  new ArrayList<Staff>();
     	
-    	return null;	
+    	
+    	
+    	//match keyword and get staff
+    	
+    	
+    	//use a simple analyser
+    	SimpleAnalyzer analyzer = new SimpleAnalyzer(Version.LUCENE_40);
+    	
+    	//create Index
+    	 Directory index = new RAMDirectory();
+
+    	 IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_40, analyzer);
+    	
+    	 
+    	 
+    	 try {
+ 			IndexWriter writer = new IndexWriter(index, config);
+ 			
+ 			//add document to corpus
+ 			
+ 			
+ 			DatabaseConnection dbconnect = new DatabaseConnection();
+ 			con = dbconnect.getConnection();
+ 			
+ 			sql_query = "SELECT * FROM staff";
+ 					
+ 			stmt = con.createStatement();
+ 			rs = stmt.executeQuery(sql_query);
+ 			
+ 			
+ 			while(rs.next()){
+ 				
+ 				//adding result as document in lucene
+ 				Document doc = new Document();
+ 				doc.add(new TextField("working_description", rs.getString("working_description"), Field.Store.YES));
+ 				doc.add(new TextField("position", rs.getString("position"), Field.Store.YES));
+
+ 			    // use a string field for isbn because we don't want it tokenized
+ 			    doc.add(new StringField("user_id", rs.getString("user_id"), Field.Store.YES));
+ 			    writer.addDocument(doc);
+ 				
+ 			}//end while(rs.next()){ 
+ 			con.close();
+ 			stmt.close();
+ 			rs.close();
+ 			
+ 			//close writer
+ 			writer.close();
+ 			
+ 			
+ 			//create lucene query
+			Query lucene_query = new QueryParser(Version.LUCENE_40, "working_description", analyzer).parse(query+"*");
+			
+			//search and get best match staff
+		    int hitsPerPage = 10;
+		    IndexReader reader = DirectoryReader.open(index);
+		    IndexSearcher searcher = new IndexSearcher(reader);
+		    TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, true);
+		    searcher.search(lucene_query, collector);
+		    ScoreDoc[] hits = collector.topDocs().scoreDocs;
+		    
+		    //creating arralist of question to return
+		    for(int i=0;i<hits.length;++i) {
+		        int docId = hits[i].doc;
+		        Document d = searcher.doc(docId);
+		        staff = new Staff();
+		        staff.setWorking_description(d.get("working_description"));
+		        staff.setPosition(d.get("position"));
+		        staff.setUser_id(d.get("user_id"));
+		        
+		        staffPopulation.add(staff);
+		        
+		     }//end for(int i=0;i<hits.length;++i) {
+ 			
+ 			
+    	 }//end try
+    	 catch(SQLException se){
+    		 
+    	 } catch (IOException e) {
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    	return new UserManager().findUser( staffPopulation.get(0).getUser_id());	
     }//end of public User getReceiver(String query){
     
 }//end of class

@@ -22,7 +22,7 @@ public class TrackingLogManager {
         // TODO Auto-generated constructor stub
     }
 
-    public int createTrackingLog(int tracking_id,int question_id)
+    public int createTrackingLog(int tracking_id,int question_id,String receiver)
     {
     	Connection con;
     	String sql_query;
@@ -34,7 +34,7 @@ public class TrackingLogManager {
     	DatabaseConnection dbconnect = new DatabaseConnection();
     	con = dbconnect.getConnection();
     	
-    	sql_query = "Insert INTO tracking_log VALUES(?,?,?,?)";
+    	sql_query = "Insert INTO tracking_log VALUES(?,?,?,?,?)";
     	
     	try {
     		pstmt = con.prepareStatement(sql_query, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -43,7 +43,7 @@ public class TrackingLogManager {
     		pstmt.setInt(2, tracking_id);
     		pstmt.setInt(3, question_id);
     		pstmt.setDate(4, null);
-    		
+    		pstmt.setString(5, receiver);
     		
     		insert = pstmt.executeUpdate();
     		rs = pstmt.getGeneratedKeys();

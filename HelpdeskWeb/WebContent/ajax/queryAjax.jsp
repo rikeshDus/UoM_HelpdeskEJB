@@ -25,7 +25,7 @@
 	
 	
 	
-	if(type.equals("normal")){
+ 	if(type.equals("normal")){
 		//clear result
 		outMgs = "";
 		
@@ -53,16 +53,23 @@
 		}//end else
 		
 		
-		
 		out.print(outMgs);
+		
 	}//end if(type.equals("normal")) 
 	else if(type.equals("foward")){
+		//clear variable
+		outMgs = "";
+		
 		
 		//get tracking Log
 		trackingLog = queryManager.forwardQuery(user_id, query, type);
 		
 		
+		outMgs = trackingLog.getTracking_log_id()+" ";//+" , "+trackingLog.getTracking_id()+" , "+trackingLog.getQuestion()+" , "+trackingLog.getTracking_log_id()+" , "+trackingLog.getDate();
+		outMgs += "enter2";
+			
+		out.print(outMgs);
 		
-	}//end else if(type.equals("foward")){
+	}//end else if(type.equals("foward")){ 
 		
 %>
