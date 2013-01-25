@@ -27,12 +27,12 @@ public class ScheduleManagerTest {
 		String[] profId = {"P 0001,P 0001"};
 		teamsHashMap.put("team1", profId);
 		teamsHashMap.put("team2", id);
-		/*teamsHashMap.put("team3", id);
+		teamsHashMap.put("team3", id);
 		teamsHashMap.put("team4", id);
 		teamsHashMap.put("team5", id);
 		teamsHashMap.put("team6", profId);
 		teamsHashMap.put("team7", id);
-		teamsHashMap.put("team8", id);*/
+		teamsHashMap.put("team8", id);
 		result = scheduleManager.generateSportSchedule(teamsHashMap, startDate, endDate);
 		int x =1;
 		for(int i=0;i<result.size();i++){

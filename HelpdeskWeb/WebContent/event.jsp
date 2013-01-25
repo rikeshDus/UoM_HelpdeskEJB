@@ -218,7 +218,7 @@
 				var form = allData[1];
 				var round = allData[0]; 
 				
-				//roundArr = round.split(" ");
+				roundArr = round.split(" ");
 				
 				//$('#confirm').hide();
 				var temp =$("#displaySchedule").html();
@@ -248,10 +248,8 @@
 			
 			
 		function submitSchedule(){
-			var al = $("#eventType").val()+" "+$("#title").val()+" "+
-			$("#description").val()+" "+$("#scheduleDate").val()+" "+
-			$("#scheduleDaytime").val()+" "+$("#scheduleDuration").val();
-		alert("event :" + al );
+			alert(roundArr[0]);			
+		
 			$.post("ajax/eventSchedule.jsp",
 			{
 				'type':$("#eventType").val(),
@@ -264,7 +262,7 @@
 				'user':<%= user_id %>
 			},
 			function(data,status){
-				$("#displaySchedule").html( data+"in saving operation <a href='homepage.jsp'>back</a>");
+				$("#calenderMgs").html( data+"in saving operation <a href='homepage.jsp'>back</a>");
 				
 			});
 			
@@ -358,6 +356,7 @@
 		
 		<button onclick="submitSchedule();">Submit</button>
 	</div>
+	<div id='calenderMgs'></div>
 	<div id='calendar'></div>
 </body>
 </html>

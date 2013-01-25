@@ -144,11 +144,9 @@
 		
  		for(int i=0;i<sportSchedule.size();i++){
  			
- 			if(i==0)
-				outputMessage += "round"+(i+1);
- 			else
- 				outputMessage += " round"+(i+1);
-			match = sportSchedule.get("round "+(i+1));
+ 			outputMessage += " round"+(i+1);
+			
+ 			match = sportSchedule.get("round "+(i+1));
 			
 			for(int j=0;j<match.size();j++){
 				outputMessage += " "+match.get(j);
@@ -156,11 +154,7 @@
 		} 
 			
  		outputMessage += "-break-<br>"
-				 	+"Time <input type=\"time\" name=\"scheduleDaytime\" id=\"scheduleDaytime\">" 
-					+ "<br>"
-					+"Date <input type=\"date\" name=\"scheduleDate\" id=\"scheduleDate\">" 
-					+ "<br>"
-					+ "Duration <input type=\"number\" name=\"scheduleDuration\"  id=\"scheduleDuration\">";
+				 	+"<button onclick=\"submitSchedule();\">Submit</button>";
 	
 			 out.print(outputMessage);
 	}//end else

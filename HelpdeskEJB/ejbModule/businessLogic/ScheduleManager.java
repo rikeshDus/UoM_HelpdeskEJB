@@ -142,7 +142,6 @@ public class ScheduleManager {
 		
 		allTime = generateNonSportSchedule(faculties, course, startDate, endDate);
 		
-		
 		while(tem<allTeams.size()){
 			//add match
 			temSchedule.add(allTeams.get(tem));
