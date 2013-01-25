@@ -12,9 +12,10 @@
 	String user_id;
 %>
 <%
-	user = (User)(session.getAttribute("currentUser"));
-	user_id = user.getUser_id();	
-
+	/* user = (User)(session.getAttribute("currentUser"));
+	user_id = user.getUser_id();	 */
+	user_id = "1010790";
+	
  	CourseManager courseManager = new CourseManager();
 	allCourse = courseManager.getAllCourse();
 	
@@ -59,12 +60,45 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<script type="text/javascript" src="javascript/jquery-1.8.3.min.js"></script>
+	<link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.css' />
+	<link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.print.css' media='print' />
+	<style type='text/css'>
+
+	
+	#calendar {
+		width: 900px;
+		margin: 0 auto;
+		margin-top: 40px;
+		text-align: center;
+		font-size: 14px;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		}
+		#confirmScheduleDiv{
+	z-index: 20;
+	background-color: grey;
+	}
+
+</style>
+	<script type='text/javascript' src='jquery/jquery-1.8.1.min.js'></script>
+	<script type='text/javascript' src='jquery/jquery-ui-1.8.23.custom.min.js'></script>
+	<script type='text/javascript' src='fullcalendar/fullcalendar.min.js'></script>
+	<!-- <script type="text/javascript" src="javascript/jquery-1.8.3.min.js"></script>-->
 	<script type="text/javascript">
+	var x;
+	var y;
 		$(document).ready(function() {
 		  // Handler for .ready() called.
 			$("#displaySchedule").hide();
 			$("#innerSportCreateEventForm").hide();
+			  $(document).mousemove(function(e){
+		            // $('#status').html(e.pageX +', '+ e.pageY);
+		            x = e.pageX;
+		            y = e.pageY;
+		        	 
+		        	 
+		          });
+			  
+			
 		});
 		
 		function sportHideShow(){
@@ -178,18 +212,21 @@
 				'teamsParticipant[]':teamArray
 			},
 			function(data,status){
-				
+				  
 				 //extract data
 				var allData = data.split("-break-");
 				var form = allData[1];
 				var round = allData[0]; 
 				
-				roundArr = round.split(" ");
+				//roundArr = round.split(" ");
 				
-				
+				//$('#confirm').hide();
 				var temp =$("#displaySchedule").html();
-				$("#displaySchedule").html( round+"<br>confirm Schedule</br>"+temp);
-				$("#displaySchedule").show().fadeIn(1000);
+				//if($("#eventType").val()!= "Other")
+					//$("#displaySchedule").html( round+"<br>confirm Schedule</br>"+temp); 
+					$("#displaySchedule").html(data).show().fadeIn(1000);
+				
+					$('#confirmScheduleDiv').hide();
 			});
 			
 		}//end function SubmitcreateEventFormDiv(){
@@ -198,7 +235,11 @@
 			
 		function addCourse(){	
 			courseArray[courseNumberAdded] = $("#comboCourse").val();
-			alert(courseArray[courseNumberAdded]);
+			
+			var te = $('#courseAddedTextArea').val();
+			te = te +courseArray[courseNumberAdded];
+			$('#courseAddedTextArea').val(te)
+			
 			courseNumberAdded++;
 			//$("#courseAddedTextArea").append($("#comboCourse").text());
 			$("#courseAddedConfirmMessge").html("<span style='color: #123456;'> Course Successfully Added </span>").show().fadeIn(500).fadeOut(2000);
@@ -207,6 +248,10 @@
 			
 			
 		function submitSchedule(){
+			var al = $("#eventType").val()+" "+$("#title").val()+" "+
+			$("#description").val()+" "+$("#scheduleDate").val()+" "+
+			$("#scheduleDaytime").val()+" "+$("#scheduleDuration").val();
+		alert("event :" + al );
 			$.post("ajax/eventSchedule.jsp",
 			{
 				'type':$("#eventType").val(),
@@ -280,22 +325,6 @@
 							<textarea rows="" cols="" readonly="readonly" id="courseAddedTextArea"></textarea>
 						</td>
 					</tr>
-					<tr>
-						<td>ID Involve</td>
-						<td>
-							<select id="comboUser">
-								<%=comboUser %>
-							</select>
-							<br>
-							<button>Add Id</button>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							Id Added <br>
-							<textarea rows="" cols="" id="courseAddedTextArea"></textarea>
-						</td>
-					</tr>
 				</table>
 			</div>
 			<div id="innerSportCreateEventForm">
@@ -329,5 +358,6 @@
 		
 		<button onclick="submitSchedule();">Submit</button>
 	</div>
+	<div id='calendar'></div>
 </body>
 </html>

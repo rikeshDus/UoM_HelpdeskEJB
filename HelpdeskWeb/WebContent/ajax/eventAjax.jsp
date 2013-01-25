@@ -3,7 +3,7 @@
 <%@page import="java.sql.Date, businessLogic.* , java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%!
-	String type,title,description,outputMessage = "";
+	String type,title,description,calenderStart,calenderEnd,slot="",outputMessage = "";
 	String[] course;
 	String[] faculties;
 	String[] teamParticipant;
@@ -41,19 +41,80 @@
 	 	
 	 	
 	   allFreeSlot = scheduleManager.generateNonSportSchedule(faculty , course, startDate, endDate);
-	     		
+	  
 	 	 for(int i=0;i<allFreeSlot.size();i++){
-	 		outputMessage += " <br>" + allFreeSlot.get(i)+"   ";
+	 		slot += "{"+
+		            "title: 'My Event',"+
+		            "start: '"+allFreeSlot.get(i)+"',allDay: false";    //'2013-01-09 08:00:00.0 '//new Date(y, m, d-3, 16, 0),"+
+		     if(i==(allFreeSlot.size()-1))
+		     {
+		    	 slot += "}";
+		     }
+		     else{
+		    	 slot += "},";
+		     }
+		        
 	 	}//end for(int i=0;i<allFreeSlot.size();i++){ 
-	 	 
+	 	  calenderStart = "<script type='text/javascript'>"+ 
+				   "$('#calendar').fullCalendar({"+
+	 	  		"aspectRatio: 2,editable: true,"+
+			    "events: [";//+
+					       /*  "{"+
+					            "title: 'My Event',"+
+					            "start: '2013-01-09 08:00:00.0 '//new Date(y, m, d-3, 16, 0),"+
+					            
+					        "}"+ */
+					        // other events here"+
+			calenderEnd	 =   "],"+
+					    "eventClick: function(calEvent, jsEvent, view) {"+
+					    "		var date = (calEvent.start).toString().split(\" \");"+
+						
+						"var month = [ \"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\",\"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\" ];"+
+						 "var mon = (month.indexOf(date[1]) +1);"+
+						"var day = date[2];"+
+						"var year = date[3];"+
+						"var time = date[4];"+
+						"var value = \"\";"+
+						
+						"if(mon<10){"+
+						"	value = year+\"-0\"+mon+\"-\"+day;"+
+								"$('#scheduleDate').val(value);"+
+						"}else"+
+							"{"+
+							
+							"value = year+\"-\"+mon+\"-\"+day;"+
+									"$('#scheduleDate').val(value);"+
+							"}"+
+							 
+				    	 "$('#scheduleDaytime').val(time);"+
+				         "$(this).css('border-color', 'red');"+
+				         "$('#confirmScheduleDiv').css( {"+
+				            " 'position': 'absolute',"+
+				            " 'left': x,"+
+				            " 'top': y"+
+				         "});"+
+				         
+				         "$('#confirmScheduleDiv').show();"+
+					    "}"+
+					"});</script>";
+	 		
+	 		
+	 		
 	 	//messega formating
-	 	outputMessage += "<br><br>"
-	 					+"Time <input type=\"time\" name=\"scheduleDaytime\" id=\"scheduleDaytime\">" 
-	 					+ "<br>"
-	 					+"Date <input type=\"date\" name=\"scheduleDate\" id=\"scheduleDate\">" 
-	 					+ "<br>"
-	 					+ "Duration <input type=\"number\" name=\"scheduleDuration\"  id=\"scheduleDuration\">";
-	 	 
+	 	outputMessage += calenderStart+slot+calenderEnd
+					+"-break-<br><div id=\"confirmScheduleDiv\" >"
+ 					+"<a onclick=\"$('#confirmScheduleDiv').hide();\">Close</a>"
+ 					+"<br>"
+					+"Time <input type=\"time\" name=\"scheduleDaytime\" id=\"scheduleDaytime\">" 
+					+ "<br>"
+					+"Date <input type=\"date\" name=\"scheduleDate\" id=\"scheduleDate\">" 
+					+ "<br>"
+					+ "Duration <input type=\"number\" name=\"scheduleDuration\"  id=\"scheduleDuration\">"
+					+"<br>"
+					+"<a onclick=\"submitSchedule();\">Submit</a>"
+					+"</div>";
+	 	
+	 	  
 	 	out.print(outputMessage);
 	}//end if(type.equals("sport")){
 	else{ 
@@ -95,7 +156,7 @@
 		} 
 			
  		outputMessage += "-break-<br>"
-					+"Time <input type=\"time\" name=\"scheduleDaytime\" id=\"scheduleDaytime\">" 
+				 	+"Time <input type=\"time\" name=\"scheduleDaytime\" id=\"scheduleDaytime\">" 
 					+ "<br>"
 					+"Date <input type=\"date\" name=\"scheduleDate\" id=\"scheduleDate\">" 
 					+ "<br>"
