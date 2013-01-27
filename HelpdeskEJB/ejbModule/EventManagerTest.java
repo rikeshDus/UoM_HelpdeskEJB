@@ -20,10 +20,11 @@ public class EventManagerTest {
 	}
 	
 	@Test
-	public void getAllEvent(){
+	public void testGetAllEvent(){
 		EventManager eventManager = new EventManager();
 		ArrayList<Event> allEvents = eventManager.getAllEvent();
 		for (int i = 0; i < allEvents.size(); i++) {
+			if(allEvents.get(i).getUser_id().equals("P"))
 			System.out.println(allEvents.get(i).getEvent_id());
 		}
 		
