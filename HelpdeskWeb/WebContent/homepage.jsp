@@ -15,6 +15,9 @@
 <body>
 	<a href="event.jsp">Event</a>
 	<br>
+	<a href="myEvent.jsp">My Event</a>
+	<br>
 	<a href="query.jsp">Query</a>
+	
 </body>
 </html>

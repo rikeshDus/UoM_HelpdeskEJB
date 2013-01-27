@@ -268,11 +268,29 @@
 			
 		}//end function submitSchedule()
 		
+		/*
+		*load all event whic user has created and 
+		*format the event in calender format
+		*give option update and delete when click on event
+		*/
+		function loadEvent(option){
+			
+		
+		}//end of function loadEvent(option){
 		
 	</script>
 	<title>UoM Helpdesk</title>
 </head>
 <body >
+	<a onclick="loadEvent('loadEvent');">My event</a>
+
+	<div id="deleteEvent">
+		
+	
+	
+	</div>
+	
+
 	
 	<div id="createEventFormDiv">
 	
