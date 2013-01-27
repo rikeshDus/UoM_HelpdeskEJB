@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -70,5 +72,51 @@ public class EventManager {
     	
     	return t_iVersion; 		
     }//end
-
-}
+    
+    public ArrayList<Event> getAllEvent(){
+    	
+    	Connection con;
+		Statement stmt;
+		ResultSet rs;
+		Event temporaryEvent;
+		ArrayList<Event> allEvent = new ArrayList<Event>();
+		String query = "SELECT * FROM event";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryEvent = new Event();
+				
+				temporaryEvent.setDescroiption(rs.getString("description"));
+				temporaryEvent.setEvent_id(rs.getInt("event_id"));
+				temporaryEvent.setTitle(rs.getString("title"));
+				temporaryEvent.setType(rs.getString("type"));
+				temporaryEvent.setUser_id(rs.getString("user_id"));
+				
+				allEvent.add(temporaryEvent);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return allEvent;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+    	
+    	return null;
+    }//end public ArrayList<Event> getAllEvent(){
+    
+    
+}//end class
