@@ -77,6 +77,10 @@
 	z-index: 20;
 	background-color: grey;
 	}
+	#divDisplay{
+	z-index: 20;
+	background-color: grey;
+	}
 
 </style>
 	<script type='text/javascript' src='jquery/jquery-1.8.1.min.js'></script>
@@ -97,6 +101,7 @@
 		        	 
 		        	 
 		          });
+			  $('#divDisplay').hide();
 			  
 			
 		});
@@ -274,7 +279,16 @@
 		*give option update and delete when click on event
 		*/
 		function loadEvent(option){
-			
+			alert("enetr" + option);
+			$.post("ajax/loadEventAjax.jsp",
+			{
+				'option':option,
+				'eventId':$("#txt_hid_event_id").val()
+			},
+			function(data,status){				
+				$("#displaySchedule").html(data).show().fadeIn(1000);
+				
+			});
 		
 		}//end of function loadEvent(option){
 		
@@ -376,5 +390,6 @@
 	</div>
 	<div id='calenderMgs'></div>
 	<div id='calendar'></div>
+	<div id = 'divDisplay'><a onclick="loadEvent('update');">add</a> <br> <a onclick="loadEvent('delete')">delete</a> <br><input type=" text" id="txt_hid_event_id"/> </div>
 </body>
 </html>
