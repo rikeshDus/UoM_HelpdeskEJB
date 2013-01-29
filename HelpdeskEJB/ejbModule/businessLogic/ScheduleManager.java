@@ -34,7 +34,48 @@ public class ScheduleManager {
         
     }
     
-    
+    public Schedule findSchedule(int schedule_id) {
+    	Connection con;
+    	String query;
+    	PreparedStatement pstmt;
+    	ResultSet rs = null;
+    	Schedule temporarySchedule = null;
+    	
+    	DatabaseConnection dbconnect = new DatabaseConnection();
+    	con = dbconnect.getConnection();
+    	
+    	query = "SELECT * FROM schedule WHERE schedule_id = ?";
+    	
+    	try {
+    		pstmt = con.prepareStatement(query);
+    		
+			pstmt.setInt(1, schedule_id);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				temporarySchedule = new Schedule();
+				
+				temporarySchedule.setDate(rs.getDate("date"));
+				temporarySchedule.setDuration(rs.getInt("duration"));
+				temporarySchedule.setEvent_id(rs.getInt("event_id"));
+				temporarySchedule.setSchedule_id(rs.getInt("schedule_id"));
+				temporarySchedule.setTime(rs.getString("starttime"));
+			}//end while
+			
+			
+			rs.close();
+    		pstmt.close();
+    		con.close();
+    		return temporarySchedule;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    	return null;
+    }
     
     public boolean createSchedule(int duration, Date date, String time,int event_id){
     	Connection con;

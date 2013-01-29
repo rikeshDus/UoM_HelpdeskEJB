@@ -28,6 +28,13 @@ public class ScheduleManagerTest {
 	}
 	
 	@Test
+	public void testFindSchedule(){
+		ScheduleManager mgr = new ScheduleManager();
+		
+		assertTrue(mgr.findSchedule(6).getEvent_id() == 22);
+	}
+	
+	//@Test
 	public void testupdateSchedule(){
 		ScheduleManager scheduleManager = new ScheduleManager();
 		Schedule schedule = new Schedule();
