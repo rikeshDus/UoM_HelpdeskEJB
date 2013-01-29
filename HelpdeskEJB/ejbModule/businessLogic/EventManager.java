@@ -24,6 +24,50 @@ public class EventManager {
         // TODO Auto-generated constructor stub
     }
     
+    public Event findEvent(int event_id){
+    	Connection con;
+    	String query;
+    	PreparedStatement pstmt;
+    	ResultSet rs = null;
+    	Event temporaryEvent = null;
+    	
+    	DatabaseConnection dbconnect = new DatabaseConnection();
+    	con = dbconnect.getConnection();
+    	
+    	query = "SELECT * FROM event WHERE event_id = ?";
+    	
+    	try {
+    		pstmt = con.prepareStatement(query);
+    		
+			pstmt.setInt(1, event_id);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				temporaryEvent = new Event();
+				
+				temporaryEvent.setDescroiption(rs.getString("description"));
+				temporaryEvent.setEvent_id(rs.getInt("event_id"));
+				temporaryEvent.setTitle(rs.getString("title"));
+				temporaryEvent.setType(rs.getString("type"));
+				temporaryEvent.setUser_id(rs.getString("user_id"));
+				
+				
+			}//end while
+			
+			
+			rs.close();
+    		pstmt.close();
+    		con.close();
+    		return temporaryEvent;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return null;
+    }
+    
     public int createEvent(String title, String description, String type, String user_id){
     	Connection con;
     	String query;

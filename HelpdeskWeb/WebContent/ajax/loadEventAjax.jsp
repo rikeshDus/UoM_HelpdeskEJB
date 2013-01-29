@@ -7,6 +7,7 @@
 	String user_id="1010790",title,date,time;
 	int event_id;
 	Schedule schedule;
+	Event event;
 	boolean trsactionConfirmation;
 	
 	ArrayList<Event> allEvent = new ArrayList<Event>();

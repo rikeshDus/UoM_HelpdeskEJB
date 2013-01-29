@@ -32,6 +32,16 @@ public class EventManagerTest {
 	}
 	
 	@Test
+	public void testFindEvent(){
+		EventManager eventManager = new EventManager();
+		
+		Event event= eventManager.findEvent(32);
+		
+		assertTrue(event.getUser_id().equals("1010790"));
+	}
+	
+	
+	//@Test
 	public void testUpdateEvent(){
 		EventManager eventManager = new EventManager();
 		Event event = new Event();
