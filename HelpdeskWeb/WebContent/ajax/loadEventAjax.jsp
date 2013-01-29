@@ -1,10 +1,12 @@
+<%@page import="java.sql.Date"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@page import="businessLogic.*" %>
 <%!
 	String option="loadEvent",outMgs="error",calenderStart,calenderEnd,calenderMiddle="",alertDisplay,eventId;
-	String user_id="1010790",title,date,time;
+	String user_id="1010790",title,time;
+	Date date;
 	int event_id;
 	Schedule schedule;
 	Event event;
@@ -146,30 +148,56 @@
 		eventId = request.getParameter("eventId");
 		title = request.getParameter("title");
 		time = request.getParameter("time");
-		date = request.getParameter("date");
+		date = Date.valueOf( request.getParameter("date"));
 		
 	
 		/* update event */
+		event = eventManager.findEvent(event_id);
+		event.setTitle(title);
+		trsactionConfirmation = eventManager.updateEvent(event);
+		if(trsactionConfirmation){
+			schedule = scheduleManager.getScheduleByEvent(event_id);
+			schedule.setDate(date);
+			schedule.setTime(time);		
+			trsactionConfirmation = scheduleManager.updateSchedule(schedule);
+			
+			if(trsactionConfirmation){
+				/* prepare alert message */		
+				alertDisplay = "<h3>Update Success</h3> "+eventId;
+			}
+			else{
+				/* prepare alert message */		
+				alertDisplay = "<h3>Update Fail</h3> "+eventId;
+			}
+		}
+		else{
+			/* prepare alert message */		
+			alertDisplay = "<h3>Update Success</h3> "+eventId;
+		}
+		
+		
 		
 		
 		/* reload calender */
 		calenderMiddle  = "";
 		allEvent = eventManager.getAllEvent();
 		for(int i=0;i<allEvent.size();i++){
+			event_id = allEvent.get(i).getEvent_id();
+			schedule = scheduleManager.getScheduleByEvent(event_id);
 			
 			if(allEvent.get(i).getUser_id().equals(user_id)){
 				calenderMiddle += 	"{"+
 									"id: "+allEvent.get(i).getEvent_id()+","+
 									"title: '"+allEvent.get(i).getTitle()+"',"+
-									"start: '2013-01-09 08:00:00.0 '"+
+									"start: '"+schedule.getDate()+" "+schedule.getTime()+"',"+   //2013-01-09 08:00:00.0
+									"allDay: false"+
 									"},";				
 				
 			}//end if(allEvent.get(i).getUser_id().equals(user_id)){			
 			
 		}//end of for(int i=0;i<allEvent.size();i++){		
 		
-		/* prepare alert message */		
-		alertDisplay = "<h3>Update Success</h3> "+eventId;
+		
 		
 		//format out put
 		calenderMiddle = calenderMiddle.substring(0, calenderMiddle.length() - 1);

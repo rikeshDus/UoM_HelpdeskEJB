@@ -393,7 +393,7 @@
 	<div id='calenderMgs'></div>
 	<div id='calendar'></div>
 	<div id = 'divDisplay'>
-		<center><a onclick="loadEvent('loadUpdate');">update</a> 
+		<center><a onclick="loadEvent('update');">update</a> 
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a onclick="loadEvent('delete')">delete</a></center>
 		<br>
