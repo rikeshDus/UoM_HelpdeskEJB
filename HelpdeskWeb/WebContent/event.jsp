@@ -279,6 +279,8 @@
 		*give option update and delete when click on event
 		*/
 		function loadEvent(option){
+			$("#divDisplay").hide();	
+		
 			$.post("ajax/loadEventAjax.jsp",
 			{
 				'option':option,
