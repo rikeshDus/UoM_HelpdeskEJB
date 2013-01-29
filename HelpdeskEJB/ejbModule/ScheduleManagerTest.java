@@ -15,7 +15,7 @@ import businessLogic.Timetable;
 
 public class ScheduleManagerTest {
 	
-	@Test
+		@Test
 	public void testGenerateSportSchedule() {
 		ScheduleManager scheduleManager = new ScheduleManager();
 		HashMap<String, String[]> teamsHashMap = new HashMap<String, String[]>();
@@ -49,7 +49,6 @@ public class ScheduleManagerTest {
 		
 		assertTrue( result != null);
 	}
-	
 	
 	@Test
 	public void testGenerateNonSportSchedule() {

@@ -30,4 +30,13 @@ public class EventManagerTest {
 		
 		assertTrue(allEvents !=   null);
 	}
+	
+	@Test
+	public void testDeleteEvent(){
+		EventManager eventManager = new EventManager();
+		boolean result = eventManager.deleteEvent(27);
+		
+		assertTrue(result);
+		
+	}// end public boolean deleteEvent(int event_id){
 }

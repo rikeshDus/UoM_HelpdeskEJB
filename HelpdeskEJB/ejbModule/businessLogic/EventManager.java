@@ -117,6 +117,43 @@ public class EventManager {
     	
     	return null;
     }//end public ArrayList<Event> getAllEvent(){
+
     
+    public boolean deleteEvent(int event_id){
+    	Connection con;
+    	PreparedStatement pstmt;
+    	String query_event,query_schedule;
+    	int confrimTransaction;
+    	
+    	//query
+    	query_event  = "DELETE FROM event WHERE event_id = ?";
+    	query_schedule = "DELETE FROM schedule WHERE event_id = ?";
+    	
+    	//connection
+    	DatabaseConnection dbconnect = new DatabaseConnection();
+    	con = dbconnect.getConnection();
+    	
+    	
+    	try{
+    		pstmt = con.prepareStatement(query_event);
+    		
+    		pstmt.setInt(1, event_id);
+    		
+    		confrimTransaction = pstmt.executeUpdate();
+    		//check if transaction complete event
+    		if(confrimTransaction == 1){
+    			return true;
+    		}//end if(confrimTransaction == 0){
+    		else{
+    			
+    			return false;
+    		}//else
+    		
+    		
+    	}catch(SQLException se){
+    		//load error page
+    		return false;
+    	}
+    }//end public boolean deleteEvent(int event_id){
     
 }//end class

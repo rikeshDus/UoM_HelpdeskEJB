@@ -69,7 +69,7 @@ public class ScheduleManager {
     }//end of public boolean createSchedule(){
     
     
-    
+       
     /*Generate Schedule if sport
      * Use round robin algorithm (first come , first serve)
      * generate round of the sport
