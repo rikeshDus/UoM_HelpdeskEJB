@@ -5,6 +5,8 @@
 <%!
 	String option="loadEvent",outMgs="error",calenderStart,calenderEnd,calenderMiddle="",alertDisplay,eventId;
 	String user_id="1010790";
+	boolean trsactionConfirmation;
+	
 	ArrayList<Event> allEvent = new ArrayList<Event>();
 
 	EventManager eventManager = new EventManager();
@@ -75,7 +77,13 @@
 		eventId = request.getParameter("eventId");
 		
 		/* delete event */
+		trsactionConfirmation = eventManager.deleteEvent(Integer.parseInt(eventId));
 		
+		/* prepare alert message */		
+		if(trsactionConfirmation)
+			alertDisplay = "<h3>Delete Success </h3> "+ eventId;
+		else
+			alertDisplay = "<h3>Delete Fail </h3> "+ eventId;
 		
 		/* reload calender */
 		calenderMiddle  = "";
@@ -93,8 +101,7 @@
 			
 		}//end of for(int i=0;i<allEvent.size();i++){		
 		
-		/* prepare alert message */		
-		alertDisplay = "<h3>Delete Success </h3> "+ eventId;
+		
 		
 		//format out put
 		calenderMiddle = calenderMiddle.substring(0, calenderMiddle.length() - 1);
