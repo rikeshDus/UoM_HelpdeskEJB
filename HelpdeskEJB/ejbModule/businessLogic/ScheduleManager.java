@@ -461,4 +461,38 @@ public class ScheduleManager {
 	   return null;
    }//end of  public Schedule getScheduleByEvent(){
     
+   public boolean updateSchedule(Schedule schedule){
+	   Connection con;
+	   String query;
+	   int update;
+	   ResultSet rs = null;
+	   PreparedStatement pstmt;
+	   
+	   query = "UPDATE schedule SET duration = ?, starttime = ?, date = ? WHERE schedule_id = ? ";
+	   
+	   DatabaseConnection dbconnect = new DatabaseConnection();
+	   con = dbconnect.getConnection();
+	   
+	   try{
+		   pstmt = con.prepareStatement(query);
+		   pstmt.setInt(1, schedule.getDuration());
+		   pstmt.setString(2, schedule.getTime());
+		   pstmt.setDate(3, schedule.getDate());
+		   pstmt.setInt(4, schedule.getSchedule_id());
+		   
+		   update = pstmt.executeUpdate();
+		   
+		   if(update == 1)
+			   return true;
+		   else
+			   return false;
+		   
+	   }catch(SQLException se){
+		   
+	   }
+  		
+	   return false;
+   }//end public boolean updateSchedule(int schedule_id,String field, String value){
+   	
+   	
 }

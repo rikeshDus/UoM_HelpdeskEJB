@@ -4,7 +4,7 @@
 <%@page import="businessLogic.*" %>
 <%!
 	String option="loadEvent",outMgs="error",calenderStart,calenderEnd,calenderMiddle="",alertDisplay,eventId;
-	String user_id="1010790";
+	String user_id="1010790",title,date,time;
 	int event_id;
 	Schedule schedule;
 	boolean trsactionConfirmation;
@@ -86,7 +86,8 @@
 									"title: '"+allEvent.get(i).getTitle()+"',"+
 									//should do schedule
 									
-									"start: '"+schedule.getDate()+" "+schedule.getTime()+"'"+   //2013-01-09 08:00:00.0
+									"start: '"+schedule.getDate()+" "+schedule.getTime()+"',"+   //2013-01-09 08:00:00.0
+									"allDay: false"+
 									"},";				
 				
 			}//end if(allEvent.get(i).getUser_id().equals(user_id)){			
@@ -142,7 +143,9 @@
 	else if (option.equals("update")){
 		//load value
 		eventId = request.getParameter("eventId");
-		
+		title = request.getParameter("title");
+		time = request.getParameter("time");
+		date = request.getParameter("date");
 		
 	
 		/* update event */

@@ -279,11 +279,13 @@
 		*give option update and delete when click on event
 		*/
 		function loadEvent(option){
-			alert("enetr" + option);
 			$.post("ajax/loadEventAjax.jsp",
 			{
 				'option':option,
-				'eventId':$("#txt_hid_event_id").val()
+				'eventId':$("#txt_hid_event_id").val(),
+				'time':$('#txt_tem_time').val(),
+				'date':$('#txt_tem_date').val(),
+				'title':$('#txt_tem_title').val()
 			},
 			function(data,status){				
 				$("#displaySchedule").html(data).show().fadeIn(1000);
@@ -391,17 +393,17 @@
 	<div id='calenderMgs'></div>
 	<div id='calendar'></div>
 	<div id = 'divDisplay'>
-		<a onclick="loadEvent('loadUpdate');">update</a> 
-		<br> 
-		<a onclick="loadEvent('delete')">delete</a>
+		<center><a onclick="loadEvent('loadUpdate');">update</a> 
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a onclick="loadEvent('delete')">delete</a></center>
 		<br>
-		<input type="text" id="txt_tem_title"/>
+		Title : <input type="text" id="txt_tem_title"/>
 		<br>
-		<input type="text" id="txt_tem_time"/>
+		Time : <input type="text" id="txt_tem_time"/>
 		<br>
-		<input type="text" id="txt_tem_date"/>
+		Date : <input type="text" id="txt_tem_date"/>
 		<br>
-		<input type=" text" id="txt_hid_event_id"/> 
+		<input type="hidden" id="txt_hid_event_id"/> 
 	</div>
 </body>
 </html>

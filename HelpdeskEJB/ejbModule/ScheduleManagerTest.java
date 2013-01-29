@@ -3,6 +3,7 @@
 import static org.junit.Assert.*;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import businessLogic.Timetable;
 
 public class ScheduleManagerTest {
 	
-	@Test
+	//@Test
 	public void testGetScheduleByEvent(){
 		ScheduleManager mgr = new ScheduleManager();
 		
@@ -24,6 +25,20 @@ public class ScheduleManagerTest {
 		
 		System.out.println(sch.getDate());
 		assertTrue(false);
+	}
+	
+	@Test
+	public void testupdateSchedule(){
+		ScheduleManager scheduleManager = new ScheduleManager();
+		Schedule schedule = new Schedule();
+		schedule.setDate(new Date(113, 01, 01));
+		schedule.setDuration(10);
+		schedule.setEvent_id(22);
+		schedule.setSchedule_id(6);
+		schedule.setTime("08:00:00");
+		
+		assertTrue( scheduleManager.updateSchedule(schedule));
+		
 	}
 	
 	
