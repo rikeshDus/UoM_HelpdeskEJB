@@ -11,7 +11,7 @@ import businessLogic.EventManager;
 
 public class EventManagerTest {
 
-	@Test
+	//@Test
 	public void testCreateEvent() {
 		EventManager eventManager = new EventManager();
 		int rs = eventManager.createEvent("title", "description", "type", "1010790");
@@ -19,7 +19,7 @@ public class EventManagerTest {
 		
 	}
 	
-	@Test
+	//@Test
 	public void testGetAllEvent(){
 		EventManager eventManager = new EventManager();
 		ArrayList<Event> allEvents = eventManager.getAllEvent();
@@ -32,6 +32,18 @@ public class EventManagerTest {
 	}
 	
 	@Test
+	public void testUpdateEvent(){
+		EventManager eventManager = new EventManager();
+		Event event = new Event();
+		
+		event.setDescroiption("re tesst");
+		event.setTitle("re title");
+		event.setEvent_id(34);
+		
+		assertTrue(eventManager.updateEvent(event));
+	}
+	
+	//@Test
 	public void testDeleteEvent(){
 		EventManager eventManager = new EventManager();
 		boolean result = eventManager.deleteEvent(27);

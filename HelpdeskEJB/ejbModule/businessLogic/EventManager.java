@@ -156,4 +156,40 @@ public class EventManager {
     	}
     }//end public boolean deleteEvent(int event_id){
     
+    
+    public boolean updateEvent(Event event){
+    	Connection con;
+ 	   String query;
+ 	   int update;
+ 	   ResultSet rs = null;
+ 	   PreparedStatement pstmt;
+ 	   
+ 	   query = "UPDATE event SET title = ?, description = ? WHERE event_id = ? ";
+ 	   
+ 	   DatabaseConnection dbconnect = new DatabaseConnection();
+ 	   con = dbconnect.getConnection();
+ 	   
+ 	   try{
+ 		   pstmt = con.prepareStatement(query);
+ 		   
+ 		   pstmt.setString(1, event.getTitle());
+ 		   pstmt.setString(2, event.getDescroiption());
+ 		   pstmt.setInt(3, event.getEvent_id()); 		   
+ 		   
+ 		   update = pstmt.executeUpdate();
+ 		   
+ 		   
+ 		   
+ 		   if(update == 1)
+ 			   return true;
+ 		   else
+ 			   return false;
+ 		   
+ 	   }catch(SQLException se){
+ 		   
+ 	   }
+    	
+    	return false;
+    }//end of public boolean updateEvent(){
+    
 }//end class
