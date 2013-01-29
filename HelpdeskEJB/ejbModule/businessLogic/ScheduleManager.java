@@ -420,6 +420,45 @@ public class ScheduleManager {
 	}//end switch
    }//end of public String getDays(int day){
    
-    
+   	public Schedule getScheduleByEvent(int event_id){
+   		Connection con;
+   		String query;
+   		Schedule schedule = null;
+   		ResultSet rs = null;
+   		PreparedStatement pstmt;
+	   
+   		query = "SELECT * FROM schedule WHERE event_id=?";
+   		
+   		DatabaseConnection dbconnect = new DatabaseConnection();
+    	con = dbconnect.getConnection();
+   		
+   		
+   		try{
+   			
+   			pstmt = con.prepareStatement(query);
+   			
+   			pstmt.setInt(1, event_id);
+   			
+   			rs = pstmt.executeQuery();
+   			
+   			while (rs.next()) {
+   				schedule = new Schedule();
+   				
+   				schedule.setDate(rs.getDate("date"));System.out.println("enter");
+   				schedule.setDuration(rs.getInt("duration"));
+   				schedule.setEvent_id(rs.getInt("event_id"));
+   				schedule.setSchedule_id(rs.getInt("schedule_id"));
+   				schedule.setTime(rs.getString("starttime"));
+   				
+				return schedule;
+			}//end while (rs.next()) {
+   		
+   		}catch(SQLException se){
+   			
+   		}
+	   
+	   
+	   return null;
+   }//end of  public Schedule getScheduleByEvent(){
     
 }

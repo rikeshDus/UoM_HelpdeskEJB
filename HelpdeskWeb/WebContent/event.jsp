@@ -390,6 +390,18 @@
 	</div>
 	<div id='calenderMgs'></div>
 	<div id='calendar'></div>
-	<div id = 'divDisplay'><a onclick="loadEvent('update');">add</a> <br> <a onclick="loadEvent('delete')">delete</a> <br><input type=" text" id="txt_hid_event_id"/> </div>
+	<div id = 'divDisplay'>
+		<a onclick="loadEvent('loadUpdate');">update</a> 
+		<br> 
+		<a onclick="loadEvent('delete')">delete</a>
+		<br>
+		<input type="text" id="txt_tem_title"/>
+		<br>
+		<input type="text" id="txt_tem_time"/>
+		<br>
+		<input type="text" id="txt_tem_date"/>
+		<br>
+		<input type=" text" id="txt_hid_event_id"/> 
+	</div>
 </body>
 </html>

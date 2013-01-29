@@ -10,12 +10,24 @@ import java.util.List;
 
 import org.junit.Test;
 
+import businessLogic.Schedule;
 import businessLogic.ScheduleManager;
 import businessLogic.Timetable;
 
 public class ScheduleManagerTest {
 	
-		@Test
+	@Test
+	public void testGetScheduleByEvent(){
+		ScheduleManager mgr = new ScheduleManager();
+		
+		Schedule sch = mgr.getScheduleByEvent(31);
+		
+		System.out.println(sch.getDate());
+		assertTrue(false);
+	}
+	
+	
+		//@Test
 	public void testGenerateSportSchedule() {
 		ScheduleManager scheduleManager = new ScheduleManager();
 		HashMap<String, String[]> teamsHashMap = new HashMap<String, String[]>();
@@ -50,7 +62,7 @@ public class ScheduleManagerTest {
 		assertTrue( result != null);
 	}
 	
-	@Test
+	//@Test
 	public void testGenerateNonSportSchedule() {
 		ArrayList<Timestamp> allFreeSlot = new ArrayList<Timestamp>();
 		
@@ -65,7 +77,7 @@ public class ScheduleManagerTest {
 	}
 	
 	
-	@Test
+	//@Test
 	public void testCreateSchedule(){
 		ScheduleManager scheduleManager = new ScheduleManager();
 		Date date = new Date(0, 0, 0);

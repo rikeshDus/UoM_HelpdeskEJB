@@ -5,11 +5,14 @@
 <%!
 	String option="loadEvent",outMgs="error",calenderStart,calenderEnd,calenderMiddle="",alertDisplay,eventId;
 	String user_id="1010790";
+	int event_id;
+	Schedule schedule;
 	boolean trsactionConfirmation;
 	
 	ArrayList<Event> allEvent = new ArrayList<Event>();
 
 	EventManager eventManager = new EventManager();
+	ScheduleManager scheduleManager = new ScheduleManager();
 %>
 <%
 	//load value
@@ -21,7 +24,7 @@
 			"$('.fc-header').remove();"+
 			
 				   "$('#calendar').fullCalendar({"+
-	 	  		"aspectRatio: 2,editable: true,"+
+	 	  		"aspectRatio: 2,editable: false,"+
 			    "events: [";//+
 			       /*  "{"+
 			            "title: 'My Event',"+
@@ -32,7 +35,29 @@
 	calenderEnd	 =   "],"+
 			    "eventClick: function(calEvent, jsEvent, view) {"+
 				//"var initial = $('#divDisplay').html();"+
-			   	//"$('#divDisplay').html(\"<input type='text' value ='\"+calEvent.id+\"' /> \");"+ 
+			   	//"$('#divDisplay').html($('#divDisplay').html()+\"<input type='text' value ='\"+calEvent.title+\"' /> \");"+ 
+				"var date = (calEvent.start).toString().split(\" \");"+
+						
+				"var month = [ \"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\",\"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\" ];"+
+				"var mon = (month.indexOf(date[1]) +1);"+
+				"var day = date[2];"+
+				"var year = date[3];"+
+				"var time = date[4];"+
+				"var value = \"\";"+
+				
+				"if(mon<10){"+
+				"	value = year+\"-0\"+mon+\"-\"+day;"+
+						"$('#txt_tem_date').val(value);"+
+				"}else"+
+					"{"+
+					
+					"value = year+\"-\"+mon+\"-\"+day;"+
+							"$('#txt_tem_date').val(value);"+
+					"}"+
+					 
+		    	 "$('#txt_tem_time').val(time);"+
+				"$('#txt_tem_title').val(calEvent.title);"+
+				//"$('#txt_tem_time').val(calEvent.start);"+
 				"var initial = calEvent.id;"+
 				"$('#txt_hid_event_id').val(calEvent.id);"+
 		        "$('#divDisplay').show();"+ 
@@ -53,10 +78,15 @@
 		for(int i=0;i<allEvent.size();i++){
 			
 			if(allEvent.get(i).getUser_id().equals(user_id)){
+				event_id = allEvent.get(i).getEvent_id();
+				schedule = scheduleManager.getScheduleByEvent(event_id);
+			
 				calenderMiddle += 	"{"+
 									"id: "+allEvent.get(i).getEvent_id()+","+
 									"title: '"+allEvent.get(i).getTitle()+"',"+
-									"start: '2013-01-09 08:00:00.0 '"+
+									//should do schedule
+									
+									"start: '"+schedule.getDate()+" "+schedule.getTime()+"'"+   //2013-01-09 08:00:00.0
 									"},";				
 				
 			}//end if(allEvent.get(i).getUser_id().equals(user_id)){			
