@@ -17,6 +17,9 @@
 		
 		if(loginValidate)
 		{
+			//set session time
+			session.setMaxInactiveInterval(3600);
+			
 			session.setAttribute("currentUser", userManager.getUser());
 			response.sendRedirect("homepage.jsp");
 		}//end if(loginValidate)

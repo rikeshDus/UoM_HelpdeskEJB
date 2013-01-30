@@ -2,9 +2,9 @@
 <%@ page import="businessLogic.*" %>
 
 <%! 
-	String comboCourse = "";
-	String comboUser = "";
-	String chechBoxFaculty = "";
+	String comboCourse;
+	String comboUser;
+	String chechBoxFaculty;
 	ArrayList<Course> allCourse = new ArrayList<Course>();
 	ArrayList<User> allUser = new ArrayList<User>();
 	ArrayList<Faculty> allFaculty = new ArrayList<Faculty>();
@@ -12,9 +12,14 @@
 	String user_id;
 %>
 <%
-	/* user = (User)(session.getAttribute("currentUser"));
-	user_id = user.getUser_id();	 */
-	user_id = "1010790";
+	//clear varirable
+	chechBoxFaculty="";
+	comboCourse= "";
+	chechBoxFaculty = "";
+	
+	user = (User)(session.getAttribute("currentUser"));
+	user_id = user.getUser_id();	
+	
 	
  	CourseManager courseManager = new CourseManager();
 	allCourse = courseManager.getAllCourse();
