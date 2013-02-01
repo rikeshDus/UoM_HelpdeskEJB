@@ -67,8 +67,8 @@
 			   	"$(this).css('border-color', 'red');"+
 		         "$('#divDisplay').css( {"+
 		         " 'position': 'absolute',"+
-		            " 'left': x,"+
-		            " 'top': y"+
+		            " 'left': x-125,"+
+		            " 'top': y-315"+
 		         "});"+ 
 		         
 			    "}"+
@@ -77,7 +77,7 @@
 	
 	if (option.equals("loadEvent")){
 		calenderMiddle  = "";
-		allEvent = eventManager.getAllEvent();
+	 	allEvent = eventManager.getAllEvent();
 		for(int i=0;i<allEvent.size();i++){
 			
 			if(allEvent.get(i).getUser_id().equals(user_id)){
@@ -101,7 +101,7 @@
 		//format out put
 		calenderMiddle = calenderMiddle.substring(0, calenderMiddle.length() - 1);
 		outMgs = calenderStart+calenderMiddle+calenderEnd;
-		
+		 
 		out.print(outMgs);
 			
 	}//end if (option.equals("loadEvent")){

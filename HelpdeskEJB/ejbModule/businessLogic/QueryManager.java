@@ -101,7 +101,11 @@ public class QueryManager {
     		
     		//get receiver
     		receiver = getReceiver(description);
-    		
+    		if(receiver == null){
+    			//search for next level staff
+    			return null;
+    		}
+    			
     		//save track log
     		tracking_log_id = trackingLogManager.createTrackingLog(tracking_id, question_id,receiver.getUser_id());
     		
@@ -361,8 +365,11 @@ public class QueryManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	
+    	if(staffPopulation.size()<1){
+    		
+    		return null;
+    	}
+    		
     	return new UserManager().findUser( staffPopulation.get(0).getUser_id());	
     }//end of public User getReceiver(String query){
     

@@ -58,15 +58,19 @@
 		//clear variable
 		outMgs = "";
 
-		//get tracking Log
+	 	//get tracking Log
 		trackingLog = queryManager.forwardQuery(user_id, query, type);
-
-		outMgs = trackingLog.getReciever() + " , "
-				+ trackingLog.getTracking_id() + " , "
-				+ trackingLog.getQuestion() + " , "
-				+ trackingLog.getTracking_log_id() + " , "
-				+ trackingLog.getDate();
-
+		if(trackingLog == null){
+			outMgs = "fail";
+		}
+		else{
+			outMgs = trackingLog.getReciever() + " , "
+					 + trackingLog.getTracking_id() + " , "
+					+ trackingLog.getQuestion() + " , "
+					+ trackingLog.getTracking_log_id() + " , "
+					+ trackingLog.getDate();  
+		}
+			
 		out.print(outMgs);
 
 	}//end else if(type.equals("foward")){ 

@@ -47,9 +47,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>UoM Helpdesk</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="javascript/jquery-1.8.3.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
+<script type="text/javascript" src="javascript/core.js">
+<%-- $(document).ready(function() {
 	  // Handler for .ready() called.
 	$('#loading')
 	.hide(10)  // hide it initially
@@ -71,6 +72,7 @@ $(document).ready(function() {
 	}
 	
 	function forwardQuery(){
+	
 		$.post("ajax/queryAjax.jsp",
 		{
 			'query':$("#query").val(),
@@ -78,7 +80,7 @@ $(document).ready(function() {
 			'type':'foward'
 		},
 		function(data,status){
-								
+			alert(data);					
 			$("#queryResult").html(data);
 			
 		});
@@ -89,19 +91,31 @@ $(document).ready(function() {
 		$("#advanceForm").show(500);
 	}//end function advanceQuery()
 	
-	function getSolution(){
+	function getSolution(divName){
+		var div = "#"+divName;
 		document.getElementById("queryResult").innerHTML = "searching ..";
 			$.post("ajax/queryAjax.jsp",
 				{
-					'query':$("#query").val(),
+					'query':$(div).val(),
 					'user':<%= user.getUser_id()%> ,
 					'type':'normal'
 				},
 				function(data,status){
-										
-					$("#queryResult").html(data);
+					if(div.indexOf("search") == -1){
+						$("#queryResult").html(data);					
+					}else{
+						
+						$("#innercontent").hide();	
+						$("#content").html($("#content").html()+"<div id=\"newcontent\" style=\"position: absolute;top:320px;\"><a onclick=\"searchShow();\">close</a>"+data+"</div>");	
+					}
+					
 					
 				});
+	}
+	
+	function searchShow(){
+		$('#newcontent').hide();	
+		$('#innercontent').show();	
 	}
 	function getAdvanceSolution(){
 		document.getElementById("queryResult").innerHTML = "searching ..";
@@ -126,13 +140,70 @@ $(document).ready(function() {
 					$("#queryResult").html(data);
 					
 				});
-	}
+	} --%>
 </script>
 
 </head>
 <body>
-	<div id="loading">Loading...</div>
-	<input type="button" value="Forward Query" onclick="forwardQuery();"/>
+
+	<div id="site_title_bar">
+    
+    	<div id="site_title">
+            <h1><a href="" target="_parent">
+               <!-- <img src="images/" alt="" />-->
+
+					<div id="DivBannerRotatorFX"></div>
+	
+                
+            </a></h1>
+        </div>
+		
+		<script type="text/javascript" src="swfobject.js"></script>
+	<script type="text/javascript">
+		var flashvars = {};
+		var params = {};
+		params.base = "";
+		params.scale = "noscale";
+		params.salign = "tl";
+		params.wmode = "transparent";
+		params.allowFullScreen = "true";
+		params.allowScriptAccess = "always";
+		swfobject.embedSWF("BannerRotatorFX.swf", "DivBannerRotatorFX", "800", "150", "9.0.0", false, flashvars, params);
+	</script>
+      
+	</div> <!-- end of site_title_bar -->
+
+<div id ="header" >
+<ul class="navigation">
+<!--nav-->
+
+<div style=position:absolute;left:340px>
+<li><a href="homepage.jsp"  title="Home">Home</a></li>
+<li><a href="event.jsp" title="Click here to ">Event </a></li>
+<li><a href="query.jsp" class='selected' title="Click here">Query</a></li>
+<li><a href="" title="Click here to ">Research</a></li><li></td>
+</ul>      
+ <!-- /.nav -->
+	<div id="search" style=position:absolute;left:800px;top:250px>
+	
+	
+  <font color="white"><b>Search:</b></font> <input type="text" name="txtsearch" id="txtsearch">
+  <input type="submit" value="Search" onClick="getSolution('txtsearch','<%= user.getUser_id()%>');">
+
+	
+	</div>	  
+	<div id="welcomeNote"></div>
+	
+	<div id="Features"></div>
+         
+ </div>
+
+ 
+</div>
+
+ <div id="content">
+	 <div id = "innercontent">
+	<input type="button" value="Forward Query" onclick="forwardQuery('<%= user.getUser_id()%>');"/>
 	<input type="button" value="Advance Query" onclick="advanceQuery();"/>
 	<%
 	if(isStaff){
@@ -174,14 +245,26 @@ $(document).ready(function() {
 		<input type="text" name="txt_boolean" id="txt_boolean"/>
 		add OR between words
 		
-		<input type="button" value="Advance Search" onClick="getAdvanceSolution();"/>
+		<input type="button" value="Advance Search" onClick="getAdvanceSolution('<%= user.getUser_id()%>');"/>
 	</div>
 	<br>
-	<input type="button" value="Submit" onClick="getSolution();"/>
+	<input type="button" value="Submit" onClick="getSolution('query','<%= user.getUser_id()%>');"/>
 	<br>
 	<br>
 	<div id="queryResult"></div>
 	<div id="tracking"></div>
 	
+	
+	
+	</div>
+
+</div>
+
+	<div id="footer">
+
+	    Copyright © 2013 <a href="#">University Of Mauritius</a> | 
+        Designed by <a href="" target="_parent">Zuhayr & Rikesh</a>  
+       
+	</div> <!-- end of footer -->
 </body>
 </html>

@@ -11,7 +11,7 @@ import businessLogic.EventManager;
 
 public class EventManagerTest {
 
-	//@Test
+	@Test
 	public void testCreateEvent() {
 		EventManager eventManager = new EventManager();
 		int rs = eventManager.createEvent("title", "description", "type", "1010790");
@@ -31,7 +31,7 @@ public class EventManagerTest {
 		assertTrue(allEvents !=   null);
 	}
 	
-	@Test
+	//@Test
 	public void testFindEvent(){
 		EventManager eventManager = new EventManager();
 		

@@ -20,28 +20,43 @@
 	user_id = request.getParameter("user");
 	
 	if(type.equals("sport")){
-		
+		//
+		outMgs="";
 		event = request.getParameterValues("event[]");
 		
  		for(int i =0;i<event.length;i++){
 			if(i>0 && event[i].contains(":")){
+				
+				
 				time = event[i];
+				outMgs += "\\ loo tim \\:"+i+time+" "+title+" "+type+"\\";
 				currentEventId = eventManager.createEvent( title, description, type, user_id);
-				result = scheduleManager.createSchedule( duration, date, time, currentEventId);
+				result = scheduleManager.createSchedule( 0, date, time, currentEventId);
 				if(result && currentEventId>0){
 					outMgs = "success"; 	
 				}//end if(result && currentEventId>0){
 				else{
-					outMgs = "fail";
+					outMgs += "fail :"+i+event[i];
 				}//end else
 				description="";
 			}
+			else if(event[i].contains("break")){
+					//do nothing
+					outMgs += "  \\:"+i+event[i]+"\\";
+				}
 			else{
+				
+				
 				if(event[i].contains("-")){
+					
+				
 					date = Date.valueOf(event[i]);
+					outMgs += "  \\loo dat \\:"+i+date+"\\";	
 				}else
 				{
+								
 					description += " "+event[i];
+					outMgs += "  \\loo des\\:"+i+description+"\\";
 				}
 			}
 			

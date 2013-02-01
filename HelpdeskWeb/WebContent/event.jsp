@@ -18,9 +18,10 @@
 	chechBoxFaculty = "";
 	
 	user = (User)(session.getAttribute("currentUser"));
+	session.setAttribute("currentUser", user);
 	user_id = user.getUser_id();	
-	
-	
+	 
+	 
  	CourseManager courseManager = new CourseManager();
 	allCourse = courseManager.getAllCourse();
 	
@@ -41,7 +42,7 @@
 	 allUser = userManager.getAllUser();
 	 
 	 for(int i=0; i<allUser.size();i++){
-		 comboUser += "<option value = \' "+allUser.get(i).getUser_id()+" \' >"+allUser.get(i).getUser_id()+"</option>";
+		 comboUser += "<option value =\\\' "+allUser.get(i).getUser_id()+"\\\' >"+allUser.get(i).getUser_id()+"</option>";
 	 }
 	 
 	 
@@ -65,6 +66,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<link href="style.css" rel="stylesheet" type="text/css" />
 	<link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.print.css' media='print' />
 	<style type='text/css'>
@@ -92,8 +94,8 @@
 	<script type='text/javascript' src='jquery/jquery-ui-1.8.23.custom.min.js'></script>
 	<script type='text/javascript' src='fullcalendar/fullcalendar.min.js'></script>
 	<!-- <script type="text/javascript" src="javascript/jquery-1.8.3.min.js"></script>-->
-	<script type="text/javascript">
-	var x;
+	<script type="text/javascript" src="javascript/core.js">
+	<%-- var x;
 	var y;
 		$(document).ready(function() {
 		  // Handler for .ready() called.
@@ -108,7 +110,14 @@
 		          });
 			  $('#divDisplay').hide();
 			  
-			
+				$('#loading')
+				.hide(10)  // hide it initially
+				.ajaxStart(function() {
+				    $(this).show(100);
+				})
+				.ajaxStop(function() {
+				    $(this).hide(100);
+				})
 		});
 		
 		function sportHideShow(){
@@ -133,7 +142,9 @@
 		//var teamParticipant = "";
 		var teamParticipantCount = 0;
 		
-		function sportTeamsDisplay(){
+		function sportTeamsDisplay(va){
+			alert(va);
+		
 			//get number of teams
 			var numTeams = $("#txt_numOfTeam").val();
 			var round = numTeams;
@@ -284,8 +295,9 @@
 		*give option update and delete when click on event
 		*/
 		function loadEvent(option){
-			$("#divDisplay").hide();	
-		
+			$("#divDisplay").hide();
+			$("#createEventFormDiv").hide();
+			$("#calendar").show();
 			$.post("ajax/loadEventAjax.jsp",
 			{
 				'option':option,
@@ -300,13 +312,73 @@
 			});
 		
 		}//end of function loadEvent(option){
-		
+		 --%>
 	</script>
 	<title>UoM Helpdesk</title>
 </head>
 <body >
-	<a onclick="loadEvent('loadEvent');">My event</a>
+	<div id="site_title_bar">
+    
+    	<div id="site_title">
+            <h1><a href="" target="_parent">
+               <!-- <img src="images/" alt="" />-->
 
+					<div id="DivBannerRotatorFX"></div>
+	
+                
+            </a></h1>
+        </div>
+		
+		<script type="text/javascript" src="swfobject.js"></script>
+	<script type="text/javascript">
+		var flashvars = {};
+		var params = {};
+		params.base = "";
+		params.scale = "noscale";
+		params.salign = "tl";
+		params.wmode = "transparent";
+		params.allowFullScreen = "true";
+		params.allowScriptAccess = "always";
+		swfobject.embedSWF("BannerRotatorFX.swf", "DivBannerRotatorFX", "800", "150", "9.0.0", false, flashvars, params);
+	</script>
+      
+	</div> <!-- end of site_title_bar -->
+
+<div id ="header" >
+<ul class="navigation">
+<!--nav-->
+
+<div style=position:absolute;left:340px>
+<li><a href="homepage.jsp"  title="Home">Home</a></li>
+<li><a href="" class='selected' title="Click here to ">Event </a></li>
+<li><a href="query.jsp"  title="Click here">Query</a></li>
+<li><a href="" title="Click here to ">Research</a></li><li></td>
+</ul>    
+ <!-- /.nav -->
+	<div id="search" style=position:absolute;left:800px;top:250px>
+	
+	<form action="">
+  <font color="white"><b>Search:</b></font> <input type="text" name="txtsearch">
+  <input type="submit" value="Search">
+</form>
+	
+	</div>	  
+	<div id="welcomeNote"></div>
+	
+	<div id="Features"></div>
+         
+ </div>
+
+ 
+</div>
+
+ <div id="content">
+ 
+ <div id = "innercontent">
+	<div id="loading" align="right"><b>Loading...</b></div>
+
+	<a onclick="loadEvent('loadEvent');"><b>My event</b></a>
+	<a onclick='$("#createEventFormDiv").show();$("#calendar").hide();'><b>Create event</b></a>
 	<div id="deleteEvent">
 		
 	
@@ -370,7 +442,7 @@
 				<table>			
 					<tr>
 						<td>Number of teams</td>
-						<td><input type="number" id="txt_numOfTeam" min="0" onblur="sportTeamsDisplay();"/> </td>
+						<td><input type="number" id="txt_numOfTeam" min="0" onblur="sportTeamsDisplay('<%= comboUser %>');"/> </td>
 					</tr>	
 				</table>
 				<div id="innerSportTeamsDisplay"></div>
@@ -395,11 +467,12 @@
 	
 	<div id="displaySchedule">
 		
-		<button onclick="submitSchedule();">Submit</button>
+		<button onclick="submitSchedule('<%= user_id %>');alert('<%= user_id %>')">Submit</button>
 	</div>
 	<div id='calenderMgs'></div>
 	<div id='calendar'></div>
 	<div id = 'divDisplay'>
+		<a onclick="$('#divDisplay').hide();" >Close</a>		
 		<center><a onclick="loadEvent('update');">update</a> 
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a onclick="loadEvent('delete')">delete</a></center>
@@ -412,5 +485,17 @@
 		<br>
 		<input type="hidden" id="txt_hid_event_id"/> 
 	</div>
+</div>
+ </div>
+
+
+
+	<div id="footer">
+
+	    Copyright © 2013 <a href="#">University Of Mauritius</a> | 
+        Designed by <a href="" target="_parent">Zuhayr & Rikesh</a>  
+       
+	</div> <!-- end of footer -->
+
 </body>
 </html>

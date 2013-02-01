@@ -15,8 +15,14 @@
 	List<String> match = new ArrayList<String>();
 	HashMap<String,List<String>> sportSchedule = new HashMap<String,List<String>>();
 	HashMap<String, String[]> teamsHashMap = new HashMap<String, String[]>();
+	User user;
+	String user_id="1010";
 %>
 <%
+	user = (User)(session.getAttribute("currentUser"));
+	session.setAttribute("currentUser", user);
+	user_id = user.getUser_id();	
+
  	//capture ajax value from createEventform of event.jsp
    	type = request.getParameter("type");
 	title = request.getParameter("title");
@@ -111,15 +117,15 @@
 					+ "<br>"
 					+ "Duration <input type=\"number\" name=\"scheduleDuration\"  id=\"scheduleDuration\">"
 					+"<br>"
-					+"<a onclick=\"submitSchedule();\">Submit</a>"
+					+"<a onclick=\"submitSchedule('"+ user_id +"');\">Submit</a>"
 					+"</div>";
 	 	
 	 	  
 	 	out.print(outputMessage);
-	}//end if(type.equals("sport")){
+	}//end if(type.equals("other")){
 	else{ 
-		
-	
+		//
+	outputMessage="";
 		//getvalues
 		team = Integer.parseInt(request.getParameter("teams")); 
 		teamParticipant = request.getParameterValues("teamsParticipant[]");
@@ -153,8 +159,8 @@
 			}
 		} 
 			
- 		outputMessage += "-break-<br>"
-				 	+"<button onclick=\"submitSchedule();\">Submit</button>";
+ 		outputMessage += " -break-<br>"
+				 	+"<button onclick=\"submitSchedule('"+ user_id +"');\">Submit</button>";
 	
 			 out.print(outputMessage);
 	}//end else
