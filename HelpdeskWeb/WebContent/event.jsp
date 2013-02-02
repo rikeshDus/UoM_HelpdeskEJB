@@ -357,10 +357,9 @@
  <!-- /.nav -->
 	<div id="search" style=position:absolute;left:800px;top:250px>
 	
-	<form action="">
-  <font color="white"><b>Search:</b></font> <input type="text" name="txtsearch">
-  <input type="submit" value="Search">
-</form>
+  <font color="white"><b>Search:</b></font> <input type="text" name="txtsearch" id="txtsearch">
+  <input type="submit" value="Search" onClick="getSolution('txtsearch','<%= user.getUser_id()%>');">
+<div id="queryResult" style="color: #317FFC;"></div>
 	
 	</div>	  
 	<div id="welcomeNote"></div>

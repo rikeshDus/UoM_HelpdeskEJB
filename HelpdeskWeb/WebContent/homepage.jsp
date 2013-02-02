@@ -11,6 +11,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link href="style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="javascript/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="javascript/core.js"></script>
 <title>UoM Helpdesk</title>
 </head>
 <body>
@@ -54,11 +56,9 @@
  <!-- /.nav -->
 	<div id="search" style=position:absolute;left:800px;top:250px>
 	
-	<form action="">
-  <font color="white"><b>Search:</b></font> <input type="text" name="txtsearch">
-  <input type="submit" value="Search">
-</form>
-	
+  <font color="white"><b>Search:</b></font> <input type="text" name="txtsearch" id="txtsearch">
+  <input type="submit" value="Search" onClick="getSolution('txtsearch','<%= user.getUser_id()%>');">
+<div id="queryResult" style="color: #317FFC;"></div>
 	</div>	  
 	<div id="welcomeNote"></div>
 	
