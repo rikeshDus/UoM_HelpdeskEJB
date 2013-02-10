@@ -3,6 +3,9 @@ package businessLogic;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -63,4 +66,48 @@ public class StaffManager {
     	return null;
     }//end public Staff findStaffByUserId(String userId){
 
+    
+    public ArrayList<Staff> getAllStaff(){
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		Staff temporaryStaff;
+		ArrayList<Staff> allStaff = new ArrayList<Staff>();
+		String query = "SELECT * FROM staff";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryStaff = new Staff();
+				
+				temporaryStaff.setStaff_id(rs.getString("staff_id"));
+				temporaryStaff.setUser_id(rs.getString("user_id"));
+				temporaryStaff.setWorking_description(rs.getString("working_description"));
+				temporaryStaff.setUser_id(rs.getString("position"));
+				temporaryStaff.setSalary(rs.getInt("salary"));
+				
+				allStaff.add(temporaryStaff);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return allStaff;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+}//end  public ArrayList<Tracking> getAllTracking(){
 }

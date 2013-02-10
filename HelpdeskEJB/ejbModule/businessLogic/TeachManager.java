@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.ejb.LocalBean;
@@ -55,5 +56,49 @@ public class TeachManager {
 	   	
 	   return null;
    }// end public String getModuleFromStaffId(String id){
+
+   public ArrayList<Teach> getAllTeach(){
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		Teach temporaryTeach;
+		ArrayList<Teach> Teach = new ArrayList<Teach>();
+		String query = "SELECT * FROM teach";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryTeach = new Teach();
+				
+				temporaryTeach.setTeach_id(rs.getInt("teach_id"));
+				temporaryTeach.setStaff_id(rs.getString("staff_id"));
+				temporaryTeach.setModule_code(rs.getString("module_code"));
+				temporaryTeach.setDate(rs.getString("date"));
+				
+				Teach.add(temporaryTeach);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return Teach;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+}//end  public ArrayList<Tracking> getAllTracking(){
+
 
 }

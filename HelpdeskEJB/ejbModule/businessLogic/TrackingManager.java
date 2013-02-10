@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -65,4 +67,54 @@ public class TrackingManager {
     	
     	return t_iVersion;
     }//end public boolean createTracking()
+
+    public ArrayList<Tracking> getAllTracking(){
+    		Connection con;
+    		Statement stmt;
+    		ResultSet rs;
+    		Tracking temporaryTracking;
+    		ArrayList<Tracking> allTracking = new ArrayList<Tracking>();
+    		String query = "SELECT * FROM tracking";
+    		
+    		DatabaseConnection dbconnect = new DatabaseConnection();
+    		con = dbconnect.getConnection();
+    		
+    		try {
+    			stmt = con.createStatement();
+    			rs = stmt.executeQuery(query);
+    			
+    			while(rs.next()){
+    				
+    				temporaryTracking = new Tracking();
+    				
+    				temporaryTracking.setTracking_id(rs.getInt("tracking_id"));	
+    				temporaryTracking.setDate(rs.getString("date"));	
+    				temporaryTracking.setStatus(rs.getInt("status"));	
+    				temporaryTracking.setQuery_id(rs.getInt("query_id"));	
+    				temporaryTracking.setUser_id(rs.getString("user_id"));	
+    				
+    				allTracking.add(temporaryTracking);
+    				
+    			}//end while(rs.next())
+    			
+    			
+    			rs.close();
+    			stmt.close();
+    			con.close();
+    			
+    			return allTracking;
+    			
+    		} catch (SQLException e) {
+    			
+    			//load errorpage
+    		}	
+    		
+    		return null;		
+    }//end  public ArrayList<Tracking> getAllTracking(){
+    
+    
+    
 }
+
+
+

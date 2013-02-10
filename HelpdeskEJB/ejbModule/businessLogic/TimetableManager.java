@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -73,7 +74,51 @@ public class TimetableManager {
 		return false;    	
     }
     
-    
+    public ArrayList<Timetable> getAllTimetable(){
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		Timetable temporaryTimetable;
+		ArrayList<Timetable> allTimetable = new ArrayList<Timetable>();
+		String query = "SELECT * FROM timetable";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryTimetable = new Timetable();
+				
+				temporaryTimetable.setTimetable_id(rs.getInt("timetable_id"));
+				temporaryTimetable.setStructure_id(rs.getInt("structure_id"));
+				temporaryTimetable.setTime(rs.getTime("starttime"));
+				temporaryTimetable.setDay(rs.getString("day"));
+				temporaryTimetable.setDuration(rs.getInt("duration"));
+				temporaryTimetable.setLecture_class(rs.getString("class"));
+				temporaryTimetable.setStaff_id(rs.getString("staff_id"));
+				
+				allTimetable.add(temporaryTimetable);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return allTimetable;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+}//end  public ArrayList<Tracking> getAllTracking(){
     
     
     

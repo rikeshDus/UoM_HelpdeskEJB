@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -109,7 +110,49 @@ public class ScheduleManager {
 		return false;    	
     }//end of public boolean createSchedule(){
     
-    
+    public ArrayList<Schedule> getAllSchedule(){
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		Schedule temporarySchedule;
+		ArrayList<Schedule> allSchedule = new ArrayList<Schedule>();
+		String query = "SELECT * FROM schedule";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporarySchedule = new Schedule();
+				
+				temporarySchedule.setSchedule_id(rs.getInt("schedule_id"));
+				temporarySchedule.setDuration(rs.getInt("duration"));
+				temporarySchedule.setTime(rs.getString("starttime"));
+				temporarySchedule.setDate(rs.getDate("date"));
+				temporarySchedule.setEvent_id(rs.getInt("event_id"));
+				
+				allSchedule.add(temporarySchedule);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return allSchedule;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+}//end  public ArrayList<Tracking> getAllTracking(){
        
     /*Generate Schedule if sport
      * Use round robin algorithm (first come , first serve)

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -67,5 +68,48 @@ public class FacultyCourseManager {
     	
     	return null;
     }//end public ArrayList<String> getCourseByFaculty(int faculty_id)
+
+    
+    public ArrayList<FacultyCourse> getAllFacultyCourse(){
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		FacultyCourse temporaryFacultyCourse;
+		ArrayList<FacultyCourse> allFacultyCourse = new ArrayList<FacultyCourse>();
+		String query = "SELECT * FROM facultyCourse";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryFacultyCourse = new FacultyCourse();
+				
+				temporaryFacultyCourse.setFaculty_course_id(rs.getInt("faculty_course_id"));
+				temporaryFacultyCourse.setFaculty_id(rs.getInt("faculty_id"));
+				temporaryFacultyCourse.setCourse_code(rs.getString("course_code"));
+				
+				allFacultyCourse.add(temporaryFacultyCourse);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return allFacultyCourse;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+}//end  public ArrayList<Tracking> getAllTracking(){
 
 }

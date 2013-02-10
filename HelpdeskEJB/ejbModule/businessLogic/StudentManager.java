@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -48,6 +50,8 @@ public class StudentManager {
     			temporaryStudent.setLpa(rs.getInt("lpa"));
     			temporaryStudent.setStudent_id(rs.getString("student_id"));
     			temporaryStudent.setUser_id(rs.getString("user_id"));
+    			temporaryStudent.setCredit(rs.getInt("credit"));
+    			temporaryStudent.setYear(rs.getInt("year"));
     			
     			rs.close();
         		pstmt.close();
@@ -66,4 +70,52 @@ public class StudentManager {
     	return null;
     }
 
+    
+    public ArrayList<Student> getAllStudent(){
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		Student temporaryStudent;
+		ArrayList<Student> allStudent = new ArrayList<Student>();
+		String query = "SELECT * FROM student";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryStudent = new Student();
+				
+				temporaryStudent.setStudent_id(rs.getString("student_id"));
+				temporaryStudent.setUser_id(rs.getString("user_id"));
+				temporaryStudent.setCpa(rs.getInt("cpa"));
+				temporaryStudent.setLpa(rs.getInt("lpa"));
+				temporaryStudent.setGpa(rs.getInt("gpa"));
+				temporaryStudent.setCourse_code(rs.getString("course_code"));
+				temporaryStudent.setCredit(rs.getInt("credit"));
+				temporaryStudent.setYear(rs.getInt("year"));
+				
+				
+				allStudent.add(temporaryStudent);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return allStudent;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+}//end  public ArrayList<Tracking> getAllTracking(){
 }

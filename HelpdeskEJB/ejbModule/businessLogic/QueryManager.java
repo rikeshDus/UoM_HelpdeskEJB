@@ -372,5 +372,51 @@ public class QueryManager {
     		
     	return new UserManager().findUser( staffPopulation.get(0).getUser_id());	
     }//end of public User getReceiver(String query){
+
+    
+    public ArrayList<businessLogic.Query> getAllQuery(){
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		businessLogic.Query temporaryQuery;
+		ArrayList<businessLogic.Query> allQuery = new ArrayList<businessLogic.Query>();
+		String query = "SELECT * FROM query";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryQuery = new businessLogic.Query();
+				
+				temporaryQuery.setQuery_id(rs.getInt("query_id"));
+				temporaryQuery.setDescrition(rs.getString("description"));
+				temporaryQuery.setDate(rs.getString("date"));
+				temporaryQuery.setUser_id(rs.getString("user_id"));
+				temporaryQuery.setType(rs.getString("type"));
+				
+				allQuery.add(temporaryQuery);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return allQuery;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+}//end  public ArrayList<Tracking> getAllTracking(){
+    
     
 }//end of class

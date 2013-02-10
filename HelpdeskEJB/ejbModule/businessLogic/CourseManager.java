@@ -52,6 +52,9 @@ public class CourseManager {
     			course.setName(rs.getString("name"));
     			course.setDescrition(rs.getString("description"));
     			course.setType(rs.getString("type"));
+    			course.setDiploma_exit(rs.getInt("diploma_exit"));
+    			course.setDegree_exit(rs.getInt("degree_exit"));
+    			
     			allCourse.add(course);
     			
     		}//end while(rs.next())

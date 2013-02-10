@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -22,6 +24,53 @@ public class TrackingLogManager {
         // TODO Auto-generated constructor stub
     }
 
+    public ArrayList<TrackingLog> getAllTrackingLogManager(){
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		TrackingLog temporaryTrackingLog;
+		ArrayList<TrackingLog> allTrackingLog = new ArrayList<TrackingLog>();
+		String query = "SELECT * FROM tracking_log";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryTrackingLog = new TrackingLog();
+				
+				temporaryTrackingLog.setTracking_log_id(rs.getInt("tracking_log_id"));
+				temporaryTrackingLog.setTracking_id(rs.getInt("tracking_id"));
+				temporaryTrackingLog.setQuestion(rs.getInt("question_id"));
+				temporaryTrackingLog.setDate(rs.getDate("date"));
+				temporaryTrackingLog.setReciever(rs.getString("receiver"));
+				
+				allTrackingLog.add(temporaryTrackingLog);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return allTrackingLog;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+}//end  public ArrayList<Tracking> getAllTracking(){
+    
+    
+    
+    
     public int createTrackingLog(int tracking_id,int question_id,String receiver)
     {
     	Connection con;

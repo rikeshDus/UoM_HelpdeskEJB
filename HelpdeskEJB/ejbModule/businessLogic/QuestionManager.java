@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -21,6 +23,48 @@ public class QuestionManager {
     public QuestionManager() {
         // TODO Auto-generated constructor stub
     }
+    
+    
+    public ArrayList<Question> getAllQuestion(){
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		Question temporaryQuestion;
+		ArrayList<Question> Question = new ArrayList<Question>();
+		String query = "SELECT * FROM question";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryQuestion = new Question();
+				
+				temporaryQuestion.setQuestion_id(rs.getInt("question_id"));
+				temporaryQuestion.setQuestion(rs.getString("question"));
+				
+				Question.add(temporaryQuestion);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return Question;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+}//end  public ArrayList<Tracking> getAllTracking(){
     
     
     public int CreateQuestion(String question){

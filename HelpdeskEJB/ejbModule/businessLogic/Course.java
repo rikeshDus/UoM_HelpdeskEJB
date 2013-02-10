@@ -10,6 +10,9 @@ public class Course {
 	private String name;
 	private String descrition;
 	private String type;
+	private int diploma_exit;
+	private int degree_exit;
+	
 	
 	public Course(){
 		
@@ -45,6 +48,22 @@ public class Course {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public int getDegree_exit() {
+		return degree_exit;
+	}
+
+	public void setDegree_exit(int degree_exit) {
+		this.degree_exit = degree_exit;
+	}
+
+	public int getDiploma_exit() {
+		return diploma_exit;
+	}
+
+	public void setDiploma_exit(int diploma_exit) {
+		this.diploma_exit = diploma_exit;
 	}
 	
 	

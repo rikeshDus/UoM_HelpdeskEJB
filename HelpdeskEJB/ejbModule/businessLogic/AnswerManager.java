@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.ejb.LocalBean;
@@ -59,4 +60,48 @@ public class AnswerManager {
     	
     	return allAnswer;
     }//public ArrayList<Answer> findAnswerByQuestion(Question quest){
+
+
+    public ArrayList<Answer> getAllAnswer(){
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		Answer temporaryAnswer;
+		ArrayList<Answer> allAnswer = new ArrayList<Answer>();
+		String query = "SELECT * FROM answer";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryAnswer = new Answer();
+				
+				temporaryAnswer.setAnswer_id(rs.getInt("answer_id"));
+				temporaryAnswer.setQuestion_id(rs.getInt("question_id"));
+				temporaryAnswer.setAnswer(rs.getString("answer"));
+				
+				allAnswer.add(temporaryAnswer);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return allAnswer;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+}//end  public ArrayList<Tracking> getAllTracking(){
+
 }

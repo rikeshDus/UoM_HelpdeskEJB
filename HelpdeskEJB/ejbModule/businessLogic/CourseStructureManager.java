@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.ejb.LocalBean;
@@ -67,6 +68,48 @@ public class CourseStructureManager {
     	
     	return null;
     }//end public ArrayList<CourseStructure> getAllCourseStructureByCourse()
+    
+    public ArrayList<CourseStructure> getAllCourseStructure(){
+		Connection con;
+		Statement stmt;
+		ResultSet rs;
+		CourseStructure temporaryCourseStructure;
+		ArrayList<CourseStructure> allCourseStructure = new ArrayList<CourseStructure>();
+		String query = "SELECT * FROM course_structure";
+		
+		DatabaseConnection dbconnect = new DatabaseConnection();
+		con = dbconnect.getConnection();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()){
+				
+				temporaryCourseStructure = new CourseStructure();
+				
+				temporaryCourseStructure.setCourse_structure_id(rs.getInt("course_structure_id"));
+				temporaryCourseStructure.setModule_code(rs.getString("module_code"));
+				temporaryCourseStructure.setCourse_code(rs.getString("course_code"));
+				
+				allCourseStructure.add(temporaryCourseStructure);
+				
+			}//end while(rs.next())
+			
+			
+			rs.close();
+			stmt.close();
+			con.close();
+			
+			return allCourseStructure;
+			
+		} catch (SQLException e) {
+			
+			//load errorpage
+		}	
+		
+		return null;		
+}//end  public ArrayList<Tracking> getAllTracking(){
     
     
     public ArrayList<CourseStructure> getAllCourseStructureByModule(ArrayList<String> moduleCode){

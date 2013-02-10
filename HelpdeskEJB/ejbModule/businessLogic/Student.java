@@ -12,6 +12,8 @@ public class Student {
 	private int lpa;
 	private int gpa;
 	private String course_code;
+	private int credit;
+	private int year;
 	
 	public Student() {
 		
@@ -57,12 +59,28 @@ public class Student {
 		this.gpa = gpa;
 	}
 
+	public int getCredit() {
+		return credit;
+	}
+
+	public void setCredit(int credit) {
+		this.credit = credit;
+	}
+
 	public String getCourse_code() {
 		return course_code;
 	}
 
 	public void setCourse_code(String course_code) {
 		this.course_code = course_code;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
 	}
 	
 	
