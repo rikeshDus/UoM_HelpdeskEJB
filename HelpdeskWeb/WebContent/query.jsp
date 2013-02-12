@@ -203,6 +203,8 @@
 
  <div id="content">
 	 <div id = "innercontent">
+	 <div id="loading" align="right"><b>Loading...</b></div>
+	 
 	<input type="button" value="Forward Query" onclick="forwardQuery('<%= user.getUser_id()%>');"/>
 	<input type="button" value="Advance Query" onclick="advanceQuery();"/>
 	<%
@@ -248,7 +250,9 @@
 		<input type="button" value="Advance Search" onClick="getAdvanceSolution('<%= user.getUser_id()%>');"/>
 	</div>
 	<br>
-	<input type="button" value="Submit" onClick="getSolution('query','<%= user.getUser_id()%>');"/>
+<!-- 	<input type="button" value="Submit" onClick="getSolution('query','<%-- user.getUser_id() --%>');"/> -->
+<input type="button" value="Submit" onClick="getQuestion('questions','<%= user.getUser_id() %>');"/>
+
 	<br>
 	<br>
 	<div id="queryResult"></div>

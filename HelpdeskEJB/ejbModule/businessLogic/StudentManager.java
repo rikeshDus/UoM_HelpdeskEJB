@@ -52,6 +52,7 @@ public class StudentManager {
     			temporaryStudent.setUser_id(rs.getString("user_id"));
     			temporaryStudent.setCredit(rs.getInt("credit"));
     			temporaryStudent.setYear(rs.getInt("year"));
+    			temporaryStudent.setLast_result_date(rs.getDate("last_result_date"));
     			
     			rs.close();
         		pstmt.close();
@@ -98,7 +99,7 @@ public class StudentManager {
 				temporaryStudent.setCourse_code(rs.getString("course_code"));
 				temporaryStudent.setCredit(rs.getInt("credit"));
 				temporaryStudent.setYear(rs.getInt("year"));
-				
+				temporaryStudent.setLast_result_date(rs.getDate("last_result_date"));
 				
 				allStudent.add(temporaryStudent);
 				

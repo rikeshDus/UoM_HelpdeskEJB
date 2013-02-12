@@ -7,7 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 
 import jess.*;
@@ -136,6 +138,8 @@ public class KnowledgeDatabaseTemplate {
 					"(slot course_code)" +
 					"(slot credit (type INTEGER))" +
 					"(slot year (type INTEGER))" +
+					"(slot last_result_year (type INTEGER))" +
+					"(slot last_result_month (type INTEGER))" +
 					")");
 			
 			
@@ -324,6 +328,7 @@ public class KnowledgeDatabaseTemplate {
 					"(slot course_code)" +
 					"(slot credit (type INTEGER))" +
 					"(slot year (type INTEGER))" +
+					"(slot end_academic_year (DEFAULT FALSE))" +
 					")");
 			
 			
@@ -599,6 +604,12 @@ public class KnowledgeDatabaseTemplate {
 			fact.setSlotValue("course_code", new Value(allstudent.get(i).getCourse_code(),RU.STRING));
 			fact.setSlotValue("credit", new Value(allstudent.get(i).getCredit(),RU.INTEGER));
 			fact.setSlotValue("year", new Value(allstudent.get(i).getYear(),RU.INTEGER));
+			
+			Date date = allstudent.get(i).getLast_result_date();
+			if(date.getMonth()>4 && date.getMonth()<8)
+				fact.setSlotValue("end_academic_year", new Value(true));
+			else
+				fact.setSlotValue("end_academic_year", new Value(false));
 			
 			if(outFile != null){
 				String temp = (fact.toStringWithParens());
@@ -981,7 +992,7 @@ public class KnowledgeDatabaseTemplate {
 	
 	
 	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		outFile = new KnowledgeDatabaseTemplate().saveKnowledgeBase();
 		Rete engine = new KnowledgeDatabaseTemplate().getDataBaseTemplates();
 		
@@ -991,17 +1002,17 @@ public class KnowledgeDatabaseTemplate {
 						
 			engine = new KnowledgeDatabaseTemplate().populateRule(engine);
 			engine = new KnowledgeDatabaseTemplate().populateQuery(engine);
-	        QueryResult result =  engine.runQueryStar("search-by-name", new ValueVector().add(new Value("P 0001", RU.STRING)));	        
+	      /*  QueryResult result =  engine.runQueryStar("search-by-name", new ValueVector().add(new Value("P 0001", RU.STRING)));	        
 	        while (result.next()) {
 	        	 System.out.println(result.getString("user_id") + " , " + result.getString("name")+" can exit with degree ");
-	        }
+	        }*/
 			engine.run();
 	        QueryResult result =  engine.runQueryStar("search-diploma-by-id", new ValueVector().add(new Value("1010790", RU.STRING)));	        
 	        while (result.next()) {
 	        	 System.out.println(result.getString("user_id") + " , " + result.getString("name")+" can exit with diploma ");
 	        	 
 	        }
-	        
+	        engine.eval("(facts)");
 	        
 			outFile.close();
 		} catch (JessException e) {
@@ -1012,7 +1023,7 @@ public class KnowledgeDatabaseTemplate {
 			e.printStackTrace();
 		}
 	}
-*/
+
 	
 	
 }

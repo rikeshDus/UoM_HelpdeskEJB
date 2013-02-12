@@ -1,5 +1,7 @@
 package businessLogic;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -14,6 +16,8 @@ public class Student {
 	private String course_code;
 	private int credit;
 	private int year;
+	private Date last_result_date; 
+	
 	
 	public Student() {
 		
@@ -81,6 +85,14 @@ public class Student {
 
 	public void setYear(int year) {
 		this.year = year;
+	}
+
+	public Date getLast_result_date() {
+		return last_result_date;
+	}
+
+	public void setLast_result_date(Date last_result_date) {
+		this.last_result_date = last_result_date;
 	}
 	
 	
