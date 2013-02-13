@@ -353,4 +353,18 @@ $(document).ready(function() {
 			});
 		
 		}//end of function loadEvent(option){
+	
 		
+/***************queryReceponce.jsp*********/
+		function getMyTracking(userId,option){
+			$.post("ajax/trackingNotification.jsp",
+			{
+				'option':option,
+				'userId':userId
+			},
+			function(data,status){				
+				$("#divAllTracking").html(data).show().fadeIn(1000);
+				
+			});
+	
+		}//end of function getMyTracking(userId){

@@ -72,8 +72,12 @@
  <div id="content">
   <div id = "innercontent">
 welcome to uom helpdesk
-
 userid : <%=user.getUser_id() %>
+
+	<br>
+	<br>
+	<a href="queryResponce.jsp">queryResponce</a>
+
 	</div>
 	
 	 </div>

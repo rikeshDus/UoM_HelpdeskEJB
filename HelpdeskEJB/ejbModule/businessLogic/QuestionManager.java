@@ -106,4 +106,45 @@ public class QuestionManager {
     	
     	return t_iVersion;
     }//end public int CreateQuestion(){
-}
+
+
+    public Question findQuestion(int question_id){
+    	Connection con;
+    	String query;
+    	PreparedStatement pstmt;
+    	ResultSet rs = null;
+    	Question temporaryQuestion = null;
+    	
+    	DatabaseConnection dbconnect = new DatabaseConnection();
+    	con = dbconnect.getConnection();
+    	
+    	query = "SELECT * FROM question WHERE question_id = ?";
+    	
+    	try {
+    		pstmt = con.prepareStatement(query);
+    		
+			pstmt.setInt(1, question_id);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				temporaryQuestion = new Question();
+				temporaryQuestion.setQuestion_id(rs.getInt("question_id"));
+				temporaryQuestion.setQuestion(rs.getString("question"));
+			}//end while
+			
+			
+			rs.close();
+    		pstmt.close();
+    		con.close();
+    		return temporaryQuestion;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   	
+    	
+    	
+		return null;    	
+    }//end public Question findQuestion(int question_id){
+
+}//end of class

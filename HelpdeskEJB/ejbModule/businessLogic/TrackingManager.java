@@ -112,7 +112,47 @@ public class TrackingManager {
     		return null;		
     }//end  public ArrayList<Tracking> getAllTracking(){
     
-    
+    public Tracking findTracking(int trackingId){
+    	Connection con;
+    	String query;
+    	PreparedStatement pstmt;
+    	ResultSet rs = null;
+    	Tracking temporaryTracking = null;
+    	
+    	DatabaseConnection dbconnect = new DatabaseConnection();
+    	con = dbconnect.getConnection();
+    	
+    	query = "SELECT * FROM tracking WHERE tracking_id = ?";
+    	
+    	try {
+    		pstmt = con.prepareStatement(query);
+    		
+			pstmt.setInt(1, trackingId);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				temporaryTracking = new Tracking();
+				temporaryTracking.setTracking_id(rs.getInt("tracking_id"));
+				temporaryTracking.setDate(rs.getString("date"));
+				temporaryTracking.setStatus(rs.getInt("status"));
+				temporaryTracking.setQuery_id(rs.getInt("query_id"));
+				temporaryTracking.setUser_id(rs.getString("user_id"));
+			}//end while
+			
+			
+			rs.close();
+    		pstmt.close();
+    		con.close();
+    		return temporaryTracking;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}   	
+    	
+    	
+		return null;    	
+    }//end  public Tracking findTracking(){
     
 }
 
