@@ -138,8 +138,18 @@ public class KnowledgeDatabaseTemplate {
 					"(slot course_code)" +
 					"(slot credit (type INTEGER))" +
 					"(slot year (type INTEGER))" +
-					"(slot last_result_year (type INTEGER))" +
-					"(slot last_result_month (type INTEGER))" +
+					"(slot end_academic_year (DEFAULT \"false\"))" +
+					")");
+			
+			new PrintStream(outFile).println("(deftemplate student_evidence" +
+					" \"\" " +
+					"(slot student_id)" +
+					"(slot evidence)" +
+					"(slot url)" +
+					"(slot date)" +
+					"(slot status)" +
+					"(slot exam_period (DEFAULT \"false\"))" +
+					"(slot current_exam_period (DEFAULT \"false\"))" +
 					")");
 			
 			
@@ -328,7 +338,18 @@ public class KnowledgeDatabaseTemplate {
 					"(slot course_code)" +
 					"(slot credit (type INTEGER))" +
 					"(slot year (type INTEGER))" +
-					"(slot end_academic_year (DEFAULT FALSE))" +
+					"(slot end_academic_year (DEFAULT \"false\"))" +
+					")");
+			
+			engine.eval("(deftemplate student_evidence" +
+					" \"\" " +
+					"(slot student_id)" +
+					"(slot evidence)" +
+					"(slot url)" +
+					"(slot date)" +
+					"(slot status)" +
+					"(slot exam_period (DEFAULT \"false\"))" +
+					"(slot current_exam_period (DEFAULT \"false\"))" +
 					")");
 			
 			
@@ -607,9 +628,9 @@ public class KnowledgeDatabaseTemplate {
 			
 			Date date = allstudent.get(i).getLast_result_date();
 			if(date.getMonth()>4 && date.getMonth()<8)
-				fact.setSlotValue("end_academic_year", new Value(true));
+				fact.setSlotValue("end_academic_year", new Value("true",RU.STRING));
 			else
-				fact.setSlotValue("end_academic_year", new Value(false));
+				fact.setSlotValue("end_academic_year", new Value("false",RU.STRING));
 			
 			if(outFile != null){
 				String temp = (fact.toStringWithParens());
@@ -620,6 +641,37 @@ public class KnowledgeDatabaseTemplate {
 			engine.assertFact(fact);
 		}//end for (int i = 0; i < allstudent.size(); i++) {
 		
+		
+		//Stuend envidence
+		StudentEvidenceManager studentEvidenceManager = new StudentEvidenceManager();
+		ArrayList<StudentEvidence> allStudentEvidences = studentEvidenceManager.getAllStudentEvidence();
+		
+		for (int i = 0; i < allStudentEvidences.size(); i++) {
+			Fact fact = new Fact("student_evidence", engine);	
+			
+			
+			
+			fact.setSlotValue("student_id", new Value(allStudentEvidences.get(i).getStudent_id(),RU.STRING));
+			fact.setSlotValue("evidence", new Value(allStudentEvidences.get(i).getEvidence() ,RU.STRING));
+			fact.setSlotValue("url", new Value(allStudentEvidences.get(i).getUrl(),RU.STRING));
+			fact.setSlotValue("date", new Value(allStudentEvidences.get(i).getDate()+"",RU.STRING));
+			fact.setSlotValue("status", new Value(allStudentEvidences.get(i).getStatus(),RU.STRING));
+			fact.setSlotValue("exam_period", new Value(allStudentEvidences.get(i).getExam_period(),RU.STRING));
+			
+			if(allStudentEvidences.get(i).getExam_period().equals("true") && (allStudentEvidences.get(i).getDate().getYear()+1900) ==  Calendar.getInstance().get(Calendar.YEAR)){
+				fact.setSlotValue("current_exam_period", new Value("true",RU.STRING));
+			}
+			
+			if(outFile != null){
+				String temp = (fact.toStringWithParens());
+				new PrintStream(outFile).println ("(assert("+temp.substring(7, temp.length())+")");
+			}
+			
+			engine.assertFact(fact);
+			
+		}//for (int i = 0; i < allStaff.size(); i++) {
+
+
 		
 		//teach
 		TeachManager teachManager = new TeachManager();
@@ -933,6 +985,45 @@ public class KnowledgeDatabaseTemplate {
 			}
 			
 			
+			
+			String examinerBoardDs1 = "(defrule examiner_board_ds_1"+
+			"	    (student (student_id ?student_id)(user_id ?user_id)( cpa ?cpa)(lpa ?lpa)(gpa ?gpa)(course_code ?course_code)( credit  ?credit)( year ?year)( end_academic_year ?end_academic_year))"+
+			"	   	(student_evidence (student_id ?student_id)(evidence ?evidence)(url ?url)(date ?date)(status ?status)(exam_period ?exam_period )(current_exam_period ?current_exam_period ))"+
+			"	    (test (= ?status \"valid\")) "+
+			"	    (test (= ?exam_period \"true\"))"+ 
+			"	    (test (= ?current_exam_period \"true\"))"+ 
+			"	    =>"+
+			"	    (assert (valid_evidence ?student_id))"+
+			"	    )";
+
+			String terminationCpaLess25 =	"(defrule termination_cpa_less_25"+
+				"    (student (student_id ?student_id)(user_id ?user_id)( cpa ?cpa)(lpa ?lpa)(gpa ?gpa)(course_code ?course_code)( credit  ?credit)( year ?year)( end_academic_year ?end_academic_year))"+
+				"   (test (= ?year 1))"+
+				"    (test (< ?cpa 25))"+
+				"   (test (= ?end_academic_year \"true\"))"+
+				"    =>"+
+				"   (assert (terminate ?student_id))"+
+				"     ) ";
+
+			String terminationCpaLess25_2 =	"(defrule termination_cpa_less_25_2"+
+				"    (student (student_id ?student_id)(user_id ?user_id)( cpa ?cpa)(lpa ?lpa)(gpa ?gpa)(course_code ?course_code)( credit  ?credit)( year ?year)( end_academic_year ?end_academic_year))"+
+				"   (terminate ?student_id)"+
+				"    (valid_evidence ?student_id)"+
+				"    =>"+
+				"    (assert (repeat_year ?student_id))"+
+				"     )"; 
+			
+			
+			engine.eval(examinerBoardDs1);
+			engine.eval(terminationCpaLess25);
+			engine.eval(terminationCpaLess25_2);
+			if(outFile != null){
+				new PrintStream(outFile).println (examinerBoardDs1);
+				new PrintStream(outFile).println (terminationCpaLess25);
+				new PrintStream(outFile).println (terminationCpaLess25_2);
+			}
+			
+			
 		} catch (JessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -967,15 +1058,33 @@ public class KnowledgeDatabaseTemplate {
 		  "(declare (variables ?user_id))"+
 		  " (user (user_id ?user_id) (password ?password) (name ?name) (surname ?surname) (house_number ?houseno) (locality ?locality) (country ?country) (email ?email) (dob ?dob)) "+
 		   ")";
+		
+		
+		String all = "(defquery student_terminate" +
+				"\"Finds people with a given last name\"" +
+				"(declare (variables ?id))" +
+				"(student (student_id ?id)(user_id ?user_id)(cpa ?cpa)(lpa ?lpa)(gpa ?gpa)(course_code ?course_code)(credit ?credit)(year ?year))  (user (user_id ?user_id) (password ?password) (name ?name) (surname ?surname) (house_number ?houseno) (locality ?locality) (country ?country) (email ?email) (dob ?dob))" +
+				"(terminate ?id)  " +
+				") " +
+				"" +
+				"(defquery student_repeat" +
+				"\"Finds people with a given last name\"" +
+				"(declare (variables ?id))" +
+				"(student (student_id ?id)(user_id ?user_id)(cpa ?cpa)(lpa ?lpa)(gpa ?gpa)(course_code ?course_code)(credit ?credit)(year ?year))  (user (user_id ?user_id) (password ?password) (name ?name) (surname ?surname) (house_number ?houseno) (locality ?locality) (country ?country) (email ?email) (dob ?dob))" +
+				"(repeat_year ?id)" +
+				")";
+		
 
 		try {
 			engine.eval(searchByDegree);
 			engine.eval(searchByDiploma);
 			engine.eval(searchByName);
+			engine.eval(all);
 			if(outFile != null){
 				new PrintStream(outFile).println (searchByDegree );
 				new PrintStream(outFile).println (searchByDiploma );
 				new PrintStream(outFile).println (searchByName);
+				new PrintStream(outFile).println (all);
 			}
 			
 		} catch (JessException e) {
