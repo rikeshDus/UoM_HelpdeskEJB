@@ -16,10 +16,13 @@
   <link rel="stylesheet" href="css/table.css" type="text/css"/>
   <!-- modernizr enables HTML5 elements and feature detects -->
   <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>
+  <script type='text/javascript' src='js/jquery.js'></script>
+  <script type="text/javascript" src="javascript/core.js"></script>
 </head>
 
 <body>
   <div id="main">
+  <div id="loading" align="right"><b>Loading...</b></div>
     <header>
       <div id="logo">
         <div id="logo_text">
@@ -31,12 +34,12 @@
       <nav >
         <div id="menu_container">
           <ul class="sf-menu" id="nav">
-            <li><a href="index.jsp">Home</a></li>
-            <li><a href="#" onclick="alert('plz sign in first');">Event</a>
+            <li><a href="homepage.jsp">Home</a></li>
+            <li><a href="#" onclick="$('#div_content').load('event.jsp');">Event</a>
 				<ul>
-					<li><a href="#" onclick="alert('plz sign in first');" >Create Event</a></li>
-					<li><a href="#" onclick="alert('plz sign in first');" >Update Event</a></li>
-					<li><a href="#" onclick="alert('plz sign in first');" >Delete Event</a></li>
+					<li><a href="#" onclick="$('#div_content').load('event.jsp');" >Create Event</a></li>
+					<li><a href="#" onclick="$('#div_content').load('event.jsp', function() { loadEvent('loadEvent');});" >Update Event</a></li>
+					<li><a href="#" onclick="$('#div_content').load('event.jsp', function() { loadEvent('loadEvent');});" >Delete Event</a></li>
 				</ul>
 			</li>
             <li><a href="#" onclick="alert('plz sign in first');" >Query</a></li>
@@ -67,7 +70,7 @@
           </ul>
         </div>--%>
       </div>
-      <div class="content">
+      <div class="content" id="div_content">
       			 welcome to uom helpdesk
 				userid : <%=user.getUser_id() %>
 			

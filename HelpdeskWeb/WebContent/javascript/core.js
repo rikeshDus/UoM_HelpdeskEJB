@@ -1,7 +1,5 @@
 
 $(document).ready(function() {
-	
-	
 	  // Handler for .ready() called.
 	$('#loading')
 	.hide(10)  // hide it initially
