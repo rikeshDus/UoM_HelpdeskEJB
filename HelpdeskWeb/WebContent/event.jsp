@@ -16,6 +16,7 @@
 	chechBoxFaculty="";
 	comboCourse= "";
 	chechBoxFaculty = "";
+	comboUser="";
 	
 	user = (User)(session.getAttribute("currentUser"));
 	session.setAttribute("currentUser", user);
@@ -66,7 +67,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<link href="style.css" rel="stylesheet" type="text/css" />
+<%-- <link href="style.css" rel="stylesheet" type="text/css" /> --%>
 	<link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='fullcalendar/fullcalendar.print.css' media='print' />
 	<style type='text/css'>

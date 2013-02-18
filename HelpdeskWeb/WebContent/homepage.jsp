@@ -39,7 +39,7 @@
 				<ul>
 					<li><a href="#" onclick="$('#div_content').load('event.jsp');" >Create Event</a></li>
 					<li><a href="#" onclick="$('#div_content').load('event.jsp', function() { loadEvent('loadEvent');});" >Update Event</a></li>
-					<li><a href="#" onclick="$('#div_content').load('event.jsp', function() { loadEvent('loadEvent');});" >Delete Event</a></li>
+					<li><a href="#" onclick="$('#div_content').load('event.jsp', function() { loadEvent('loadEvent'); $('#sidebar_help').html('<a href=#>help</a>') });" >Delete Event</a></li>
 				</ul>
 			</li>
             <li><a href="#" onclick="alert('plz sign in first');" >Query</a></li>
@@ -50,10 +50,10 @@
         </div>
       </nav>
     </header>
-	<div><div style="float:right"><div style="position:relative;top:-10px;">Search : <input type="text" /></div></div>
+	<div><div style="float:right"><div style="position:relative;top:-10px;">Search : <input type=search results=5 name=s></div></div>
     <div id="site_content">
     <div id="sidebar_container">
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar_help">
           <h4>Quick Info</h4> 
        
           <p>Welcome page allow u to edit you profile</p>
