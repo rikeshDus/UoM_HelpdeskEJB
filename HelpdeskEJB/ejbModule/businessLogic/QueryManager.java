@@ -79,7 +79,7 @@ public class QueryManager {
     }//end public boolean createQuery()
     
     public TrackingLog forwardQuery(String user_id,String description,String type ){
-    	
+    	String outMgs,content;
     	int query_id,tracking_id,question_id,tracking_log_id;
     	ArrayList <Answer> allAnswer = new ArrayList<Answer>();
     	User receiver = new User();
@@ -104,6 +104,18 @@ public class QueryManager {
     		if(receiver == null){
     			//search for next level staff
     			return null;
+    		}else{
+    			//send mail to reciever
+    			outMgs = "fail";
+    			content ="Question : \n" +
+    					description+
+    					"\n\n\n Send by :" +
+    					"\n User ID = "+user_id;
+    			
+    			
+    			SendMailSSL sendMail = new SendMailSSL();
+    			
+    			outMgs = sendMail.sendMail("fpyengineering@gmail.com", "testingfpy", receiver.getEmail(), "new query",content);
     		}
     			
     		//save track log

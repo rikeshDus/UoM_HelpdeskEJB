@@ -36,7 +36,7 @@ public class SendMailSSL {
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.port", "465");
  
-		Session session = Session.getDefaultInstance(props,
+		Session session = Session.getInstance(props,
 			new javax.mail.Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
 					return new PasswordAuthentication(from,password);
@@ -59,6 +59,7 @@ public class SendMailSSL {
 			throw new RuntimeException(e);
 		}
 		
+		props.clear();
 		return mgs;
 	}//end of public String sendMail(String from,String to) {
     

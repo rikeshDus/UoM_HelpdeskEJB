@@ -18,7 +18,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	Oparation : 
+	Operation : 
 
 	<%= outMgs %>
 

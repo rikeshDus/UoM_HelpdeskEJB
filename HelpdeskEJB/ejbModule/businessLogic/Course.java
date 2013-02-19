@@ -12,7 +12,8 @@ public class Course {
 	private String type;
 	private int diploma_exit;
 	private int degree_exit;
-	
+	private String email;
+	private String password;
 	
 	public Course(){
 		
@@ -64,6 +65,22 @@ public class Course {
 
 	public void setDiploma_exit(int diploma_exit) {
 		this.diploma_exit = diploma_exit;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	

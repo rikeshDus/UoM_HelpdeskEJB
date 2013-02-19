@@ -54,6 +54,8 @@ public class CourseManager {
     			course.setType(rs.getString("type"));
     			course.setDiploma_exit(rs.getInt("diploma_exit"));
     			course.setDegree_exit(rs.getInt("degree_exit"));
+    			course.setEmail(rs.getString("email"));
+    			course.setPassword(rs.getString("password"));
     			
     			allCourse.add(course);
     			
