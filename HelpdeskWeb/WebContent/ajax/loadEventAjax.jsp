@@ -67,8 +67,8 @@
 			   	"$(this).css('border-color', 'red');"+
 		         "$('#divDisplay').css( {"+
 		         " 'position': 'absolute',"+
-		            " 'left': x-125,"+
-		            " 'top': y-315"+
+		            " 'left': x,"+
+		            " 'top': y"+
 		         "});"+ 
 		         
 			    "}"+
@@ -115,20 +115,23 @@
 		
 		/* prepare alert message */		
 		if(trsactionConfirmation)
-			alertDisplay = "<h3>Delete Success </h3> "+ eventId;
+			alertDisplay = "<h3>Delete Success </h3> ";
 		else
-			alertDisplay = "<h3>Delete Fail </h3> "+ eventId;
+			alertDisplay = "<h3>Delete Fail </h3> ";
 		
 		/* reload calender */
 		calenderMiddle  = "";
 		allEvent = eventManager.getAllEvent();
 		for(int i=0;i<allEvent.size();i++){
+			event_id = allEvent.get(i).getEvent_id();
+			schedule = scheduleManager.getScheduleByEvent(event_id);
 			
 			if(allEvent.get(i).getUser_id().equals(user_id)){
 				calenderMiddle += 	"{"+
 									"id: "+allEvent.get(i).getEvent_id()+","+
 									"title: '"+allEvent.get(i).getTitle()+"',"+
-									"start: '2013-01-09 08:00:00.0 '"+
+									"start: '"+schedule.getDate()+" "+schedule.getTime()+"',"+   //2013-01-09 08:00:00.0
+									"allDay: false"+
 									"},";				
 				
 			}//end if(allEvent.get(i).getUser_id().equals(user_id)){			
@@ -163,16 +166,16 @@
 			
 			if(trsactionConfirmation){
 				/* prepare alert message */		
-				alertDisplay = "<h3>Update Success</h3> "+eventId;
+				alertDisplay = "<h3>Update Success</h3> ";
 			}
 			else{
 				/* prepare alert message */		
-				alertDisplay = "<h3>Update Fail</h3> "+eventId;
+				alertDisplay = "<h3>Update Fail</h3> ";
 			}
 		}
 		else{
 			/* prepare alert message */		
-			alertDisplay = "<h3>Update Success</h3> "+eventId;
+			alertDisplay = "<h3>Update Success</h3> ";
 		}
 		
 		

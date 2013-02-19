@@ -63,28 +63,33 @@ $(document).ready(function() {
 	
 	
 	function getQuestion(type, user_id){
-		document.getElementById("queryResult").innerHTML = "searching ...";
-		$.post("ajax/knowledgeAjax.jsp",
-				{
-					'question':$("#query").val(),
-					'user':user_id ,
-					'type':type
-				},
-				function(data,status){
-						$("#queryResult").html(data);
-						$("#queryResult").show();
-						$("#innercontent").show();
-									
-				});
-		
+		if(!validateBlank('query')){
+			
+		}
+		else{
+			document.getElementById("queryResult").innerHTML = "searching ...";
+			$.post("ajax/knowledgeAjax.jsp",
+			{
+				'question':$("#query").val(),
+				'user':user_id ,
+				'type':type
+			},
+			function(data,status){
+					$("#queryResult").html(data);
+					$("#queryResult").show();
+					$("#innercontent").show();
+								
+			});
+		}
 		
 		
 	}//end of function getQuestion(){
 	
-	
+	var currentContent="";
+	var currentContentValid = false;
 	function getSolution(divName,user_id){
 		var div = "#"+divName;
-		document.getElementById("queryResult").innerHTML = "searching ..";
+	//	document.getElementById("queryResult").innerHTML = "searching ..";
 			$.post("ajax/queryAjax.jsp",
 				{
 					'query':$(div).val(),
@@ -92,26 +97,35 @@ $(document).ready(function() {
 					'type':'normal'
 				},
 				function(data,status){
-					if(div.indexOf("search") == -1){
-						$("#queryResult").html(data);
-						$("#innercontent").show();
-					}else{
+					//if(div.indexOf("search") == -1){
+						//$("#queryResult").html(data);
+					//	$("#div_content").show();
+					//}else{
 						
-						$("#innercontent").hide();
-						$("#queryResult").hide();
-						$("#content").html($("#content").html()+"<div id=\"newcontent\" style=\"position: absolute;top:320px;\"><a onclick=\"searchShow();\">close</a>"+data+"</div>");	
+						//$("#div_content").hide();
+					//	$("#queryResult").hide();
+					if(!currentContentValid){
+						currentContent=$("#div_content").html();
+						currentContentValid = true;
 					}
-					
-					
+						$("#div_content").html("<div id=\"newcontent\"><a onclick=\"searchShow();\">close</a>"+data+"</div>");	
+					//}					
 				});
 	}
 	
 	function searchShow(){
 		$('#newcontent').hide();	
-		$('#innercontent').show();	
+		$("#div_content").html(	currentContent);
+		currentContentValid = false;
 	}
 	function getAdvanceSolution(user_id){
-		document.getElementById("queryResult").innerHTML = "searching ..";
+		
+		if(!validateBlank("advanceSearch")){
+			
+		}//end of if(validateBlank("advanceSearch")){
+		else{
+		
+			document.getElementById("queryResult").innerHTML = "searching ..";
 			$.post("ajax/queryAjax.jsp",
 				{
 					'query':$("#query").val(),
@@ -133,6 +147,7 @@ $(document).ready(function() {
 					$("#queryResult").html(data);
 					
 				});
+		}//end of else (validateBlank("advanceSearch"))
 	}
 	
 	/***********************/
@@ -254,44 +269,53 @@ $(document).ready(function() {
 		}
 		var roundArr = [];
 		
-		function submitcreateEventFormDiv(){			
-			$("#createEventFormDiv").hide(1000);
-			//get checkbox value
-			var faculties = [];
-			$("input[name='faculty']:checked").each(function(){faculties.push($(this).val());});
-			$.post("ajax/eventAjax.jsp",
-			{
-				'type':$("#eventType").val(),
-				'title':$("#title").val(), 
-				'description':$("#description").val(),
-				'faculty[]':  faculties,
-				'course[]': courseArray,
-				'startDate':$("#startDate").val(),
-				'endDate':$("#endDate").val(),
-				'teams':$("#txt_numOfTeam").val(),
-				'teamsParticipant[]':teamArray
-			},
-			function(data,status){
-				  
-				 //extract data
-				var allData = data.split("-break-");
-				var form = allData[1];
-				var round = allData[0]; 
-				
-				// display all values
-				for (var i = 1; i < (round.split(" ").length-1); i++) {
-					roundArr.push(round.split(" ")[i]);
-				};
-				
-				
-				//$('#confirm').hide();
-				var temp =$("#displaySchedule").html();
-				//if($("#eventType").val()!= "Other")
-					//$("#displaySchedule").html( round+"<br>confirm Schedule</br>"+temp); 
-					$("#displaySchedule").html(data).show().fadeIn(1000);
-				
-					$('#confirmScheduleDiv').hide();
-			});
+		function submitcreateEventFormDiv(){
+			
+			//validation
+			if(!validateBlank('event')){
+				alert("event");
+			}//end of if(!validateBlank('event')){
+			else{
+				$("#createEventFormDiv").hide(1000);
+				//get checkbox value
+				var faculties = [];
+				$("input[name='faculty']:checked").each(function(){faculties.push($(this).val());});
+				$.post("ajax/eventAjax.jsp",
+				{
+					'type':$("#eventType").val(),
+					'title':$("#title").val(), 
+					'description':$("#description").val(),
+					'faculty[]':  faculties,
+					'course[]': courseArray,
+					'startDate':$("#startDate").val(),
+					'endDate':$("#endDate").val(),
+					'teams':$("#txt_numOfTeam").val(),
+					'teamsParticipant[]':teamArray
+				},
+				function(data,status){
+					  
+					 //extract data
+					var allData = data.split("-break-");
+					var form = allData[1];
+					var round = allData[0]; 
+					
+					// display all values
+					for (var i = 1; i < (round.split(" ").length-1); i++) {
+						roundArr.push(round.split(" ")[i]);
+					};
+					
+					
+					//$('#confirm').hide();
+					var temp =$("#displaySchedule").html();
+					//if($("#eventType").val()!= "Other")
+						//$("#displaySchedule").html( round+"<br>confirm Schedule</br>"+temp); 
+						$("#displaySchedule").html(data).show().fadeIn(1000);
+					
+						$('#confirmScheduleDiv').hide();
+				});
+			}//end else
+			
+			
 			
 		}//end function SubmitcreateEventFormDiv(){
 		
@@ -324,7 +348,9 @@ $(document).ready(function() {
 				'user':user_id
 			},
 			function(data,status){
-				$("#calenderMgs").html( data+"in saving operation <a href='homepage.jsp'>back</a>");
+				$("#displaySchedule").empty();
+				$("#calenderMgs").html( data+"in saving operation");
+				$("#calendar").empty();
 				
 			});
 			
@@ -368,3 +394,113 @@ $(document).ready(function() {
 			});
 	
 		}//end of function getMyTracking(userId){
+		
+/*****validation**********/
+		function validateBlank(form){
+			if(form == "query"){
+				if($("#query").val().replace(/^\s+|\s+$/g, "").length == 0)
+				{
+					alert("plz fill in textbox before querying!");
+					return false;
+				}//end of if($("#query").val() == "")
+				else{
+					return true;
+				}
+			}//end of if(form == "query"){
+			else if(form == "event"){
+				
+				//check for blank
+				var blank = true;
+				var event = $("#eventType").val();
+				
+				if(event == "sport")
+				{
+					//check for blank
+					var teamNo = $("#txt_numOfTeam").val();
+					if($("#txt_numOfTeam").val().replace(/^\s+|\s+$/g, "").length == 0){
+						blank = false;		
+					}//end of  if($("#txt_numOfTeam").val().replace(/^\s+|\s+$/g, "").length == 0){
+					else if(!(teamNo == 2 || teamNo == 4 ||teamNo == 8 ||teamNo == 16 ||teamNo == 32)){
+						blank = false; 
+					}//end of else if(teamNo == 2 || teamNo == 4 ||teamNo == 8 ||teamNo == 16 ||teamNo == 32){
+					for (var i=0;i<teamNo;i++)
+					{ 
+						var teamInput = "#textareaTeam"+(i+1);
+						if($(teamInput).val().replace(/^\s+|\s+$/g, "").length == 0){
+							blank = false;
+						}//end of if($(teamInput).val().replace(/^\s+|\s+$/g, "").length == 0){
+					}//end of for (var i=0;i<teamNo;i++) 
+				}//end of if(event == "sport")
+				else{					
+					var checkboxes = [];
+					$("input[name='faculty']:checked").each(function(){checkboxes.push($(this).val());});
+					if(checkboxes.length<1){
+						blank = false;
+					}
+					if($("#courseAddedTextArea").val().replace(/^\s+|\s+$/g, "").length == 0)
+					{
+						blank =  false;
+					}
+					if($("#courseAddedTextArea").val().replace(/^\s+|\s+$/g, "").length == 0)
+					{
+						blank =  false;
+					}
+				}//end else (event == "sport")
+				
+				//check title
+				if($("#title").val().replace(/^\s+|\s+$/g, "").length == 0)
+				{
+					blank =  false;
+				}
+				
+				//check for date
+				if($("#startDate").val().replace(/^\s+|\s+$/g, "").length == 0)
+				{
+					blank =  false;
+					
+				}
+				else{
+					//start dat should be after 2day
+					var start = new Date($("#startDate").val());
+					var now = new Date();
+					var diff = ((start - now)/1000/60/60/24);
+					if(diff < -1){
+						blank =  false;
+					}//end if(diff < 0){
+					else{
+						//check for end date
+						if($("#endDate").val().replace(/^\s+|\s+$/g, "").length == 0)
+						{
+							blank =  false; 
+						}//end of if($("#endDate").val().replace(/^\s+|\s+$/g, "").length == 0)
+						else{
+							//end date should be after start date
+							start = new Date($("#startDate").val());
+							end = new Date($("#endDate").val());
+							diff = ((end - start)/1000/60/60/24);
+							if(diff < -1){
+								blank =  false; 
+							}//end if(diff < 0){						
+							
+							
+						}//end for else ($("#endDate").val().replace(/^\s+|\s+$/g, "").length == 0)
+					}//end else
+				}//end else
+				
+				return blank;
+			}//end else if(form = "event"){
+			else if(form == "advanceSearch"){
+				var blank = true; 
+				//check for date
+				if($("#txt_wildCard").val().replace(/^\s+|\s+$/g, "").length == 0)
+				{
+					blank =  false;
+					
+				}
+				
+				return blank;
+				
+			}//end of else if(form == "advanceSearch"){
+			
+			
+		}//end of function validateBlank(field){

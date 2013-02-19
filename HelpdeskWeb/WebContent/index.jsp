@@ -39,10 +39,13 @@
   <link rel="stylesheet" href="css/table.css" type="text/css"/>
   <!-- modernizr enables HTML5 elements and feature detects -->
   <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>
+   <script type='text/javascript' src='js/jquery.js'></script>
+  <script type="text/javascript" src="javascript/core.js"></script>
 </head>
 
 <body>
   <div id="main">
+  <div id="loading" align="right"><b>Loading...</b></div>
     <header>
       <div id="logo">
         <div id="logo_text">
@@ -70,7 +73,14 @@
         </div>
       </nav>
     </header>
-	<div><div style="float:right"><div style="position:relative;top:-10px;">Search : <input type="text" /></div></div>
+	<div>
+		<div style="float:right">
+			<div style="background-color: rgba(37, 29, 29, 0.5);width: 230px;text-align: center;padding-top: 8px;border-radius: 40px;alignment-baseline: central;height: 30px;position:relative;top:-10px;"> 
+				<input type=search results=5 name=s id="search_input">
+				<input type="button" value="Search"  onclick="getSolution('search_input','null')"/>		
+			</div>
+		</div>
+
     <div id="site_content">
       <div id="sidebar_container">
         <div class="sidebar">
@@ -81,7 +91,7 @@
           <p>2013 sees the redesign of our website. We assure to find solutions to your queries.</p>
     
         </div>
-        <div class="sidebar">
+        <div class="sidebar" >
           <h3>Services Offeres</h3>
           <ul>
             <li><a href="#">24 Hour services</a></li>
@@ -92,7 +102,7 @@
           </ul>
         </div>
       </div>
-      <div class="content">
+      <div class="content" id="div_content">
  
       <section class="loginform cf">
 		<form naction="index.jsp" method="post">

@@ -1,11 +1,11 @@
 input[type=search] { 
-	color: red;  
+	color: rgba(10, 14, 15, 0.81);  
 	text-align: right;
 	cursor: pointer;
-	display: block; 
-	width: 100%; 
-	letter-spacing: 4px;        
-	text-shadow: 0 0 2px black;       
+/*	display: block; 
+	width: 100%; */ 
+	letter-spacing: 2px;        
+	/* text-shadow: 0 0 2px black;    */    
 	word-spacing: 20px;               
 }
 label {

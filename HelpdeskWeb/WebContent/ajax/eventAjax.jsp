@@ -96,8 +96,8 @@
 				         "$(this).css('border-color', 'red');"+
 				         "$('#confirmScheduleDiv').css( {"+
 				            " 'position': 'absolute',"+
-				            " 'left': x-125,"+
-						    " 'top': y-315"+
+				            " 'left': x,"+
+						    " 'top': y"+
 				         "});"+
 				         
 				         "$('#confirmScheduleDiv').show();"+
