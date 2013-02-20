@@ -27,7 +27,7 @@ public class ScheduleManagerTest {
 		assertTrue(false);
 	}
 	
-	@Test
+	//@Test
 	public void testFindSchedule(){
 		ScheduleManager mgr = new ScheduleManager();
 		
@@ -49,7 +49,7 @@ public class ScheduleManagerTest {
 	}
 	
 	
-		//@Test
+	@Test
 	public void testGenerateSportSchedule() {
 		ScheduleManager scheduleManager = new ScheduleManager();
 		HashMap<String, String[]> teamsHashMap = new HashMap<String, String[]>();

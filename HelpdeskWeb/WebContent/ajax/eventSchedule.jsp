@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@page import="java.sql.Date, businessLogic.* , java.util.ArrayList"%>
 <%!
-	String title,description = "",type,user_id,time,outMgs="default";
+	String title,description = "",type,user_id,time,outMgs="default",round;
 	int duration,currentEventId;
 	Date date;
 	boolean result;
@@ -30,6 +30,10 @@
 				
 				time = event[i];
 				outMgs += "\\ loo tim \\:"+i+time+" "+title+" "+type+"\\";
+				if(description.equals("") && !round.equals("")){
+					description = round;
+				}
+				
 				currentEventId = eventManager.createEvent( title, description, type, user_id);
 				result = scheduleManager.createSchedule( 0, date, time, currentEventId);
 				if(result && currentEventId>0){
@@ -56,6 +60,9 @@
 				{
 								
 					description += " "+event[i];
+					if(description.contains("round")){
+						round =description;
+					}
 					outMgs += "  \\loo des\\:"+i+description+"\\";
 				}
 			}
