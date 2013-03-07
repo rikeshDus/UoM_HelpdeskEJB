@@ -2,6 +2,7 @@ package businessLogic;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -78,26 +79,65 @@ public class QueryManager {
     	return t_iVersion;
     }//end public boolean createQuery()
     
+    
+    public businessLogic.Query fingQuery(int query_id){
+    	businessLogic.Query query = new businessLogic.Query();
+    	Connection con;
+    	String sql_query;
+    	PreparedStatement pstmt;
+    	
+    	DatabaseConnection dbconnect = new DatabaseConnection();
+    	con = dbconnect.getConnection();
+    		
+    	sql_query = "SELECT * FROM query where query_id = ?";
+    	
+    	try {
+    		pstmt = con.prepareStatement(sql_query);
+    		
+    		
+    		pstmt.setInt(1, query_id);
+    		
+    		ResultSet result = pstmt.executeQuery();
+    		
+    		while(result.next()){
+    			query.setDate(result.getString("date"));
+    			query.setDescrition(result.getString("description"));
+    			query.setQuery_id(result.getInt("query_id"));
+    			query.setType(result.getString("type"));
+    			query.setUser_id(result.getString("user_id"));
+    		}
+    		
+    		con.close();
+			pstmt.close();
+			result.close();
+			
+			return query;
+    	}
+    	catch(SQLException e){
+    		
+    	}
+    	return query;
+    }//end public Query fingQuery(int query_id){
+    
+    
     public TrackingLog forwardQuery(String user_id,String description,String type ){
     	String outMgs,content;
     	int query_id,tracking_id,question_id,tracking_log_id;
     	ArrayList <Answer> allAnswer = new ArrayList<Answer>();
     	User receiver = new User();
     	TrackingLog trackingLog =  new TrackingLog(); 
-    	TrackingManager trackingManager = new TrackingManager();
+    //	TrackingManager trackingManager = new TrackingManager();
     	QuestionManager questionManager = new QuestionManager();
     	TrackingLogManager trackingLogManager = new TrackingLogManager();
     
     	//create query
-    	query_id = createQuery(user_id, description, type);
+    	query_id =createQuery(user_id, description, type);
     	
     	if(query_id!=0){
     		
-    		//tracking
-    		tracking_id = trackingManager.createTracking(user_id, query_id);
     		
     		//create question
-    		question_id = questionManager.CreateQuestion(description);
+    		//question_id = questionManager.CreateQuestion(description);
     		
     		//get receiver
     		receiver = getReceiver(description);
@@ -115,14 +155,23 @@ public class QueryManager {
     			
     			SendMailSSL sendMail = new SendMailSSL();
     			
-    			outMgs = sendMail.sendMail("fpyengineering@gmail.com", "testingfpy", receiver.getEmail(), "new query",content);
+    		//	outMgs = sendMail.sendMail("fpyengineering@gmail.com", "testingfpy", receiver.getEmail(), "new query",content);
     		}
-    			
+
+    		
+    		//tracking
+    		//tracking_id = trackingManager.createTracking(user_id, query_id);
+    		java.util.Calendar cal = java.util.Calendar.getInstance();
+    		java.util.Date utilDate = cal.getTime();
+    		java.sql.Date sqlDate = new Date(utilDate.getTime());
+    		
+    		tracking_id = trackingLogManager.createTrackingLog(user_id, query_id, receiver.getUser_id(), 0, sqlDate);
+    		
     		//save track log
-    		tracking_log_id = trackingLogManager.createTrackingLog(tracking_id, question_id,receiver.getUser_id());
+    		//tracking_log_id = trackingLogManager.createTrackingLog(tracking_id, question_id,receiver.getUser_id());
     		
     		//find tracking_log
-    		trackingLog = trackingLogManager.findTrackingLog(tracking_log_id);
+    		trackingLog = trackingLogManager.findTrackingLog(tracking_id);
     		
     		
     	}// if(query_id!=0){

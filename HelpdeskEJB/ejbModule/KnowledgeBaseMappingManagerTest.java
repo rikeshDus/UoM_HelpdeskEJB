@@ -15,7 +15,7 @@ public class KnowledgeBaseMappingManagerTest {
 	@Test
 	public void testFindQuestion() {
 		ArrayList<KnowledgeBaseMapping> allMaps = Manager.findQuestion("diploma");
-		//System.out.println(allMaps.get(0).getQuestion());
+		System.out.println(allMaps.get(0).getAnswerFormat());
 		assertTrue(allMaps != null);
 	}
 

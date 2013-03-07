@@ -62,7 +62,7 @@ $(document).ready(function() {
 	}//end function advanceQuery()
 	
 	
-	function getQuestion(type, user_id){
+	function getQuestion(type, user_id,answer){
 		if(!validateBlank('query')){
 			
 		}
@@ -72,7 +72,8 @@ $(document).ready(function() {
 			{
 				'question':$("#query").val(),
 				'user':user_id ,
-				'type':type
+				'type':type,
+				'answer':answer
 			},
 			function(data,status){
 					$("#queryResult").html(data);
@@ -390,7 +391,7 @@ $(document).ready(function() {
 			},
 			function(data,status){				
 				$("#divAllTracking").html(data).show().fadeIn(1000);
-				
+				$("#replyQuery").hide();
 			});
 	
 		}//end of function getMyTracking(userId){
@@ -401,6 +402,7 @@ $(document).ready(function() {
 				if($("#query").val().replace(/^\s+|\s+$/g, "").length == 0)
 				{
 					alert("plz fill in textbox before querying!");
+					$("#query").css({"background-color": "red"});
 					return false;
 				}//end of if($("#query").val() == "")
 				else{
@@ -418,15 +420,20 @@ $(document).ready(function() {
 					//check for blank
 					var teamNo = $("#txt_numOfTeam").val();
 					if($("#txt_numOfTeam").val().replace(/^\s+|\s+$/g, "").length == 0){
+						
+						$("#txt_numOfTeam").css({"background-color": "red"});
+						
 						blank = false;		
 					}//end of  if($("#txt_numOfTeam").val().replace(/^\s+|\s+$/g, "").length == 0){
 					else if(!(teamNo == 2 || teamNo == 4 ||teamNo == 8 ||teamNo == 16 ||teamNo == 32)){
+						$("#txt_numOfTeam").css({"background-color": "red"});
 						blank = false; 
 					}//end of else if(teamNo == 2 || teamNo == 4 ||teamNo == 8 ||teamNo == 16 ||teamNo == 32){
 					for (var i=0;i<teamNo;i++)
 					{ 
 						var teamInput = "#textareaTeam"+(i+1);
 						if($(teamInput).val().replace(/^\s+|\s+$/g, "").length == 0){
+							$("#textareaTeam").css({"background-color": "red"});
 							blank = false;
 						}//end of if($(teamInput).val().replace(/^\s+|\s+$/g, "").length == 0){
 					}//end of for (var i=0;i<teamNo;i++) 
@@ -435,14 +442,17 @@ $(document).ready(function() {
 					var checkboxes = [];
 					$("input[name='faculty']:checked").each(function(){checkboxes.push($(this).val());});
 					if(checkboxes.length<1){
+						
 						blank = false;
 					}
 					if($("#courseAddedTextArea").val().replace(/^\s+|\s+$/g, "").length == 0)
 					{
+						$("#courseAddedTextArea").css({"background-color": "red"});
 						blank =  false;
 					}
 					if($("#courseAddedTextArea").val().replace(/^\s+|\s+$/g, "").length == 0)
 					{
+						$("#courseAddedTextArea").css({"background-color": "red"});
 						blank =  false;
 					}
 				}//end else (event == "sport")
@@ -450,12 +460,14 @@ $(document).ready(function() {
 				//check title
 				if($("#title").val().replace(/^\s+|\s+$/g, "").length == 0)
 				{
+					$("#title").css({"background-color": "red"});
 					blank =  false;
 				}
 				
 				//check for date
 				if($("#startDate").val().replace(/^\s+|\s+$/g, "").length == 0)
 				{
+					$("#startDate").css({"background-color": "red"});
 					blank =  false;
 					
 				}
@@ -465,12 +477,14 @@ $(document).ready(function() {
 					var now = new Date();
 					var diff = ((start - now)/1000/60/60/24);
 					if(diff < -1){
+						$("#startDate").css({"background-color": "red"});
 						blank =  false;
 					}//end if(diff < 0){
 					else{
 						//check for end date
 						if($("#endDate").val().replace(/^\s+|\s+$/g, "").length == 0)
 						{
+							$("#endDate").css({"background-color": "red"});
 							blank =  false; 
 						}//end of if($("#endDate").val().replace(/^\s+|\s+$/g, "").length == 0)
 						else{
@@ -479,6 +493,7 @@ $(document).ready(function() {
 							end = new Date($("#endDate").val());
 							diff = ((end - start)/1000/60/60/24);
 							if(diff < -1){
+								$("#endDate").css({"background-color": "red"});
 								blank =  false; 
 							}//end if(diff < 0){						
 							
@@ -504,3 +519,63 @@ $(document).ready(function() {
 			
 			
 		}//end of function validateBlank(field){
+		
+		function validate(obj)
+		{
+		  if(!obj.checkValidity())
+		  {
+			$(obj).css({"background-color": "red"});
+		    obj.focus();
+		    return false;
+		  }
+		  else{
+			$(obj).css({"background-color": "white"});
+			return true;
+		  }
+		}
+		
+		function sendEmail(){
+			if(validate(your_email) && validate(your_message)){
+				$.post("ajax/sendMailAjax.jsp",
+						{
+							'name':$("#your_name").val(),
+							'message':$("#your_message").val(),
+							'email':$('#your_email').val()
+						},
+						function(data,status){				
+							$("#mailConfirm").html(data).show().fadeIn(1000);
+						});
+				
+			}//end of if(validate(your_email) && validate(your_message)){
+			
+		}//end of function sendEmail(){
+		
+		
+		
+		function replyShow(tracking_id,query_id,descrition,user_id){
+			data = "<table><tr><td>To :</td><td> "+user_id+"</td></tr>"+
+					"<tr><td>Query : </td><td>"+descrition+"</td></tr>"+
+					"<tr><td>Reply :</td><td> <textarea id='replyReply'></textarea></td></tr>"+
+					"<tr><td colspan=2><div style=\"float:right;\"><input type='button' value='reply' "+
+					"onclick = \"replyQuery('"+user_id+"','"+query_id+"','"+tracking_id+"');\" /></div></td></tr>"+
+					"</table>";
+			$("#replyQuery").html(data).show().fadeIn(1000);
+			$("#divAllTracking").hide(500);
+		}//end function replyShow(tracking_id,query_id,descrition,user_id){
+		
+		
+		
+		
+		function replyQuery(user_id,query_id,tracking_id){	
+			$.post("ajax/replyQuery.jsp",
+					{
+						'queryId':query_id,
+						'userId':user_id,
+						'trackingId':tracking_id,
+						'answer':$("#replyReply").val()
+					},
+					function(data,status){
+						$("#divAllTracking").html(data).show().fadeIn(1000);
+						$("#replyQuery").hide();
+					});
+		}// end of function replyQuery(){ 

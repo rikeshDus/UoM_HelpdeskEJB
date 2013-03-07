@@ -23,7 +23,7 @@ public class TrackingManager {
     public TrackingManager() {
         // TODO Auto-generated constructor stub
     }
-
+/*
     public int createTracking(String user_id,int query_id)
     {
     	Connection con;
@@ -153,7 +153,7 @@ public class TrackingManager {
     	
 		return null;    	
     }//end  public Tracking findTracking(){
-    
+    */
 }
 
 

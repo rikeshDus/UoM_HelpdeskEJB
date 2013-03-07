@@ -8,21 +8,22 @@ import org.junit.Test;
 
 import businessLogic.QueryManager;
 import businessLogic.Question;
+import businessLogic.TrackingLog;
 
 public class QueryManagerTest {
 	QueryManager queryManager = new QueryManager();
 
-	@Test
+//	@Test
 	public void testCreateQuery() {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	//@Test
 	public void testProcessQuery() {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	//@Test
 	public void testGetSolution() {
 		//formatQuery(String question,String wildCard, String fuzzy,String proximity,String firstRange,String secondRange,String boosting,String excludeWords,String booleanQuery)
 		ArrayList<Question> allquestion = queryManager.getSolution("\"will email\"~3");
@@ -37,7 +38,7 @@ public class QueryManagerTest {
 	}
 
 	
-	@Test
+	//@Test
 	public void testFormatQuery(){
 		//String fullQuery = queryManager.formatQuery(wildCard, fuzzy, proximity, firstRange, secondRange, boosting, excludeWords, booleanQuery);	
 		String fullQuery = queryManager.formatQuery("email*", "roam~0.8", "\"jakarta apache\"~0.4", null, null, null, null, null);	
@@ -45,10 +46,15 @@ public class QueryManagerTest {
 		assertTrue(fullQuery != null);
 	}
 	
-	
-	
-	
 	@Test
+	public void testFowardQuery(){
+		TrackingLog tr = queryManager.forwardQuery("1010790", "test Manager", "normal");
+			System.out.println("test pass : "+tr.getQuery_id());
+			 
+		assertTrue(tr != null);
+	}
+	
+	//@Test
 	public void testGetReceiver() {
 		fail("Not yet implemented");
 	}

@@ -1,8 +1,22 @@
 <%@page import="businessLogic.*" %>
-<%! User user; %>
+<%! User user; 
+	Staff staff; 
+	boolean isStaff;
+	StaffManager staffManager = new StaffManager();
+%>
 <%
+	//clear varialble
+	staff = new Staff();
+	isStaff = false;
+
 	user = (User)(session.getAttribute("currentUser"));
 	session.setAttribute("currentUser", user);
+	
+	staff = staffManager.findStaffByUserId(user.getUser_id());
+	if(staff != null){
+		isStaff = true;
+	}//end if(staff == null){
+	
 %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -23,6 +37,7 @@
 <body>
   <div id="main">
   <div id="loading" align="right"><b>Loading...</b></div>
+  <div align="right"><a href="index.jsp">Logout</a> </div>
     <header>
       <div id="logo">
         <div id="logo_text">
@@ -42,9 +57,16 @@
 					<li><a href="#" onclick="$('#div_content').load('event.jsp', function() { loadEvent('loadEvent'); $('#sidebar_help').html('<a href=#>help</a>') });" >Delete Event</a></li>
 				</ul>
 			</li>
-            <li><a href="#" onclick="$('#div_content').load('query.jsp');" >Query</a></li>
+            <li><a href="#" onclick="$('#div_content').load('query.jsp');" >Query</a>
+            	<%if(isStaff){ %>
+            		<ul>
+            			<li><a href="#" onclick="$('#div_content').load('query.jsp');" >Make Queries</a>
+            			<li><a href="#" onclick="$('#div_content').load('queryResponce.jsp', function() {$('#viewTracking').click();$('#viewTracking').hide();});">Reply Queries</a></li>
+            		</ul>            	
+            	<%}//end of if(isStaff){%>
+            </li>
             <li><a href="#" onclick="$('#div_content').load('advanceSearch.jsp');" >Advance Search</a></li>
-            <li><a href="#" onclick="alert('site is under construction');" >Contact Us</a></li>
+            <li><a href="#" onclick="$('#div_content').load('contactUs.jsp');" >Contact Us</a></li>
           </ul>
 		  
         </div>
@@ -82,7 +104,7 @@
 			
 				<br>
 				<br>
-				<a href="queryResponce.jsp">queryResponce</a>
+				
       
       </div>
     </div>

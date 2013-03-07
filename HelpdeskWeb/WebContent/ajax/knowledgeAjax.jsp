@@ -4,7 +4,7 @@
 <%@ page import="businessLogic.* , jess.*;" %>
 <%!
 //varaibles
-String question,type,outMgs,user_id;
+String question,type,outMgs,user_id,temAnswerFormat;
 ArrayList<KnowledgeBaseMapping> allKnowledgeBaseMappings = new ArrayList<KnowledgeBaseMapping>();
 
 KnowledgeBaseMappingManager knowledgeBaseMappingManager = new KnowledgeBaseMappingManager();
@@ -16,6 +16,7 @@ KnowledgeBaseMappingManager knowledgeBaseMappingManager = new KnowledgeBaseMappi
 	type ="";
 	outMgs="";
 	user_id="";
+	temAnswerFormat="ERROR OCCURS";
 %>
 <%
 //implementation
@@ -28,8 +29,8 @@ KnowledgeBaseMappingManager knowledgeBaseMappingManager = new KnowledgeBaseMappi
 		allKnowledgeBaseMappings = knowledgeBaseMappingManager.findQuestion(question);
 		if(allKnowledgeBaseMappings.size()>0){
 			for(int i=0;i<allKnowledgeBaseMappings.size();i++){
-				outMgs +="<a onclick=\" alert('"+allKnowledgeBaseMappings.get(i).getQueryFormat()+"');getQuestion('"+allKnowledgeBaseMappings.get(i).getQueryFormat()+"','" +user_id+"')\">"+ allKnowledgeBaseMappings.get(i).getQuestion()+"</a></br>";
-				
+				temAnswerFormat = allKnowledgeBaseMappings.get(i).getAnswerFormat();
+				outMgs +="<a onclick=\"getQuestion('"+allKnowledgeBaseMappings.get(i).getQueryFormat()+"','" +user_id+"','" +temAnswerFormat+"')\">"+ allKnowledgeBaseMappings.get(i).getQuestion()+"</a></br>";
 				
 			}//end of for(int i=0;i<allKnowledgeBaseMappings.size();i++){
 		}else{
@@ -47,9 +48,9 @@ KnowledgeBaseMappingManager knowledgeBaseMappingManager = new KnowledgeBaseMappi
 		Rete engine = new KnowledgeDatabaseTemplate().getDataBaseTemplates();
 		
 		try {
+			
 			engine =  new KnowledgeDatabaseTemplate().populateDataBaseTemplates(engine);
 			//engine.eval("(printout t  \" working\"  crlf)");
-						
 			engine = new KnowledgeDatabaseTemplate().populateRule(engine);
 			engine = new KnowledgeDatabaseTemplate().populateQuery(engine);
 			/* QueryResult result =  engine.runQueryStar("search-by-name", new ValueVector().add(new Value("P 0001", RU.STRING)));	        
@@ -60,13 +61,14 @@ KnowledgeBaseMappingManager knowledgeBaseMappingManager = new KnowledgeBaseMappi
 	     //   user_id = user_id.replaceAll(" ", "");
 	        QueryResult result =  engine.runQueryStar(type, new ValueVector().add(new Value(user_id, RU.STRING)));	        
 	        while (result.next()) {
-	        	
-	        	outMgs = result.getString("user_id") + " , " + result.getString("name")+" can exit with diploma ";
+	        	temAnswerFormat = request.getParameter("answer");
+	        	//outMgs = result.getString("user_id") + " , " + result.getString("name")+" can exit with diploma <br>";
+	        	outMgs = temAnswerFormat;
 	        }
 	        
 		} catch (JessException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();outMgs+=" "+type;
 		}
 		
 		

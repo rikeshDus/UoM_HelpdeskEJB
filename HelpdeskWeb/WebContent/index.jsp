@@ -58,16 +58,16 @@
         <div id="menu_container">
           <ul class="sf-menu" id="nav">
             <li><a href="index.jsp">Home</a></li>
-            <li><a href="#" onclick="alert('plz sign in first');">Event</a>
+    <!--    <li><a href="#" onclick="alert('plz sign in first');">Event</a>
 				<ul>
 					<li><a href="#" onclick="alert('plz sign in first');" >Create Event</a></li>
 					<li><a href="#" onclick="alert('plz sign in first');" >Update Event</a></li>
 					<li><a href="#" onclick="alert('plz sign in first');" >Delete Event</a></li>
 				</ul>
-			</li>
-            <li><a href="#" onclick="alert('plz sign in first');" >Query</a></li>
-            <li><a href="#" onclick="alert('site is under construction');" >Advance Search</a></li>
-            <li><a href="#" onclick="alert('site is under construction');" >Contact Us</a></li>
+			</li>	
+            <li><a href="#" onclick="alert('plz sign in first');" >Query</a></li>  
+            <li><a href="#" onclick="alert('plz sign in first');" >Advance Search</a></li>-->
+            <li><a href="#" onclick="$('#div_content').load('contactUs.jsp');" >Contact Us</a></li>
           </ul>
 		  
         </div>

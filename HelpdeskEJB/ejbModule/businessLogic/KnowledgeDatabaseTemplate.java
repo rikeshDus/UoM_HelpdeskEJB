@@ -721,8 +721,8 @@ public class KnowledgeDatabaseTemplate {
 		
 		//tracking
 		TrackingManager trackingManager = new TrackingManager();
-		ArrayList<Tracking> allTracking = trackingManager.getAllTracking();
-		for (int i = 0; i < allTracking.size(); i++) {
+		//ArrayList<Tracking> allTracking = trackingManager.getAllTracking();
+		/*for (int i = 0; i < allTracking.size(); i++) {
 			Fact fact = new Fact("tracking", engine);	
 			
 			fact.setSlotValue("tracking_id", new Value(allTracking.get(i).getTracking_id()+"",RU.STRING));
@@ -734,19 +734,19 @@ public class KnowledgeDatabaseTemplate {
 			if(outFile != null){
 				String temp = (fact.toStringWithParens());
 				new PrintStream(outFile).println ("(assert("+temp.substring(7, temp.length())+")");
-			}
+			}*/
 			
 			
 			
-			engine.assertFact(fact);
-		}//end for (int i = 0; i < allTracking.size(); i++) {
+			//engine.assertFact(fact);
+		//}//end for (int i = 0; i < allTracking.size(); i++) {
 		
 		
 		
 		
 		
 		//tracking_log
-		TrackingLogManager trackingLogManager = new TrackingLogManager();
+/*		TrackingLogManager trackingLogManager = new TrackingLogManager();
 		ArrayList<TrackingLog> allTrackingLogManagers = trackingLogManager.getAllTrackingLogManager();
 		for (int i = 0; i < allTrackingLogManagers.size(); i++) {
 			Fact fact = new Fact("tracking_log", engine);	
@@ -766,7 +766,7 @@ public class KnowledgeDatabaseTemplate {
 			
 			engine.assertFact(fact);
 		}//end for (int i = 0; i < allTrackingLogManagers.size(); i++) {
-		
+		*/
 		
 		
 		//user
@@ -1121,7 +1121,7 @@ public class KnowledgeDatabaseTemplate {
 	        	 System.out.println(result.getString("user_id") + " , " + result.getString("name")+" can exit with diploma ");
 	        	 
 	        }
-	        engine.eval("(facts)");
+	       // engine.eval("(facts)");
 	        
 			outFile.close();
 		} catch (JessException e) {

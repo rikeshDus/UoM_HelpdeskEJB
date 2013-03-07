@@ -5,7 +5,7 @@ public class KnowledgeBaseMapping {
 	private int id;
 	private String question;
 	private String queryFormat;
-	
+	private String answerFormat;
 	
 	public int getId() {
 		return id;
@@ -24,6 +24,12 @@ public class KnowledgeBaseMapping {
 	}
 	public void setQueryFormat(String queryFormat) {
 		this.queryFormat = queryFormat;
+	}
+	public String getAnswerFormat() {
+		return answerFormat;
+	}
+	public void setAnswerFormat(String answerFormat) {
+		this.answerFormat = answerFormat;
 	}
 	
 	

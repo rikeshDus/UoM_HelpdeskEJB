@@ -9,15 +9,12 @@
 	int status;
 
 	Date trackingDate;
-	
-	TrackingManager trackingManager = new TrackingManager();
 	TrackingLogManager trackingLogManager = new TrackingLogManager();
-	QuestionManager questionManager = new QuestionManager();
+	QueryManager queryManager = new QueryManager();
 	UserManager userManager = new UserManager();
 	
 	
-	Question question = new Question();
-	Tracking tracking = new Tracking();
+	Query query = new Query();
 	User sender =new User();
 	
 	ArrayList<TrackingLog> allTrackingLog =  new ArrayList<TrackingLog>();
@@ -26,7 +23,7 @@
 	//clear variable
 	user_id =  "";
 	option = "";
-	outMgs ="no tracking  ffound";
+	outMgs ="no tracking  found";
 	status = 0;
 	
 	//get values
@@ -37,41 +34,49 @@
 	
 	
 	if(option.equals("getTrackings")){
-		outMgs="";
-		//get all tracking log
+	 	//get all tracking log
 		allTrackingLog = trackingLogManager.getAllTrackingLogManager();
 		
+	 	//format out put table
+	 	outMgs = "<table border=1 width=\"100%\">"+
+	 			"<tr ><th colspan = 5 ><center>Unsolve Queries</center></th></tr>"+
+	 			"<tr><th>ID</th><th>Queries</th><th>Date</th><th>Reply</th><th>Foward</th></tr>";
+	 			
+	 	
+	 	
 		for(int i=0 ; i< allTrackingLog.size(); i++){
-			
-			if(allTrackingLog.get(i).getReciever().equals(user_id)){
+		 	if(allTrackingLog.get(i).getInitial_receiver_id().equals(user_id)){
 				
-				
-				//get date
-				trackingDate = allTrackingLog.get(i).getDate();
-				
-				//get tracking
-				tracking = trackingManager.findTracking(allTrackingLog.get(i).getTracking_id());
-				
+		 		
+			 	//get date
+				trackingDate = allTrackingLog.get(i).getDate_send();
+										
 				//get status
-				status = tracking.getStatus();
+				status = allTrackingLog.get(i).getStatus();
 				
 				//get sender
-				sender = userManager.findUser(tracking.getUser_id());
+				sender = userManager.findUser(allTrackingLog.get(i).getSender_id());
 				
-				//question
-				question = questionManager.findQuestion(allTrackingLog.get(i).getQuestion());
-				
+					//question
+				query = queryManager.fingQuery(allTrackingLog.get(i).getQuery_id());
+				// replyShow('<%=allTrackingLog.get(i).getTracking_id() >','<%=allTrackingLog.get(i).getQuery_id()>','<%=query.getDescrition()>','<%=user_id>')
 				if(status<100){
-					outMgs += sender.getUser_id() + " - "+ question.getQuestion();
-				}//end of if(status<100){
+					outMgs += "<tr><td>"+sender.getUser_id() + "</td><td>"+ query.getDescrition()+status+"</td><td>"+trackingDate+
+							"</td><td><a onclick=\" replyShow('"+allTrackingLog.get(i).getTracking_id() +"','"+allTrackingLog.get(i).getQuery_id()+"','"+query.getDescrition()+"','"+user_id+"');  \">reply</a></td>"+
+							"<td><a onclick=\"alert('features under Construction');\">Foward</a></td></tr>" ;
+				//	outMgs += "<tr><td colspan =3><textarea style=\"width:100%\"></textarea><br><div style=\"float:right;\"><input type='button' value='Reply' /></div></td></tr></table></td></tr>";
+					//outMgs += sender.getUser_id() + "  "+ query.getDescrition()+" "+trackingDate ;
+				}//end of if(status<100){ 
 				
-				
-				
-				
-			}//end of if(allTrackingLog.get(i).getReciever().equals(user_id)){
+			}//end of if(allTrackingLog.get(i).getReciever().equals(user_id)){ 
 			
 		}//end for(int i=0 ; i< allTrackingLog.size(); i++){
 		
+		outMgs += "</table>";
+		
+		if(outMgs.equals(""))	
+			outMgs = "No query to solve";
+			
 		out.print(outMgs);
 	}//end of if(option.equals("getTrackings")){
 	else{

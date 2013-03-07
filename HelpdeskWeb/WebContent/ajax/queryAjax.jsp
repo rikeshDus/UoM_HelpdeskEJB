@@ -64,11 +64,11 @@
 			outMgs = "fail";
 		}
 		else{
-			outMgs = trackingLog.getReciever() + " , "
+			outMgs = trackingLog.getDate_send() + " , "
 					 + trackingLog.getTracking_id() + " , "
-					+ trackingLog.getQuestion() + " , "
-					+ trackingLog.getTracking_log_id() + " , "
-					+ trackingLog.getDate();  
+					+ trackingLog.getStatus() + " , "
+					+ trackingLog.getSender_id() + " , "
+					+ trackingLog.getQuery_id();  
 		}
 			
 		out.print(outMgs);

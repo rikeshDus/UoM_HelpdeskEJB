@@ -85,7 +85,7 @@ public class KnowledgeBaseMappingManager {
  				Document doc = new Document();
  				doc.add(new TextField("question", rs.getString("question"), Field.Store.YES));
  				doc.add(new TextField("query", rs.getString("query"), Field.Store.YES));
-
+ 				doc.add(new TextField("answer_format", rs.getString("answer_format"), Field.Store.YES));
  			    // use a string field for isbn because we don't want it tokenized
  			    doc.add(new IntField("id", rs.getInt("id"), Field.Store.YES));
  			    writer.addDocument(doc);
@@ -115,6 +115,7 @@ public class KnowledgeBaseMappingManager {
 		        int docId = hits[i].doc;
 		        Document d = searcher.doc(docId);
 		        mapping = new KnowledgeBaseMapping();
+		        mapping.setAnswerFormat(d.get("answer_format"));
 		        mapping.setQuestion(d.get("question"));
 		        mapping.setQueryFormat(d.get("query"));
 		        mapping.setId(Integer.parseInt(d.get("id")));

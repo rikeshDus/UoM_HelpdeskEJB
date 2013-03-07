@@ -56,7 +56,7 @@
 	 allFaculty = facultyManager.getAllFaculty();
 	 
 	 for(int i=0;i<allFaculty.size();i++){
-		 chechBoxFaculty += allFaculty.get(i).getName()+" <input type=\"checkbox\" name=\"faculty\" value=\""+allFaculty.get(i).getFaculty_id()+"\" id=\""+allFaculty.get(i).getName()+"\"/>";
+		 chechBoxFaculty += " "+allFaculty.get(i).getName()+" <input type=\"checkbox\" name=\"faculty\" value=\""+allFaculty.get(i).getFaculty_id()+"\" id=\""+allFaculty.get(i).getName()+"\"/>";
 	 }//end of for(int i=0;i<allFaculty.size();i++){
 	  
 	  
@@ -116,9 +116,9 @@
 	
 			<table cellspacing="2" cellpadding="3">
 				<tr>
-					<td>Event Type</td>
+					<td width="150px">Event Type</td>
 					<td> 
-						<select name="" id="eventType" onchange="sportHideShow();">
+						<select name="" id="eventType" style="width: 210px" onchange="sportHideShow();">
 							<option value="other">Other</option>
 							<option value="sport">Sport</option>							
 						</select>
@@ -126,21 +126,20 @@
 				</tr>
 				<tr>
 					<td>Title</td>
-					<td><input type="text" name="" id="title"/> </td>
+					<td><input type="text" name="" id="title" size="30"/> </td>
 				</tr>
 					
 				<tr>
 					<td>Description</td>
-					<td><textarea name="" id="description"></textarea></td>
+					<td><textarea name="" style="width: 210px" id="description"></textarea></td>
 				</tr>
 			</table>
 			<div id="innerSportOtherEventForm">
 				<table>
 					<tr>
-						<td colspan="2">Faculty Involve </td>
-					</tr>
-					<tr>
-						<td colspan="2">
+						<td width="150px">Faculty Involve </td>
+					
+						<td >
 							<%= chechBoxFaculty %>
 						</td>
 					</tr>
@@ -155,10 +154,12 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">
-							Course Added <br>
+						<td>
+							Course Added
+						</td>
+						<td> 
 							<div id="courseAddedConfirmMessge"></div><br>
-							<textarea rows="" cols="" readonly="readonly" id="courseAddedTextArea"></textarea>
+							<textarea rows="" cols="" style="width: 210px" readonly="readonly" id="courseAddedTextArea"></textarea>
 						</td>
 					</tr>
 				</table>
@@ -166,7 +167,7 @@
 			<div id="innerSportCreateEventForm">
 				<table>			
 					<tr>
-						<td>Number of teams</td>
+						<td width="150px">Number of teams</td>
 						<td><input type="number" id="txt_numOfTeam" min="0" onblur="sportTeamsDisplay('<%= comboUser %>');"/> </td>
 					</tr>	
 				</table>
@@ -174,12 +175,12 @@
 			</div>
 			<table>	
 				<tr>
-					<td>Starting Date</td>
-					<td><input type="date" name="startDate" id="startDate"></td>
+					<td width="150px">Starting Date</td>
+					<td><input type="date" name="startDate" id="startDate" style="width: 210px"></td>
 				</tr>
 				<tr>
 					<td>Ending Date</td>
-					<td><input type="date" name="endDate" id="endDate"></td>
+					<td><input type="date" name="endDate" id="endDate" style="width: 210px"></td>
 				</tr>
 			</table>
 		
