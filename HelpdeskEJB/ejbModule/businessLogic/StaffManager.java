@@ -45,7 +45,7 @@ public class StaffManager {
 			while(rs.next()){
 				temporaryStaff = new Staff();
 				
-				temporaryStaff.setPosition(rs.getString("position"));
+				temporaryStaff.setPosition(rs.getInt("position"));
 				temporaryStaff.setSalary(rs.getInt("salary"));
 				temporaryStaff.setStaff_id(rs.getString("staff_id"));
 				temporaryStaff.setUser_id(rs.getString("user_id"));

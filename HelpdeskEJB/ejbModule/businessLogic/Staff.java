@@ -10,7 +10,8 @@ public class Staff {
 	private String staff_id;
 	private String user_id;
 	private String working_description;
-	private String position;
+	//private String position;
+	private int position;
 	private int salary;
 	
 	
@@ -37,10 +38,10 @@ public class Staff {
 	public void setWorking_description(String working_description) {
 		this.working_description = working_description;
 	}
-	public String getPosition() {
+	public int getPosition() {
 		return position;
 	}
-	public void setPosition(String position) {
+	public void setPosition(int position) {
 		this.position = position;
 	}
 	public int getSalary() {

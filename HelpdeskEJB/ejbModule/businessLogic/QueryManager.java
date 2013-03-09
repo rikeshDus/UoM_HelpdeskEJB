@@ -377,7 +377,7 @@ public class QueryManager {
  				//adding result as document in lucene
  				Document doc = new Document();
  				doc.add(new TextField("working_description", rs.getString("working_description"), Field.Store.YES));
- 				doc.add(new TextField("position", rs.getString("position"), Field.Store.YES));
+ 				doc.add(new TextField("position", rs.getInt("position")+"", Field.Store.YES));
 
  			    // use a string field for isbn because we don't want it tokenized
  			    doc.add(new StringField("user_id", rs.getString("user_id"), Field.Store.YES));
@@ -407,11 +407,11 @@ public class QueryManager {
 		    for(int i=0;i<hits.length;++i) {
 		        int docId = hits[i].doc;
 		        Document d = searcher.doc(docId);
-		        staff = new Staff();
+		       /* staff = new Staff();
 		        staff.setWorking_description(d.get("working_description"));
-		        staff.setPosition(d.get("position"));
-		        staff.setUser_id(d.get("user_id"));
-		        
+		        staff.setPosition(Integer.parseInt(d.get("position")));
+		        staff.setUser_id(d.get("user_id"));*/
+		        staff = new StaffManager().findStaffByUserId(d.get("user_id"));
 		        staffPopulation.add(staff);
 		        
 		     }//end for(int i=0;i<hits.length;++i) {
